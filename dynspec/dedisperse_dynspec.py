@@ -274,6 +274,7 @@ class DMCurve():
 def main(**kwargs):
     # Load the data into a "dynspec" object
     dynspec = Dynspec(**kwargs)
+    orig_total_time = len(dynspec.t)*dynspec.dt
 
     # Set the reference frequency
     dynspec.set_freq_ref(kwargs['freq_ref'])
@@ -309,6 +310,13 @@ def main(**kwargs):
             ax.set_xlabel("DM (pc/cm^3)")
             ax.set_ylabel("Peak flux density (a.u.)")
 
+            if kwargs['dynspec_image_xlim_padding'] is not None:
+                ax.set_xlim([kwargs['t0'] - dynspec.dmdelay - kwargs['dynspec_image_xlim_padding'],
+                             kwargs['t0'] + orig_total_time - dynspec.dmdelay + kwargs['dynspec_image_xlim_padding']])
+
+            if kwargs['dynspec_image_ylim'] is not None:
+                ax.set_ylim(kwargs['dynspec_image_ylim'])
+
             if kwargs['dmcurve_image'] == "SHOW":
                 plt.show()
             else:
@@ -326,8 +334,14 @@ def main(**kwargs):
         fig, axs = plt.subplots(nrows=2, ncols=1, sharex=True)
         dynspec.plot_lightcurve(axs[0])
         dynspec.plot(axs[1])
+        if kwargs['dynspec_image_xlim_padding'] is not None:
+            axs[0].set_xlim([kwargs['t0'] - dynspec.dmdelay - kwargs['dynspec_image_xlim_padding'],
+                             kwargs['t0'] + orig_total_time - dynspec.dmdelay + kwargs['dynspec_image_xlim_padding']])
+
+        if kwargs['dynspec_image_ylim'] is not None:
+            axs[0].set_ylim(kwargs['dynspec_image_ylim'])
+
         fig.suptitle('DM = {:.1f} pc/cm^3'.format(DM))
-        axs[0].set_yticks([])
         if kwargs['dynspec_image'] == "SHOW":
             plt.show()
         else:
@@ -463,6 +477,8 @@ if __name__ == "__main__":
     parser.add_argument('--ephemeris', default='de430.bsp', help='The path to the planetary ephemeris file to use (default de430.bsp)')
     parser.add_argument('--yaml', type=argparse.FileType('r'), help='Obtain parameters from yaml file. These will be overriden by equivalent parameters given on the command line')
     parser.add_argument('--yaml_help', action='store_true', help='More detailed documentation on the --yaml option')
+    parser.add_argument('--dynspec_image_xlim_padding', type=float)
+    parser.add_argument('--dynspec_image_ylim', nargs=2, type=float)
 
     args = parser.parse_args()
 
