@@ -68,8 +68,8 @@ def dmdelay(freq, t0, dm):
 #       |    |
 p0 = (50*dt, 150)
 popt, pcov = curve_fit(dmdelay, cc_freqs, times, p0=p0)
-print(f"{popt = }")
-print(f"{np.sqrt(pcov) = }")
+#print(f"{popt = }")
+#print(f"{np.sqrt(pcov) = }")
 
 #plt.plot(lc)
 #plt.plot(lc_smoothed)
@@ -96,15 +96,26 @@ cc_fluxes = np.array([correlated[c,dm_idxs[c]] for c in cc])
 
 # Throw away a few outliers
 cc_fluxes[9:12] = np.nan
+not_nan_mask = ~np.isnan(cc_fluxes)
+cc_goodfluxes = cc_fluxes[not_nan_mask]
+cc_goodfreqs = cc_freqs[not_nan_mask]
 
 # Fit a spectral index, coz that's what we like to do
 def powerlaw(nu_GHz, S1GHz, alpha):
     return S1GHz*nu_GHz**alpha
 
 p0 = (0.05, -1)
-popt, pcov = curve_fit(powerlaw, cc_freqs/1e3, cc_fluxes, p0=p0)
+popt, pcov = curve_fit(powerlaw, cc_goodfreqs/1e3, cc_goodfluxes, p0=p0)
+print(popt, pcov)
 
-plt.plot(cc_freqs, cc_fluxes, 'k.')
+freqs = np.logspace(2, 3, 10) # Used for plotting
+
+plt.plot(cc_freqs, cc_fluxes, 'k.', label="MWA")
+plt.plot([887.5], [0.2], 'bx', label="ASKAP") # Add Dougal's point, and draw their slope as well
+#plt.plot(freqs, powerlaw(freqs/1e3, *popt), 'k--', alpha=0.5, label=f"$\\alpha = {popt[1]:.1f} ± {np.sqrt(pcov[1,1]):.1f}$")
+
+
 plt.xscale('log')
 plt.yscale('log')
-plt.show()
+plt.legend()
+plt.savefig("1410773120-I_and_1410773416-I_spectrum.png")
