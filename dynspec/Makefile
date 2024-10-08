@@ -1,4 +1,4 @@
-RMS = $(shell seq 900 0.5 1100)
+RMS = $(shell seq -970 0.5 -950)
 PNGS = $(patsubst %,1410773120_and_1410773416-RM_%-fullpol.png,$(RMS))
 
 
