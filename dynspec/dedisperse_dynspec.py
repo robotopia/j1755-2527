@@ -342,6 +342,7 @@ def main(**kwargs):
             axs[0].set_ylim(kwargs['dynspec_image_ylim'])
 
         fig.suptitle('DM = {:.1f} pc/cm^3'.format(DM))
+        axs[0].set_ylabel("Flux density (Jy)")
         if kwargs['dynspec_image'] == "SHOW":
             plt.show()
         else:
