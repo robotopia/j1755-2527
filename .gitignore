@@ -162,3 +162,11 @@ cython_debug/
 #.idea/
 
 *.png
+
+# LaTeX
+paper/main.log
+paper/main.aux
+paper/main.bbl
+paper/main.blg
+paper/main.out
+paper/main.pdf

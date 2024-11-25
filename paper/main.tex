@@ -1,0 +1,381 @@
+%% Beginning of file 'sample631.tex'
+%%
+%% Modified 2022 May  
+%%
+%% This is a sample manuscript marked up using the
+%% AASTeX v6.31 LaTeX 2e macros.
+%%
+%% AASTeX is now based on Alexey Vikhlinin's emulateapj.cls 
+%% (Copyright 2000-2015).  See the classfile for details.
+
+%% AASTeX requires revtex4-1.cls and other external packages such as
+%% latexsym, graphicx, amssymb, longtable, and epsf.  Note that as of 
+%% Oct 2020, APS now uses revtex4.2e for its journals but remember that 
+%% AASTeX v6+ still uses v4.1. All of these external packages should 
+%% already be present in the modern TeX distributions but not always.
+%% For example, revtex4.1 seems to be missing in the linux version of
+%% TexLive 2020. One should be able to get all packages from www.ctan.org.
+%% In particular, revtex v4.1 can be found at 
+%% https://www.ctan.org/pkg/revtex4-1.
+
+%% The first piece of markup in an AASTeX v6.x document is the \documentclass
+%% command. LaTeX will ignore any data that comes before this command. The 
+%% documentclass can take an optional argument to modify the output style.
+%% The command below calls the preprint style which will produce a tightly 
+%% typeset, one-column, single-spaced document.  It is the default and thus
+%% does not need to be explicitly stated.
+%%
+%% using aastex version 6.3
+\documentclass[preprint2,linenumbers]{aastex631}
+
+%% The default is a single spaced, 10 point font, single spaced article.
+%% There are 5 other style options available via an optional argument. They
+%% can be invoked like this:
+%%
+%% \documentclass[arguments]{aastex631}
+%% 
+%% where the layout options are:
+%%
+%%  twocolumn   : two text columns, 10 point font, single spaced article.
+%%                This is the most compact and represent the final published
+%%                derived PDF copy of the accepted manuscript from the publisher
+%%  manuscript  : one text column, 12 point font, double spaced article.
+%%  preprint    : one text column, 12 point font, single spaced article.  
+%%  preprint2   : two text columns, 12 point font, single spaced article.
+%%  modern      : a stylish, single text column, 12 point font, article with
+%% 		  wider left and right margins. This uses the Daniel
+%% 		  Foreman-Mackey and David Hogg design.
+%%  RNAAS       : Supresses an abstract. Originally for RNAAS manuscripts 
+%%                but now that abstracts are required this is obsolete for
+%%                AAS Journals. Authors might need it for other reasons. DO NOT
+%%                use \begin{abstract} and \end{abstract} with this style.
+%%
+%% Note that you can submit to the AAS Journals in any of these 6 styles.
+%%
+%% There are other optional arguments one can invoke to allow other stylistic
+%% actions. The available options are:
+%%
+%%   astrosymb    : Loads Astrosymb font and define \astrocommands. 
+%%   tighten      : Makes baselineskip slightly smaller, only works with 
+%%                  the twocolumn substyle.
+%%   times        : uses times font instead of the default
+%%   linenumbers  : turn on lineno package.
+%%   trackchanges : required to see the revision mark up and print its output
+%%   longauthor   : Do not use the more compressed footnote style (default) for 
+%%                  the author/collaboration/affiliations. Instead print all
+%%                  affiliation information after each name. Creates a much 
+%%                  longer author list but may be desirable for short 
+%%                  author papers.
+%% twocolappendix : make 2 column appendix.
+%%   anonymous    : Do not show the authors, affiliations and acknowledgments 
+%%                  for dual anonymous review.
+%%
+%% these can be used in any combination, e.g.
+%%
+%% \documentclass[twocolumn,linenumbers,trackchanges]{aastex631}
+%%
+%% AASTeX v6.* now includes \hyperref support. While we have built in specific
+%% defaults into the classfile you can manually override them with the
+%% \hypersetup command. For example,
+%%
+%% \hypersetup{linkcolor=red,citecolor=green,filecolor=cyan,urlcolor=magenta}
+%%
+%% will change the color of the internal links to red, the links to the
+%% bibliography to green, the file links to cyan, and the external links to
+%% magenta. Additional information on \hyperref options can be found here:
+%% https://www.tug.org/applications/hyperref/manual.html#x1-40003
+%%
+%% Note that in v6.3 "bookmarks" has been changed to "true" in hyperref
+%% to improve the accessibility of the compiled pdf file.
+%%
+%% If you want to create your own macros, you can do so
+%% using \newcommand. Your macros should appear before
+%% the \begin{document} command.
+%%
+\newcommand{\vdag}{(v)^\dagger}
+\newcommand\aastex{AAS\TeX}
+\newcommand\latex{La\TeX}
+
+\newcommand{\todo}[1]{{\color{red}#1}}
+\newcommand{\src}{J1755$-$2527}
+\newcommand{\srcfull}{ASKAP J175534.9$-$252749.1}
+
+%% Reintroduced the \received and \accepted commands from AASTeX v5.2
+%\received{March 1, 2021}
+%\revised{April 1, 2021}
+%\accepted{\today}
+
+%% Command to document which AAS Journal the manuscript was submitted to.
+%% Adds "Submitted to " the argument.
+%\submitjournal{PSJ}
+
+%% For manuscript that include authors in collaborations, AASTeX v6.31
+%% builds on the \collaboration command to allow greater freedom to 
+%% keep the traditional author+affiliation information but only show
+%% subsets. The \collaboration command now must appear AFTER the group
+%% of authors in the collaboration and it takes TWO arguments. The last
+%% is still the collaboration identifier. The text given in this
+%% argument is what will be shown in the manuscript. The first argument
+%% is the number of author above the \collaboration command to show with
+%% the collaboration text. If there are authors that are not part of any
+%% collaboration the \nocollaboration command is used. This command takes
+%% one argument which is also the number of authors above to show. A
+%% dashed line is shown to indicate no collaboration. This example manuscript
+%% shows how these commands work to display specific set of authors 
+%% on the front page.
+%%
+%% For manuscript without any need to use \collaboration the 
+%% \AuthorCollaborationLimit command from v6.2 can still be used to 
+%% show a subset of authors.
+%
+%\AuthorCollaborationLimit=2
+%
+%% will only show Schwarz & Muench on the front page of the manuscript
+%% (assuming the \collaboration and \nocollaboration commands are
+%% commented out).
+%%
+%% Note that all of the author will be shown in the published article.
+%% This feature is meant to be used prior to acceptance to make the
+%% front end of a long author article more manageable. Please do not use
+%% this functionality for manuscripts with less than 20 authors. Conversely,
+%% please do use this when the number of authors exceeds 40.
+%%
+%% Use \allauthors at the manuscript end to show the full author list.
+%% This command should only be used with \AuthorCollaborationLimit is used.
+
+%% The following command can be used to set the latex table counters.  It
+%% is needed in this document because it uses a mix of latex tabular and
+%% AASTeX deluxetables.  In general it should not be needed.
+%\setcounter{table}{1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% The following section outlines numerous optional output that
+%% can be displayed in the front matter or as running meta-data.
+%%
+%% If you wish, you may supply running head information, although
+%% this information may be modified by the editorial offices.
+%\shorttitle{AASTeX v6.3.1 Sample article}
+%\shortauthors{Schwarz et al.}
+%%
+%% You can add a light gray and diagonal water-mark to the first page 
+%% with this command:
+%% \watermark{text}
+%% where "text", e.g. DRAFT, is the text to appear.  If the text is 
+%% long you can control the water-mark size with:
+%% \setwatermarkfontsize{dimension}
+%% where dimension is any recognized LaTeX dimension, e.g. pt, in, etc.
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\graphicspath{{./}{figures/}}
+%% This is the end of the preamble.  Indicate the beginning of the
+%% manuscript itself with \begin{document}.
+
+\begin{document}
+
+\title{Confirmation of \srcfull{} as a long period radio transient}
+
+%% LaTeX will automatically break titles if they run longer than
+%% one line. However, you may use \\ to force a line break if
+%% you desire. In v6.31 you can include a footnote in the title.
+
+%% A significant change from earlier AASTEX versions is in the structure for 
+%% calling author and affiliations. The change was necessary to implement 
+%% auto-indexing of affiliations which prior was a manual process that could 
+%% easily be tedious in large author manuscripts.
+%%
+%% The \author command is the same as before except it now takes an optional
+%% argument which is the 16 digit ORCID. The syntax is:
+%% \author[xxxx-xxxx-xxxx-xxxx]{Author Name}
+%%
+%% This will hyperlink the author name to the author's ORCID page. Note that
+%% during compilation, LaTeX will do some limited checking of the format of
+%% the ID to make sure it is valid. If the "orcid-ID.png" image file is 
+%% present or in the LaTeX pathway, the OrcID icon will appear next to
+%% the authors name.
+%%
+%% Use \affiliation for affiliation information. The old \affil is now aliased
+%% to \affiliation. AASTeX v6.31 will automatically index these in the header.
+%% When a duplicate is found its index will be the same as its previous entry.
+%%
+%% Note that \altaffilmark and \altaffiltext have been removed and thus 
+%% can not be used to document secondary affiliations. If they are used latex
+%% will issue a specific error message and quit. Please use multiple 
+%% \affiliation calls for to document more than one affiliation.
+%%
+%% The new \altaffiliation can be used to indicate some secondary information
+%% such as fellowships. This command produces a non-numeric footnote that is
+%% set away from the numeric \affiliation footnotes.  NOTE that if an
+%% \altaffiliation command is used it must come BEFORE the \affiliation call,
+%% right after the \author command, in order to place the footnotes in
+%% the proper location.
+%%
+%% Use \email to set provide email addresses. Each \email will appear on its
+%% own line so you can put multiple email address in one \email call. A new
+%% \correspondingauthor command is available in V6.31 to identify the
+%% corresponding author of the manuscript. It is the author's responsibility
+%% to make sure this name is also in the author list.
+%%
+%% While authors can be grouped inside the same \author and \affiliation
+%% commands it is better to have a single author for each. This allows for
+%% one to exploit all the new benefits and should make book-keeping easier.
+%%
+%% If done correctly the peer review system will be able to
+%% automatically put the author and affiliation information from the manuscript
+%% and save the corresponding author the trouble of entering it by hand.
+
+%\correspondingauthor{August Muench}
+%\email{greg.schwarz@aas.org, gus.muench@aas.org}
+
+\author[0000-0001-6114-7469]{Samuel J. McSweeney}
+\affiliation{International Centre for Radio Astronomy Research, Curtin University, Bentley, WA 6102, Australia}
+
+\author[0000-0002-5119-4808]{Natasha Hurley-Walker}
+\affiliation{International Centre for Radio Astronomy Research, Curtin University, Bentley, WA 6102, Australia}
+
+\author{Dougal Dobie}
+\affiliation{Sydney Institute for Astronomy, School of Physics, The University of Sydney, NSW 2006, Australia}
+\affiliation{ARC Centre of Excellence for Gravitational Wave Discovery (OzGrav), Hawthorn, VIC 3122, Australia}
+
+\author{Ziteng Wang}
+\affiliation{International Centre for Radio Astronomy Research, Curtin University, Bentley, WA 6102, Australia}
+
+%\collaboration{20}{(AAS Journals Data Editors)}
+
+% Example with "altaffiliation"
+%\author{Amy Hendrickson}
+%\altaffiliation{AASTeX v6+ programmer}
+%\affiliation{TeXnology Inc.}
+
+%% Note that the \and command from previous versions of AASTeX is now
+%% depreciated in this version as it is no longer necessary. AASTeX 
+%% automatically takes care of all commas and "and"s between authors names.
+
+%% AASTeX 6.31 has the new \collaboration and \nocollaboration commands to
+%% provide the collaboration status of a group of authors. These commands 
+%% can be used either before or after the list of corresponding authors. The
+%% argument for \collaboration is the collaboration identifier. Authors are
+%% encouraged to surround collaboration identifiers with ()s. The 
+%% \nocollaboration command takes no argument and exists to indicate that
+%% the nearby authors are not part of surrounding collaborations.
+
+%% Mark off the abstract in the ``abstract'' environment. 
+\begin{abstract}
+
+[Abstract goes here\dots]
+
+\end{abstract}
+
+%% Keywords should appear after the \end{abstract} command. 
+%% The AAS Journals now uses Unified Astronomy Thesaurus concepts:
+%% https://astrothesaurus.org
+%% You will be asked to selected these concepts during the submission process
+%% but this old "keyword" functionality is maintained in case authors want
+%% to include these concepts in their preprints.
+%\keywords{Classical Novae (251) --- Ultraviolet astronomy(1736) --- History of astronomy(1868) --- Interdisciplinary astronomy(804)}
+
+%% From the front matter, we move on to the body of the paper.
+%% Sections are demarcated by \section and \subsection, respectively.
+%% Observe the use of the LaTeX \label
+%% command after the \subsection to give a symbolic KEY to the
+%% subsection for cross-referencing in a \ref command.
+%% You can use LaTeX's \ref and \label commands to keep track of
+%% cross-references to sections, equations, tables, and figures.
+%% That way, if you change the order of any elements, LaTeX will
+%% automatically renumber them.
+%%
+%% We recommend that authors also use the natbib \citep
+%% and \citet commands to identify citations.  The citations are
+%% tied to the reference list via symbolic KEYs. The KEY corresponds
+%% to the KEY in the \bibitem in the reference list below. 
+
+\section{Introduction} \label{sec:intro}
+
+\srcfull{} (hereafter, \src{}) is a transient radio source discovered in the Variables and Slow Transients (VAST) survey \citep{2024MNRAS.535..909D}.
+A single, highly polarized pulse was observed, lasting approximately 2 minutes, exhibiting a steep spectrum ($\alpha = -3.1$).
+Extensive follow up in new and archival data at multiple wavelengths turned up no other pulses.
+Despite this, the authors concluded that \src{} was most likely a long period transient (LPT), a newly emerging class of radio source with periods ranging from minutes to hours (see Table \ref{tbl:lpts} for an up-to-date list).
+
+
+
+\begin{deluxetable*}{lcl}
+\tablecaption{Known LPTs, arranged in ascending order of period\label{tbl:lpts}}
+\tablehead{
+\colhead{LPT} & \colhead{Period} & \colhead{References} \\ 
+ & \colhead{(min)} & 
+} 
+\startdata
+%AR Scorpii (J162147.28-225310.3) & 1.97 &  \\
+%ASKAP J175154.89-255135.3 & ${\sim}$3.6 &  \\
+%J1912-4410 & 5.3 &  \\
+CHIME J0630+25             & 7.02 & \citet{2024arXiv240707480D} \\
+GLEAM-X J162759.5-523504.3 & 18.2 & \citet{2022Natur.601..526H} \\
+GPM J1839-10               & 22.0 & \citet{2023Natur.619..487H} \\
+ASKAP J1832-0911           & 44.3 & \todo{Wang} \\
+ASKAP J193505.1+214841.0   & 53.8 & \citet{2024NatAs...8.1159C} \\
+ASKAP J175534.9-252749.1   & 69.8 & \citet{2024MNRAS.535..909D} \\
+GCRT J1745-3009            & 77.0 & \citet{2005Natur.434...50H} \\
+ILT J1101+5521             & 126  & \citet{2024arXiv240811536D} \\
+GLEAM-X J0704-37           & 175  & \citet{2024arXiv240815757H} \\
+ASKAP J1839-0756           & 387  & \todo{Lee} \\
+\enddata
+%\tablecomments{This is a sample table. Add more rows as needed, and include notes in this area.}
+\end{deluxetable*}
+
+\begin{acknowledgments}
+
+[Acknowledgements go here\dots]
+
+\end{acknowledgments}
+
+%% To help institutions obtain information on the effectiveness of their 
+%% telescopes the AAS Journals has created a group of keywords for telescope 
+%% facilities.
+%
+%% Following the acknowledgments section, use the following syntax and the
+%% \facility{} or \facilities{} macros to list the keywords of facilities used 
+%% in the research for the paper.  Each keyword is check against the master 
+%% list during copy editing.  Individual instruments can be provided in 
+%% parentheses, after the keyword, but they are not verified.
+
+%\vspace{5mm}
+%\facilities{HST(STIS), Swift(XRT and UVOT), AAVSO, CTIO:1.3m,
+%CTIO:1.5m,CXO}
+
+%% Similar to \facility{}, there is the optional \software command to allow 
+%% authors a place to specify which programs were used during the creation of 
+%% the manuscript. Authors should list each code and include either a
+%% citation or url to the code inside ()s when available.
+
+%\software{astropy \citep{2013A&A...558A..33A,2018AJ....156..123A},  
+%          Cloudy \citep{2013RMxAA..49..137F}, 
+%          Source Extractor \citep{1996A&AS..117..393B}
+%          }
+
+%% Appendix material should be preceded with a single \appendix command.
+%% There should be a \section command for each appendix. Mark appendix
+%% subsections with the same markup you use in the main body of the paper.
+
+%% Each Appendix (indicated with \section) will be lettered A, B, C, etc.
+%% The equation counter will reset when it encounters the \appendix
+%% command and will number appendix equations (A1), (A2), etc. The
+%% Figure and Table counter will not reset.
+
+%\appendix
+
+
+\bibliography{biblio}{}
+\bibliographystyle{aasjournal}
+
+%% This command is needed to show the entire author+affiliation list when
+%% the collaboration and author truncation commands are used.  It has to
+%% go at the end of the manuscript.
+%\allauthors
+
+%% Include this line if you are using the \added, \replaced, \deleted
+%% commands to see a summary list of all changes at the end of the article.
+%\listofchanges
+
+\end{document}
+
+% End of file `sample631.tex'.
