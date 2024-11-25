@@ -6,8 +6,14 @@ import matplotlib.pyplot as plt
 
 PEPOCH = Time(59965.03767627493, scale='utc', format='mjd')
 P = 4186.32874813198 * u.s
+DM = 1100 * u.pc / u.cm**3
+freq = 887.5 * u.MHz
 
-# TODO: Add DM and Barycentre corrections
+def dmdelay(dm, flo, fhi):
+    dm_u = dm.to('pc cm-3').value
+    flo_u = flo.to('MHz').value
+    fhi_u = fhi.to('MHz').value
+    return 4.148808e3 * u.s * dm_u * (flo_u**-2 - fhi_u**-2)
 
 with open('VAST-Pipeline-Source-ID-34260695.csv') as csvfile:
     myreader = csv.reader(csvfile)
@@ -20,8 +26,13 @@ with open('VAST-Pipeline-Source-ID-34260695.csv') as csvfile:
     start_times = Time([row[2].split('+')[0] for row in rows], scale='utc', format='isot')
     is_detection = [row[16] == "true" for row in rows]
 
+# Add DM delay
+start_times -= dmdelay(DM, freq, np.inf*u.MHz)
+
+# Add barycentre corrections
+
 start_pulses, start_phases = np.divmod(((start_times - PEPOCH) / P).decompose(), 1)
-obs_duration = 11*u.min
+obs_duration = 12*u.min
 end_phases   = start_phases + (obs_duration / P).decompose()
 
 # Fix the start_pulses so that things that start at phases > 0.5 get added 1 to it
@@ -52,6 +63,15 @@ ax2 = ax.twinx()
 ax2.set_yticks(ids)
 ax2.set_ylim([y_min, y_max])
 ax2.set_yticklabels([t.isot for t in start_times])
+ax2.set_ylabel("Obs start time (UTC)")
+
+ax3 = ax.twiny()
+x2ticks = np.arange(-3,4)*10
+xlim = [x*P.to('min').value for x in ax.get_xlim()]
+ax3.set_xlim(xlim)
+ax3.set_xticks(x2ticks)
+ax3.set_xticklabels([str(x) for x in x2ticks])
+ax3.set_xlabel("Time (min)")
 
 plt.tight_layout()
 plt.savefig('fold.png')
