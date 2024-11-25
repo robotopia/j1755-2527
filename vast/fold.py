@@ -2,18 +2,31 @@ import csv
 import numpy as np
 from astropy.time import Time
 import astropy.units as u
+from astropy.coordinates import SkyCoord
 import matplotlib.pyplot as plt
+import sys
+
+sys.path.append('../dynspec')
+
+from bc_corr import bc_corr
+ephemeris_file = "../dynspec/de430.bsp"
+
+###########################
 
 PEPOCH = Time(59965.03767627493, scale='utc', format='mjd')
 P = 4186.32874813198 * u.s
 DM = 1100 * u.pc / u.cm**3
 freq = 887.5 * u.MHz
 
+###########################
+
 def dmdelay(dm, flo, fhi):
     dm_u = dm.to('pc cm-3').value
     flo_u = flo.to('MHz').value
     fhi_u = fhi.to('MHz').value
     return 4.148808e3 * u.s * dm_u * (flo_u**-2 - fhi_u**-2)
+
+###########################
 
 with open('VAST-Pipeline-Source-ID-34260695.csv') as csvfile:
     myreader = csv.reader(csvfile)
@@ -30,6 +43,8 @@ with open('VAST-Pipeline-Source-ID-34260695.csv') as csvfile:
 start_times -= dmdelay(DM, freq, np.inf*u.MHz)
 
 # Add barycentre corrections
+coord = SkyCoord('17h55m34.9s -25d27m49.1s', frame='icrs')
+start_times += bc_corr(coord, start_times, ephemeris_file=ephemeris_file)
 
 start_pulses, start_phases = np.divmod(((start_times - PEPOCH) / P).decompose(), 1)
 obs_duration = 12*u.min
