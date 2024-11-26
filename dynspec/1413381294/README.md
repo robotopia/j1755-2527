@@ -94,6 +94,29 @@ polprof --RM -961 \
   1413381294-[IQUV].yaml
 ```
 
+> [!warning]
+> I used **-961** (i.e. *negative*) instead of the positive value reported by Dougal. Might be my sign convention is wrong in my code.
+
 ![[dynspec/1413381294/1413381294-DM0-polprof_fixed.png]]
 
-So, I can't see much polarisation in the first couple hundred seconds, but hey, look at that PA curve!
+So, I can't see much polarisation in the first couple hundred seconds, but hey, look at that PA curve! There's an open question in my mind whether the RM could be changing across the pulse(s), and whether that might be shifting the respective PAs up and down. Let me look at the spectra.
+
+```
+for RM in $(seq 950 970)
+do
+  polprof --RM -${RM} \
+    --off_pulse_lims 1413381750:1413381890 \
+    --outfile 1413381294/1413381294-DM0-RM${RM}-polprof.png \
+    --subtract_I_baseline \
+    --PA_sigma_limit 1.5 \
+    --outdynspec_binning 8 64 \
+    --outdynspec 1413381294/1413381294-DM0-RM${RM}-dynspec.png \
+    1413381294-[IQUV].yaml
+done
+magick 1413381294/1413381294-DM0-RM*-dynspec.png \
+  -delay 5 -loop 0 1413381294/1413381294-DM0-RMs-dynspec.gif
+magick 1413381294/1413381294-DM0-RM*-polprof.png \
+  -delay 5 -loop 0 1413381294/1413381294-DM0-RMs-polprof.gif
+```
+![[1413381294-DM0-RMs-dynspec.gif]]
+![[1413381294-DM0-RMs-polprof.gif]]
