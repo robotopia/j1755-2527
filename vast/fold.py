@@ -5,11 +5,11 @@ import astropy.units as u
 from astropy.coordinates import SkyCoord
 import matplotlib.pyplot as plt
 import sys
+import os
 
 sys.path.append('../dynspec')
-
 from bc_corr import bc_corr
-ephemeris_file = "../dynspec/de430.bsp"
+ephemeris_file = os.getenv("PLANETARY_EPHEMERIS")
 
 ###########################
 

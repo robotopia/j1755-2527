@@ -1,3 +1,16 @@
+# Running scripts
+
+Ensure that you have an environment variable called `PLANETARY_EPHEMERIS` which points to the location of an ephemeris such as `de430.bsp` or `de440.bsp`. Then, run
+
+```
+python fold.py
+```
+
+This will produce `fold.png`, a copy of which here:
+
+![[vast/fold_fixed.png]]
+# Discussion
+
 Here is Dougal's plot of which periods were originally ruled out by non-detections in VAST
 
 ![[vast/askap-nondetections.png]]
