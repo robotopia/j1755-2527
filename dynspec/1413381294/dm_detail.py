@@ -10,6 +10,18 @@ dynspec = dd.Dynspec(**params)
 
 fig, ax = plt.subplots(figsize=(12,5))
 
+flo = dynspec.f[0] - dynspec.df/2
+fhi = flo + dynspec.df*dynspec.Nf
+fctr = 0.5*(flo + fhi)
+bw = 0.5*(fhi - flo)
+
+tlo = dynspec.t[0] - dynspec.dt/2
+thi = tlo + dynspec.dt*dynspec.Nt
+duration = thi - tlo
+
+print(f"{fctr} ± {bw} MHz")
+print(f"{duration} s")
+
 dynspec.plot(ax, fscrunch=64)
 ax.set_xlim([1413381450, 1413381720])
 plt.tight_layout()

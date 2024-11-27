@@ -6,11 +6,11 @@ Dynamic spectrum:
   Sample time (s): 2.0
   T0 (s): 1412941985.0
   Transpose: true
-  ObsID: 1412941985
-  Reference frequency (MHz): high
+ObsID: 1412941985
+Reference frequency (MHz): high
 Telescope: MWA
 RFI Mask:
   Value: 0.0
-RA: 18.6505
-Dec: -10.5304
+RA: 268.895
+RA: -25.4636
 Padding: DM
