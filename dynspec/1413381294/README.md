@@ -102,7 +102,7 @@ polprof --RM -961 \
 So, I can't see much polarisation in the first couple hundred seconds, but hey, look at that PA curve! There's an open question in my mind whether the RM could be changing across the pulse(s), and whether that might be shifting the respective PAs up and down. Let me look at the spectra.
 
 ```
-for RM in $(seq 950 970)
+for RM in $(seq 940 980)
 do
   polprof --RM -${RM} \
     --off_pulse_lims 1413381750:1413381890 \
@@ -118,5 +118,12 @@ magick 1413381294/1413381294-DM0-RM*-dynspec.png \
 magick 1413381294/1413381294-DM0-RM*-polprof.png \
   -delay 5 -loop 0 1413381294/1413381294-DM0-RMs-polprof.gif
 ```
+
 ![[1413381294-DM0-RMs-dynspec.gif]]
 ![[1413381294-DM0-RMs-polprof.gif]]
+
+Actually, now that I look at this animation more closely, I'm not so sure that the PA doesn't change shape. At the beginning of the animation, the right hand component is more negatively sloped, while at the end of the animation, it's more positively sloped. That means the trailing side of the component changes its PA more quickly as a function of RM correction than the right hand side.
+
+What would do that? If I imagine the PA as a function of $\lambda^2$, it's hard to imagine how a deviation from a straight line would have this effect. But I can think of one idea: the final reported PA is the frequency-scrunched version, so if the lower frequencies were weighted differently compared to the higher frequencies across the pulse, then the PAs will be also weighted differently. So I reckon what we're seeing is evidence of a different spectral index (at least, in the linear polarisation) across the pulse.
+
+Let's now test this by measuring the spectral index in different bins. But I'll do it for both stokes I and L.
