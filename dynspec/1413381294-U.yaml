@@ -1,4 +1,4 @@
-Apply barycentric correction: true
+Apply barycentric correction: false
 Dynamic spectrum:
   Centre of lowest channel (MHz): 565.25
   Channel width (MHz): 0.1328125
@@ -7,7 +7,7 @@ Dynamic spectrum:
   T0 (s): 1413381294.4718554
   Transpose: true
 Obsid: 1413381294
-Reference frequency (MHz): high
+Reference frequency (MHz): centre
 Telescope: MeerKAT
 RFI Mask:
   Value: 0.0
