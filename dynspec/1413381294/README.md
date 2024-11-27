@@ -83,7 +83,7 @@ done
 So they look ok in the sense that their baselines look sensible, as expected. Doing baseline subtraction for Stokes I and computing the polarisation profile:
 
 > [!warning]
-> Requires `>=v0.3.29` of [dynspec_tools](https://github.com/GLEAM-X/dynspec_tools).
+> Requires `>=v0.3.33` of [dynspec_tools](https://github.com/GLEAM-X/dynspec_tools).
 
 ```
 polprof --RM -961 \
@@ -126,4 +126,53 @@ Actually, now that I look at this animation more closely, I'm not so sure that t
 
 What would do that? If I imagine the PA as a function of $\lambda^2$, it's hard to imagine how a deviation from a straight line would have this effect. But I can think of one idea: the final reported PA is the frequency-scrunched version, so if the lower frequencies were weighted differently compared to the higher frequencies across the pulse, then the PAs will be also weighted differently. So I reckon what we're seeing is evidence of a different spectral index (at least, in the linear polarisation) across the pulse.
 
-Let's now test this by measuring the spectral index in different bins. But I'll do it for both stokes I and L.
+We can test this by measuring the spectral index in different bins (for both Stokes I and L). But before that, a reminder that the above is without correcting for DM; it's possible that the spectral index change is just an apparent effect from not having dedispersed the data properly. Certainly the DM delay across the band (~565 to 1000 MHz) is more than the 2-second time resolution in this case, even if the DM is closer to the ~800 pc/cm³, which gives about 7 seconds of delay.
+
+Probably the easiest way to test this is to repeat the animation, but dedisperse it first! I won't worry about the dynamic spectrum plots this time.
+
+```
+mkdir -p 1413381294/animation
+for RM in $(seq 940 980)
+do
+  polprof --RM -${RM} --DM 800 \
+    --off_pulse_lims 1413381750:1413381890 \
+    --outfile 1413381294/animation/1413381294-DM800-RM${RM}-polprof.png \
+    --subtract_I_baseline \
+    --PA_sigma_limit 1.5 \
+    1413381294-[IQUV].yaml
+done
+magick 1413381294/animation/1413381294-DM800-RM*-polprof.png \
+  -delay 5 -loop 0 1413381294/1413381294-DM800-RMs-polprof.gif
+```
+
+Yep, that seemed to do the trick:
+
+![[1413381294/1413381294-DM800-RMs-polprof.gif]]
+
+Ok, so nothing seems out of place. The PA is slightly concave down, but otherwise relatively flat. The linear polarisation seems to peak between RMs 961 rad/m² and 962 rad/m², exactly in line with the 961 ± 45 rad/m² reported by [Dougal et al. (2024)](https://ui.adsabs.harvard.edu/abs/2024MNRAS.535..909D/abstract).
+
+# DM measurement
+
+**dm_detail.py**:
+```
+from dynspec_tools import dedisperse as dd
+import matplotlib.pyplot as plt
+from matplotlib.ticker import FormatStrFormatter
+
+with open("../1413381294-I.yaml", 'r') as yaml_file:
+    params = dd.parse_yaml(yaml_file)
+    params['input'] = "../" + params['input']
+
+dynspec = dd.Dynspec(**params)
+
+fig, ax = plt.subplots(figsize=(12,5))
+
+dynspec.plot(ax, fscrunch=64)
+ax.set_xlim([1413381450, 1413381720])
+plt.tight_layout()
+plt.savefig('dm_detail.png')
+```
+
+![[dm_detail_fixed.png]]
+
+It still looks we're going to be hard-pressed to pull out a precise DM from these data. Still, I can try the same method as what I did for the MWA pulses.
