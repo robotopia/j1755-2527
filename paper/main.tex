@@ -297,7 +297,7 @@ Extensive follow up in new and archival data at multiple wavelengths turned up n
 Despite this, the authors concluded that \src{} was most likely a long period transient (LPT), a newly emerging class of radio source with periods ranging from minutes to hours (see Table \ref{tbl:lpts} for an up-to-date list).
 
 \begin{deluxetable*}{lcl}
-\tablecaption{Known LPTs, arranged in ascending order of period\label{tbl:lpts}}
+\tablecaption{Known and candidate LPTs, arranged in ascending order of period\label{tbl:lpts}}
 \tablehead{
 \colhead{LPT} & \colhead{Period} & \colhead{References} \\ 
  & \colhead{(min)} & 
@@ -317,7 +317,6 @@ ILT J1101+5521             & 126  & \citet{2024arXiv240811536D} \\
 GLEAM-X J0704-37           & 175  & \citet{2024arXiv240815757H} \\
 ASKAP J1839-0756           & 387  & \todo{Lee} \\
 \enddata
-%\tablecomments{This is a sample table. Add more rows as needed, and include notes in this area.}
 \end{deluxetable*}
 
 \section{Observations} \label{sec:observations}
@@ -328,11 +327,48 @@ ASKAP J1839-0756           & 387  & \todo{Lee} \\
 
 \subsection{MeerKAT} \label{sec:meerkat}
 
+\begin{deluxetable*}{cccccl}
+\tablecaption{Pulse detections}
+\tablehead{
+\colhead{Obs start} & \colhead{Duration} & \colhead{Telescope} & \colhead{$\nu$} & \colhead{$\Delta\nu$} & Notes \\ 
+\colhead{time (UTC)} & \colhead{(s)} & & \colhead{(MHz)} & \colhead{(MHz)} & 
+} 
+\startdata
+2024-09-19 09:25:02 & 592\tablenotemark{a} & MWA & 184.96 & 30.72 & \\ % 1410773120 and 1410773416
+2024-09-19 10:34:06 & 592\tablenotemark{a} & MWA & 184.96 & 30.72 & \\ % 1410777264 and 1410777560
+2024-09-19 12:57:10 & 296 & MWA & 184.96 & 30.72 & \\ % 1410785848
+2024-09-19 14:06:14 & 296 & MWA & 184.96 & 30.72 & \\ % 1410789992
+2024-10-09 10:55:50 & 296 & MWA & 184.96 & 30.72 & \\ % 1412506568
+2024-10-09 12:05:34 & 296 & MWA & 184.96 & 30.72 & \\ % 1412510752
+2024-10-10 11:21:10 & 296 & MWA & 184.96 & 30.72 & \\ % 1412594488
+2024-10-10 12:30:54 & 296 & MWA & 184.96 & 30.72 & (Pulse there but too much RFI) \\ % 1412598672
+2024-10-11 10:36:46 & 296 & MWA & 184.96 & 30.72 & \\ % 1412678224
+2024-10-11 11:46:30 & 296 & MWA & 184.96 & 30.72 & \\ % 1412682408
+2024-10-12 11:02:06 & 296 & MWA & 184.96 & 30.72 & \\ % 1412766144
+2024-10-12 12:11:50 & 296 & MWA & 184.96 & 30.72 & \\ % 1412770328
+2024-10-13 10:17:42 & 296 & MWA & 184.96 & 30.72 & \\ % 1412849880
+2024-10-13 11:27:26 & 296 & MWA & 184.96 & 30.72 & \\ % 1412854064
+2024-10-14 10:43:02 & 296 & MWA & 184.96 & 30.72 & \\ % 1412937800
+2024-10-14 11:52:46 & 296 & MWA & 184.96 & 30.72 & \\ % 1412941984
+2024-10-16 10:23:58 & 296 & MWA & 184.96 & 30.72 & \\ % 1413109456
+2024-10-16 11:33:42 & 296 & MWA & 184.96 & 30.72 & \\ % 1413113640
+2024-10-17 11:59:02 & 296 & MWA & 184.96 & 30.72 & \\ % 1413201560
+2024-10-19 10:30:14 & 296 & MWA & 184.96 & 30.72 & \\ % 1413369032
+2024-10-19 11:39:58 & 296 & MWA & 184.96 & 30.72 & \\ % 1413373216
+2024-10-19 13:54:36 & 601 & MeerKAT & 812.8 & 247.6 & (Two components) \\ % 1413381294
+\enddata
+\tablenotetext{a}{Two contiguous 296-second MWA observations were combined}
+\end{deluxetable*}
+
 \section{Analysis \& results} \label{sec:analysis}
 
-\subsection{Period and period derivative} \label{sec:ppdot}
+\subsection{Timing solution and DM determination} \label{sec:timing_and_dm}
 
-\subsection{Dispersion measure} \label{sec:dm}
+Following the positive identification of several pulses in the GPM data set, we did a grid search of periods that would result in an integer number of pulses between two widely spaced pulses.
+A candidate period of $4186.4 \pm 0.1$ was found for which all detections fell within the same phase range ${\sim}0.05$.
+% We further refined this by attempting to phase connect to Dougal's original pulse, and got $4186.33 \pm 0.02$ s, but this needn't be part of the story, since even the above was enough to motivate the MWA campaign that followed.
+This motivated the follow-up MWA observations (under project code D0042) in which two consecutive pulses ${\sim}4190$ seconds apart were detected without any detectable emission between them, confirming our earlier estimate.
+The lever arm afforded by both the GPM and D0042 detections proved sufficient to phase-connect to the original pulse published by \citet{2024MNRAS.535..909D}, yielding a refined period of $P = 4186.329 \pm 0.002$~s.
 
 \subsection{Polarization} \label{sec:polarization}
 
