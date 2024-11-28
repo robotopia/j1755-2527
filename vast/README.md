@@ -46,14 +46,29 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 pulse_diff = np.loadtxt('askap1-mpath.txt')
-pulse = np.cumsum(pulse_diff)
+pulse = np.cumsum(pulse_diff) / 1e3  # Because the ULP site expects Jy, not mJy
 
 np.savetxt('askap1-I.txt', pulse)
 
-plt.plot(pulse)
+plt.plot(np.arange(len(pulse))*10, pulse)
+plt.xlabel("Time from start of observations (s)")
+plt.ylabel("Flux density (Jy)")
 plt.savefig('askap1-I.png')
 ```
 
 ![[vast/askap1-I.png]]
 
 The only thing to remember is that each time step is 10 seconds. But happily, the y-axis looks correct!
+
+The metadata needed for uploading to the ULP website (https://ulp.duckdns.org/data/timing/lightcurve_add/10) is summarised here:
+
+> [!ASKAP #1 metadata]
+> **Polarisations**: I
+> **Telescope**: ASKAP
+> **Frequency (MHz)**: 887.5
+> **Bandwidth (MHz)**: 288
+> **MJD of first sample**: 59965.03588541667 (= 2023-01-21T00:51:40.5 UTC)
+> **Duration of samples (s)**: 10
+> **DM used (pc/cm^3)**: 0
+> **DM referemce frequency (MHz)**: 887.5  (I *think*, since "DM used" is 0, that this doesn't matter...)
+> **Values (Jy)**: `askap1-I.txt`
