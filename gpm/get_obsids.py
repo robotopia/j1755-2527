@@ -5,6 +5,8 @@ from astropy.time import Time
 import astropy.units as u
 import sys
 
+max_sep = 15*u.deg
+
 # Define source location
 src_coord = SkyCoord("17h55m34.9s -25d27m49.1s", frame='icrs')
 print(f"Source coordinates: {src_coord}")
@@ -30,6 +32,8 @@ obsids = Time(obsids, scale='utc', format='gps')
 
 pointings = SkyCoord(RAs, Decs, unit=(u.deg, u.deg), frame='icrs')
 separations = src_coord.separation(pointings)
+print(separations)
+close_enough = separations < max_sep
 
 # Now read in the predicted ToAs from the ULP website
 predicted_ToAs = Time(np.loadtxt('predicted_toas_gpm2024.txt'), scale='utc', format='gps')
@@ -49,7 +53,7 @@ end_times = predicted_ToAs + pulse_duration/2
 start_caught = np.array([np.any(np.logical_and(obsid <= start_times, start_times <= obsid + obs_duration)) for obsid in obsids], dtype=bool)
 end_caught = np.array([np.any(np.logical_and(obsid <= end_times, end_times <= obsid + obs_duration)) for obsid in obsids], dtype=bool)
 
-start_or_end_caught = np.logical_or(start_caught, end_caught)
+meets_criteria = np.logical_or(start_caught, end_caught, close_enough)
 
 #print(obsids.mjd)
 #print(obsids[start_or_end_caught].gps.astype(int))
@@ -57,4 +61,4 @@ start_or_end_caught = np.logical_or(start_caught, end_caught)
 outfile = 'gpm2024_J1755-2527_observations.txt'
 print(f"Saving results to {outfile}")
 header = f'Created with:\n  {' '.join(sys.argv)}\n\nObsIDs:'
-np.savetxt(outfile, obsids[start_or_end_caught].gps, fmt='%d', header=header)
+np.savetxt(outfile, obsids[meets_criteria].gps, fmt='%d', header=header)
