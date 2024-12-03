@@ -26,3 +26,20 @@ Here is Dougal's plot of which periods were originally ruled out by non-detectio
 |       2023-05-28        |          |  MeerKAT  | DDT-20230525-DD-01 |     N      | [Dobie et al. (2024)](https://ui.adsabs.harvard.edu/abs/2024MNRAS.535..909D/abstract)                  |
 |            ?            |          |  MeerKAT  |  (Other archival)  |     N      | TODO: Find out all the times when it should have been seen, but wasn't. (https://archive.sarao.ac.za/) |
 |                         |          |           |                    |            |                                                                                                        |
+
+# More MWA follow up
+
+|Epoch|ObsID|Separation (deg)|Pulse centre (seconds from obs start)|Pulse number|Known detection?|Ctr. freq (MHz)|
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+|Epoch0226|[1354928296](https://ws.mwatelescope.org/observation/obs/?obs_id=1354928296)|4.5|62|-806||161.92|
+|Epoch0229|[1355192120](https://ws.mwatelescope.org/observation/obs/?obs_id=1355192120)|3.5|-21|-742||161.92|
+|Epoch0234|[1355619080](https://ws.mwatelescope.org/observation/obs/?obs_id=1355619080)|1.4|27|-641||161.92|
+|Epoch0237|[1355887056](https://ws.mwatelescope.org/observation/obs/?obs_id=1355887056)|4.3|-25|-576||161.92|
+|Epoch0238|[1355962424](https://ws.mwatelescope.org/observation/obs/?obs_id=1355962424)|7.9|-40|-558||161.92|
+|Epoch0238|[1355987536](https://ws.mwatelescope.org/observation/obs/?obs_id=1355987536)|6.8|-34|-552||161.92|
+|Epoch0240|[1356163376](https://ws.mwatelescope.org/observation/obs/?obs_id=1356163376)|11.3|-50|-510||161.92|
+
+|Epoch|ObsID|Separation (deg)|Pulse centre (seconds from obs start)|Known detection?|
+|:-:|:-:|:-:|:-:|:-:|
+|Epoch0297|[1361136016](https://ws.mwatelescope.org/observation/obs/?obs_id=1361136016)|3.1|308||
+|Epoch0297|[1361136312](https://ws.mwatelescope.org/observation/obs/?obs_id=1361136312)|4.0|12||
