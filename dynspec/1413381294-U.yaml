@@ -1,0 +1,18 @@
+Apply barycentric correction: false
+Dynamic spectrum:
+  Centre of lowest channel (MHz): 565.25
+  Channel width (MHz): 0.1328125
+  Input file: 1413381294-U.csv
+  Sample time (s): 1.9969310760498047
+  T0 (s): 1413381294.4718554
+  Transpose: true
+Obsid: 1413381294
+Reference frequency (MHz): centre
+Telescope: MeerKAT
+RFI Mask:
+  Value: 0.0
+  Time bins:
+    - 300
+RA: 268.895
+RA: -25.4636
+Padding: DM

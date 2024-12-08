@@ -1,4 +1,4 @@
-Apply barycentric correction: true
+Apply barycentric correction: false
 Dynamic spectrum:
   Centre of lowest channel (MHz): 184.96
   Channel width (MHz): 0.01
@@ -6,11 +6,14 @@ Dynamic spectrum:
   Sample time (s): 2.0
   T0 (s): 1412849881.0
   Transpose: true
-  ObsID: 1412849881
-  Reference frequency (MHz): high
+ObsID: 1412849881
+Reference frequency (MHz): centre
 Telescope: MWA
 RFI Mask:
   Value: 0.0
-RA: 18.6505
-Dec: -10.5304
+  Time bins:
+    - 0
+    - 1
+RA: 268.895
+RA: -25.4636
 Padding: DM

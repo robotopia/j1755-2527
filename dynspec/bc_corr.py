@@ -6,7 +6,7 @@ from astropy.coordinates import SkyCoord
 from astropy.constants import c
 from spiceypy.spiceypy import spkezr, furnsh, j2000, spd, unload
 
-def bc_corr(coord, time, ephemeris_file='de430.bsp'):
+def bc_corr(coord, times, ephemeris_file='de430.bsp'):
     '''
     coord - SkyCoord object (from astropy) representing the location of the source
     time - Time object (from astropy)
@@ -16,14 +16,13 @@ def bc_corr(coord, time, ephemeris_file='de430.bsp'):
         furnsh(ephemeris_file)
     except:
         raise Exception("Cannot load ephemeris file {}\n".format(ephemeris_file))
-    jd = time.mjd + 2400000.5
-    et = (jd - j2000())*spd()
-    r_earth = spkezr("earth", et, "j2000", "NONE", "solar system barycenter")[0][:3]
+    ets = (times.jd - j2000())*spd()
+    r_earth = [spkezr("earth", et, "j2000", "NONE", "solar system barycenter")[0][:3] for et in ets]
     r_src_normalised = [np.cos(coord.ra.rad)*np.cos(coord.dec.rad),
             np.sin(coord.ra.rad)*np.cos(coord.dec.rad),
             np.sin(coord.dec.rad)]
-    delay = np.dot(r_earth, r_src_normalised) * 1e3 * u.meter / c # (1e3 = km->m)
-    return delay.value
+    delay = np.dot(r_earth, r_src_normalised) * u.km / c
+    return delay
 
 if __name__ == "__main__":
     # Parse the command line
