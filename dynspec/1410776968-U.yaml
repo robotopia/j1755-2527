@@ -12,5 +12,5 @@ Telescope: MWA
 RFI Mask:
   Value: 0.0
 RA: 268.895
-RA: -25.4636
+Dec: -25.4636
 Padding: DM
