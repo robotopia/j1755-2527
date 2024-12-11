@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from astropy.time import Time
 
 on = np.loadtxt('ts_on_source.txt')
 off = np.loadtxt('ts_off_source.txt')
@@ -28,9 +29,12 @@ binned_off = np.mean(np.reshape(off, (-1, b)), axis=-1)
 
 yerr = np.std(off)/np.sqrt(b)
 
-t = np.arange(b) * sample_time * b
-plt.errorbar(t, binned_on, yerr=yerr, label="On")
-plt.errorbar(t, binned_off, yerr=yerr, label="Off");
+t_rel = np.arange(b) * sample_time * b
+t = Time(t_rel + 1358386096 + b*sample_time/2, scale='utc', format='gps')
+np.savetxt('ts_on_source_binned.txt', np.stack((t.mjd, binned_on)).T, fmt="%.13f %.18e")
+
+plt.errorbar(t_rel, binned_on, yerr=yerr, label="On")
+plt.errorbar(t_rel, binned_off, yerr=yerr, label="Off");
 
 plt.xlabel("Time (s)")
 plt.ylabel("Flux density (Jy/beam)")
