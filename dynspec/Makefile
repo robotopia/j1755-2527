@@ -26,7 +26,7 @@ YAMLS = 1410773120-I_and_1410773416-I.yaml \
 				1413373216-I.yaml \
 				1413381294-I.yaml
 
-DM = 1100
+DM = 929
 LIGHTCURVES = $(patsubst %.yaml,%_lightcurve_DM$(DM).txt,$(YAMLS))
 
 lightcurves: $(LIGHTCURVES)
