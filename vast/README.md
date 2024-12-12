@@ -72,3 +72,34 @@ The metadata needed for uploading to the ULP website (https://ulp.duckdns.org/da
 > **DM used (pc/cm^3)**: 0
 > **DM referemce frequency (MHz)**: 887.5  (I *think*, since "DM used" is 0, that this doesn't matter...)
 > **Values (Jy)**: `askap1-I.txt`
+
+------------------------------------
+
+The second ASKAP pulse is in `j1755_burst2_unsub_lc.csv`, but it's the lightcurve without model subtraction. I'll use this until the subtracted one comes along.
+
+Parse into a format that my website can take:
+
+```
+from astropy.time import Time
+with open("j1755_burst2_unsub_lc.csv", "r") as f:
+    lines = f.readlines()
+    prev_t = Time(5227513916.09279/86400.0, scale='utc', format='mjd')
+    for line in lines[1:]: # Skip header row
+        tokens = line.split(',')
+        t = Time(float(tokens[0])/86400.0, scale='utc', format='mjd')
+        dt = t - prev_t
+        prev_t = t
+        I = float(tokens[1])
+        print(t.mjd, dt.to('s').value, I)
+```
+
+Output saved in [[vast/j1755_burst2_unsub_lc_summary.txt]].
+
+> [!ASKAP #2 Metadata]
+> - **Polarisations**: `_ _ I`
+> - **Telescope**: ASKAP
+> - **Frequency (MHz)**: 887.5
+> - **MJD of first sample**: 60503.633288111094
+> - **Duration of samples (s)**: 9.95328
+> - **DM used (pc/cm^3)**: 0
+> - **DM reference frequency (MHz)**: 
