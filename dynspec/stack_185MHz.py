@@ -58,7 +58,7 @@ def main():
         dat = np.load(pkl, allow_pickle=True)
 
         if int(dat['FREQS'][0]) != 184960000 or int(dat['FREQS'][1]) != 185000000:
-            print(f"{pkl} ({int(dat['FREQS'][0])}...) is not in the desired frequency range (184960000...). Skipping...")
+            print(f"{pkl} ({int(dat['FREQS'][0]), int(dat['FREQS'][1])}...) is not in the desired frequency range (184960000...). Skipping...")
             continue
 
         I = StokesI_ds(dat)
@@ -73,15 +73,12 @@ def main():
         maxs.append(max(phase_bins))
 
         # All of the dynamic spectra I'm considering in this run have a sample time of 4 seconds, which is also what the bin size has been set to. This means that each output bin will only ever have one pixel from each dynamic spectrum added to it. If this assumption breaks, then the following method of adding each dynamic spectrum into the output dynamic spectrum won't work.
-        output_ds[(phase_bins[0] - min_phase_bin):(phase_bins[0] - min_phase_bin + I.shape[0])] = np.nansum(output_ds[(phase_bins[0] - min_phase_bin):(phase_bins[0] - min_phase_bin + I.shape[0])], I)
+        output_ds[(phase_bins[0] - min_phase_bin):(phase_bins[0] - min_phase_bin + I.shape[0])] = np.nansum([output_ds[(phase_bins[0] - min_phase_bin):(phase_bins[0] - min_phase_bin + I.shape[0])], I], axis=0)
         counts[(phase_bins[0] - min_phase_bin):(phase_bins[0] - min_phase_bin + nphase_bins)] += ~np.isnan(counts[(phase_bins[0] - min_phase_bin):(phase_bins[0] - min_phase_bin + nphase_bins)])
 
         plt.pcolormesh(I.T)
         plt.show()
         #print(phase_bins)
-
-    #print(min(mins))
-    #print(max(maxs))
 
     mean_ds = output_ds / counts
     plt.pcolormesh(mean_ds.T)
