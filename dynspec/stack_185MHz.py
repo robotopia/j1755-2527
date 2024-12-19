@@ -32,7 +32,7 @@ def barycentre(times):
 
 def StokesI_ds(dat):
     if dat['POLS'][0] == 'XX' and dat['POLS'][3] == 'YY':
-        return np.abs(dat['DS'][:,:,0])**2 + np.abs(dat['DS'][:,:,3])**2
+        return 0.5*np.real(dat['DS'][:,:,0] + dat['DS'][:,:,3])
     else:
         raise NotImplementedError(f"I haven't been taught how to deal with POLS = {ds['POLS']} yet")
 
@@ -76,12 +76,16 @@ def main():
         output_ds[(phase_bins[0] - min_phase_bin):(phase_bins[0] - min_phase_bin + I.shape[0])] = np.nansum([output_ds[(phase_bins[0] - min_phase_bin):(phase_bins[0] - min_phase_bin + I.shape[0])], I], axis=0)
         counts[(phase_bins[0] - min_phase_bin):(phase_bins[0] - min_phase_bin + nphase_bins)] += ~np.isnan(counts[(phase_bins[0] - min_phase_bin):(phase_bins[0] - min_phase_bin + nphase_bins)])
 
-        plt.pcolormesh(I.T)
-        plt.show()
+        #plt.pcolormesh(I.T)
+        #plt.show()
         #print(phase_bins)
 
     mean_ds = output_ds / counts
-    plt.pcolormesh(mean_ds.T)
+
+    fig, axs = plt.subplots(nrows=3, ncols=1, sharex=True)
+    axs[0].plot(np.nanmean(mean_ds, axis=1))
+    axs[1].pcolormesh(mean_ds.T, vmin=-0.1, vmax=0.6)
+    axs[2].pcolormesh(counts.T)
     plt.show()
 
 if __name__ == '__main__':
