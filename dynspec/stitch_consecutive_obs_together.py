@@ -6,7 +6,7 @@ from copy import deepcopy
 import shutil
 import pickle
 
-pklfiles = glob('*.pkl')
+pklfiles = glob('??????????.pkl')
 pklfiles.sort()
 
 for i in range(len(pklfiles)-1):
@@ -42,7 +42,8 @@ for i in range(len(pklfiles)-1):
     new_data = deepcopy(data)
 
     new_data['TIMES'] = np.hstack((data['TIMES'], data_next['TIMES']))
-    new_data['DS'] = np.stack((data['DS'], data_next['DS']), axis=0)
+    new_data['DS'] = np.vstack((data['DS'], data_next['DS']))
+    #print(f"{new_data['DS'].shape = }")
 
     with open(new_pklfile, 'wb') as f:
         pickle.dump(new_data, f, protocol=pickle.HIGHEST_PROTOCOL)

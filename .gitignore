@@ -173,3 +173,11 @@ paper/main.pdf
 
 # Obsidian
 .obsidian
+
+# Miscellaneous
+*DM*.txt
+*_and_*.pkl
+*_and_*.csv
+*.fits
+*.tar.gz
+*.gif
