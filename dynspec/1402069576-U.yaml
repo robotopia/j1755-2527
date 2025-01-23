@@ -7,7 +7,7 @@ Dynamic spectrum:
   T0 (s): 1402069578.0000002
   Transpose: true
 ObsID: 1402069578
-Reference frequency (MHz): high
+Reference frequency (MHz): centre
 Telescope: MWA
 RFI Mask:
   Value: 0.0

@@ -131,7 +131,13 @@ class Dynspec:
                 self.mask[:,idx] = True
 
     def prune_time(self, nsecs, before=True, after=True):
-        nbins = int(nsecs/self.dt)
+
+        # TODO: I *THINK* this only works if the reference frequency is centre. Check this!
+        if nsecs == 'dm':
+            nbins = int(calc_dmdelay(self.dm, self.f[0], self.f[-1])/self.dt)
+        else:
+            nbins = int(nsecs/self.dt)
+
         if before:
             self.dynspec = np.delete(self.dynspec, range(nbins), axis=self.TIMEAXIS)
             self.mask = np.delete(self.mask, range(nbins), axis=self.TIMEAXIS)
@@ -335,6 +341,7 @@ def main(**kwargs):
             if kwargs['dynspec_image_ylim'] is not None:
                 ax.set_ylim(kwargs['dynspec_image_ylim'])
 
+            plt.tight_layout()
             if kwargs['dmcurve_image'] == "SHOW":
                 plt.show()
             else:
@@ -344,12 +351,13 @@ def main(**kwargs):
 
     # Dedisperse the spectrum
     dynspec.dedisperse(DM)
+    dynspec.prune_time('dm')
     dynspec.fscrunch()
 
     # Plot the dynamic spectrum at the given/best DM
     if kwargs['dynspec_image'] is not None:
         dynspec.t = dynspec.get_time_at_infinite_frequency()
-        fig, axs = plt.subplots(nrows=2, ncols=1, sharex=True)
+        fig, axs = plt.subplots(nrows=2, ncols=1, sharex=True, figsize=(6,10))
         dynspec.plot_lightcurve(axs[0])
         dynspec.plot(axs[1])
         if kwargs['dynspec_image_xlim_padding'] is not None:
@@ -361,6 +369,7 @@ def main(**kwargs):
 
         fig.suptitle('DM = {:.1f} pc/cm^3'.format(DM))
         axs[0].set_ylabel("Flux density (Jy)")
+        plt.tight_layout()
         if kwargs['dynspec_image'] == "SHOW":
             plt.show()
         else:

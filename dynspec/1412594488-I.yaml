@@ -14,6 +14,10 @@ RFI Mask:
   Time bins:
     - 0
     - 1
+    - 100
+    - 101
+    - 102
+    - 105
 RA: 268.895
 Dec: -25.4636
 Padding: DM
