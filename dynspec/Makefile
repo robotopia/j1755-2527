@@ -5,11 +5,11 @@ RMS = $(shell seq -970 0.5 -950)
 YAMLS = $(shell ls *-I.yaml)
 
 DM = 710
-LIGHTCURVES = $(patsubst %.yaml,%_lightcurve_DM$(DM).txt,$(YAMLS))
+LIGHTCURVES = $(patsubst %.yaml,%_lightcurve_DM$(DM).pkl,$(YAMLS))
 
 lightcurves: $(LIGHTCURVES)
 
-%_lightcurve_DM$(DM).txt: %.yaml
+%_lightcurve_DM$(DM).pkl: %.yaml
 	python dedisperse_dynspec.py --yaml $< --lightcurve $@ --dms $(DM) --dynspec_image $*_DM$(DM).png
 
 #1410773120_and_1410773416-RM_%-fullpol.png:

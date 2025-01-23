@@ -9,6 +9,7 @@ from astropy.coordinates import SkyCoord
 from astropy import units as u
 import yaml
 import copy
+import pickle
 
 # The DM delay formula assumes time in seconds, frequencies in MHz
 def calc_dmdelay(DM, flo, fhi):
@@ -189,7 +190,7 @@ class Dynspec:
         self.dt = sample_time
 
     def create_freq_axis(self, bw, freqlo):
-        self.f = np.arange(self.Nf)*bw + freqlo
+        self.f = np.arange(self.Nf)*bw + freqlo + bw/2
         self.df = bw
 
     def plot(self, ax):
@@ -399,8 +400,21 @@ def main(**kwargs):
         header += "Time (s) | Flux density (a.u.) | Number of non-masked channels"
 
         # Construct array to be written out and write it out
-        lightcurve = np.array([timeaxis, dynspec.fscrunched, dynspec.num_good_chans]).T
-        np.savetxt(kwargs['lightcurve'], lightcurve, header=header)
+        lightcurve = {
+            'TIME': Time(timeaxis, scale='utc', format='gps').mjd,
+            'LIGHTCURVE': dynspec.fscrunched,
+            'NUM_CHANS': dynspec.num_good_chans,
+            'POL': kwargs['stokes'],
+            'TELESCOPE': kwargs['telescope'],
+            'CTR_FREQ': np.mean(dynspec.f),
+            'BW': dynspec.df * len(dynspec.f),
+        }
+
+        with open(str(kwargs['lightcurve']), 'wb') as f:
+            print(lightcurve)
+            pickle.dump(lightcurve, f, protocol=pickle.HIGHEST_PROTOCOL)
+
+        #np.savetxt(kwargs['lightcurve'], lightcurve, header=header, fmt='%.15f %.5e %d')
 
     if kwargs['output'] is not None:
         np.savetxt(kwargs['output'], dynspec.dynspec)
@@ -418,7 +432,7 @@ def parse_yaml(yaml_file):
     except:
         pass
     try:
-        obj['freqlo'] = yaml_params['Dynamic spectrum']['Centre of lowest channel (MHz)']
+        obj['freqlo'] = yaml_params['Dynamic spectrum']['Bottom of lowest channel (MHz)']
     except:
         pass
     try:
@@ -525,7 +539,7 @@ if __name__ == "__main__":
         print("-------------------------------+------------------+----------------+-------------------------------")
         print("Apply barycentric correction   |                  | true/false     | --bc_corr")
         print("Dynamic spectrum               |                  |                |")
-        print("Centre of lowest channel (MHz) | Dynamic spectrum | [float]        | --freqlo")
+        print("Bottom of lowest channel (MHz) | Dynamic spectrum | [float]        | --freqlo")
         print("Channel width (MHz)            | Dynamic spectrum | [float]        | --bw")
         print("Input file                     | Dynamic spectrum | [file]         | --input")
         print("Sample time (s)                | Dynamic spectrum | [float]        | --sample_time")
@@ -543,7 +557,7 @@ if __name__ == "__main__":
         print("\nExample:\n")
         print("Apply barycentric correction: true")
         print("Dynamic spectrum:")
-        print("  Centre of lowest channel (MHz): 103.115")
+        print("  Bottom of lowest channel (MHz): 103.115")
         print("  Channel width (MHz): 0.16")
         print("  Input file: 1343567456_dyn_dynamic_spectrum.csv")
         print("  Sample time (s): 0.5")
