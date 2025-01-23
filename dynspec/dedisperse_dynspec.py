@@ -25,12 +25,30 @@ class Dynspec:
             transpose = None
 
         try:
-            dynspec = np.loadtxt(kwargs['input'], ndmin=2)
+            if 'input' in kwargs.keys():
+                dynspec_file = kwargs['input']
+            else:
+                dynspec_file = kwargs['dynspec']
         except:
-            try:
-                dynspec = kwargs['dynspec']
-            except:
-                raise Exception("'input' (filename) or 'dynspec' (2D Numpy array) required for Dynspec initialiser")
+            raise Exception("'input' (filename) or 'dynspec' (2D Numpy array) required for Dynspec initialiser")
+
+        try:
+            if dynspec_file.endswith('.pkl'):
+                dynspec_complex = np.load(dynspec_file, allow_pickle=True)['DS']
+                if kwargs['stokes'] == 'I':
+                    dynspec = 0.5*np.real(dynspec_complex[:,:,0] + dynspec_complex[:,:,3])
+                elif kwargs['stokes'] == 'Q':
+                    dynspec = 0.5*np.real(dynspec_complex[:,:,0] - dynspec_complex[:,:,3])
+                elif kwargs['stokes'] == 'U':
+                    dynspec = 0.5*np.real(dynspec_complex[:,:,1] + dynspec_complex[:,:,2])
+                elif kwargs['stokes'] == 'V':
+                    dynspec = 0.5*np.imag(dynspec_complex[:,:,1] - dynspec_complex[:,:,2])
+                else:
+                    raise Exception(f"Unknown Stokes parameter '{kwargs['stokes']}'")
+            else:
+                dynspec = np.loadtxt(dynspec_file, ndmin=2)
+        except:
+            raise Exception(f"Unrecognised format in {dynspec_file} (not .pkl or np.loadtxt-readable)")
 
         try:
             sample_time = kwargs['sample_time']
@@ -450,6 +468,10 @@ def parse_yaml(yaml_file):
         obj['truncated'] = yaml_params['Truncated']
     except:
         obj['truncated'] = False
+    try:
+        obj['stokes'] = yaml_params['Dynamic spectrum']['Stokes']
+    except:
+        obj['stokes'] = 'I'
 
     return obj
 
@@ -475,6 +497,7 @@ if __name__ == "__main__":
     parser.add_argument('--padding', type=str, help='Number of seconds worth of padding to use along the time axis before dedispersion. The padded pixels will be filled with the value of --mask_value. If set to "DM", and if only one DM is given, then the padding will be chosen to just ensure that there is no wrapping during dedispersion')
     parser.add_argument('--RA', type=float, help='The RA of the source in decimal hours')
     parser.add_argument('--Dec', type=float, help='The Dec of the source in decimal degrees')
+    parser.add_argument('--stokes', default='I', help='The Stokes parameter, either I, Q, U, or V (default: I)')
     parser.add_argument('--ephemeris', default='de430.bsp', help='The path to the planetary ephemeris file to use (default de430.bsp)')
     parser.add_argument('--yaml', type=argparse.FileType('r'), help='Obtain parameters from yaml file. These will be overriden by equivalent parameters given on the command line')
     parser.add_argument('--yaml_help', action='store_true', help='More detailed documentation on the --yaml option')
@@ -498,6 +521,7 @@ if __name__ == "__main__":
         print("Input file                     | Dynamic spectrum | [file]         | --input")
         print("Sample time (s)                | Dynamic spectrum | [float]        | --sample_time")
         print("T0 (s)                         | Dynamic spectrum | [float]        | --t0")
+        print("Stokes                         | Dynamic spectrum | I,Q,U,V        | --stokes")
         print("Transpose                      | Dynamic spectrum | true/false     | --transpose")
         print("Reference frequency (MHz)      |                  | [float]        | --freq_ref")
         print("RA                             |                  | [float]        | --RA")
@@ -515,6 +539,7 @@ if __name__ == "__main__":
         print("  Input file: 1343567456_dyn_dynamic_spectrum.csv")
         print("  Sample time (s): 0.5")
         print("  T0 (s): 1343567456.0")
+        print("  Stokes: I")
         print("  Transpose: true")
         print("ObsID: 1343567456")
         print("Reference frequency (MHz): centre")
