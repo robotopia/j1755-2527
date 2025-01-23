@@ -99,7 +99,8 @@ Output saved in [[vast/j1755_burst2_unsub_lc_summary.txt]].
 > - **Polarisations**: `_ _ I`
 > - **Telescope**: ASKAP
 > - **Frequency (MHz)**: 887.5
+> - **Bandwidth (MHz)**: 288.0
 > - **MJD of first sample**: 60503.633288111094
 > - **Duration of samples (s)**: 9.95328
 > - **DM used (pc/cm^3)**: 0
-> - **DM reference frequency (MHz)**: 
+> - **DM reference frequency (MHz)**: [leave blank]
