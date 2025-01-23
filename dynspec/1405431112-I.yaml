@@ -1,8 +1,9 @@
-Apply barycentric correction: true
+Apply barycentric correction: false
 Dynamic spectrum:
   Centre of lowest channel (MHz): 184.96
   Channel width (MHz): 0.04
-  Input file: 1405431112-I.csv
+  Input file: 1405431112.pkl
+  Stokes: I
   Sample time (s): 4.0
   T0 (s): 1405431113.9999998
   Transpose: true
