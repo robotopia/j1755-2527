@@ -408,10 +408,14 @@ def main(**kwargs):
             'TELESCOPE': kwargs['telescope'],
             'CTR_FREQ': np.mean(dynspec.f),
             'BW': dynspec.df * len(dynspec.f),
+            'DMDELAY': dynspec.dmdelay,
+            'DMREFFREQ': np.inf,
+            'DM': dynspec.dm,
         }
 
-        with open(str(kwargs['lightcurve']), 'wb') as f:
-            print(lightcurve)
+        with open(kwargs['lightcurve'], 'wb') as f:
+            #print(lightcurve)
+            print(f"Writing lightcurve pickle to {kwargs['lightcurve']}")
             pickle.dump(lightcurve, f, protocol=pickle.HIGHEST_PROTOCOL)
 
         #np.savetxt(kwargs['lightcurve'], lightcurve, header=header, fmt='%.15f %.5e %d')
@@ -511,7 +515,7 @@ if __name__ == "__main__":
     parser.add_argument('--dmcurve_image', type=str, help='The file to which the DM curve image will be saved')
     parser.add_argument('--input', type=str, help='The (NumPy-readable) file containing the input dynamic spectrum')
     parser.add_argument('--transpose', help='Interpret the input file as rows for time axis, columns for frequency axis')
-    parser.add_argument('--lightcurve', type=argparse.FileType('w'), help='Write out the frequency-scrunched, dispersion-corrected lightcurve to the named file. "Dispersion-corrected" means using infinite frequency as reference')
+    parser.add_argument('--lightcurve', help='Write out the frequency-scrunched, dispersion-corrected lightcurve to the named file (pickled dictionary). "Dispersion-corrected" means using infinite frequency as reference')
     parser.add_argument('--t0', type=float, help='The left (early) edge of the first time bin')
     parser.add_argument('--bc_corr', help='Apply barycentric correction')
     parser.add_argument('--mask_time_bins', type=int, nargs='*', help='Mask these time bins (expecting ints)')
