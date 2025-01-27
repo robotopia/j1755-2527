@@ -368,7 +368,7 @@ def main(**kwargs):
         if kwargs['dynspec_image_ylim'] is not None:
             axs[0].set_ylim(kwargs['dynspec_image_ylim'])
 
-        fig.suptitle('DM = {:.1f} pc/cm^3'.format(DM))
+        fig.suptitle(f'MJD = {Time(kwargs["t0"], scale="utc", format="gps").mjd:.3f}\nDM = {DM:.1f} pc/cm^3')
         axs[0].set_ylabel("Flux density (Jy)")
         plt.tight_layout()
         if kwargs['dynspec_image'] == "SHOW":
@@ -416,7 +416,7 @@ def main(**kwargs):
         with open(kwargs['lightcurve'], 'wb') as f:
             #print(lightcurve)
             print(f"Writing lightcurve pickle to {kwargs['lightcurve']}")
-            pickle.dump(lightcurve, f, protocol=pickle.HIGHEST_PROTOCOL)
+            np.save(f, lightcurve)
 
         #np.savetxt(kwargs['lightcurve'], lightcurve, header=header, fmt='%.15f %.5e %d')
 
