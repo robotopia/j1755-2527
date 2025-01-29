@@ -4,19 +4,7 @@ import astropy.units as u
 from astropy.time import Time
 from astropy.coordinates import SkyCoord, EarthLocation
 import sys
-
-src_coord = SkyCoord("17:55:34.87", "-25:27:49.1", unit=(u.hourangle, u.deg), frame='icrs')
-src_period = 4186.330360402573 * u.s
-src_pepoch = Time(59965.038453386056, scale='utc', format='mjd')
-src_dm = 922.4853409645726 * u.pc / u.cm**3
-
-# Binning parameters
-bin_size = 4 * u.s
-bin_size_phase = (bin_size / src_period).decompose()
-
-# Output filenames
-pulsestack_png = "pulsestack.png"
-average_ds_png = "average_ds.png"
+import argparse
 
 def fold(times, period, pepoch):
 
@@ -30,7 +18,7 @@ def fold(times, period, pepoch):
 
     return pulses, phases
 
-def barycentre(times):
+def barycentre(times, src_coord):
     bc_correction = times.light_travel_time(src_coord, ephemeris='jpl')
     return times + bc_correction
 
@@ -41,10 +29,42 @@ def StokesI_ds(dat):
         raise NotImplementedError(f"I haven't been taught how to deal with POLS = {ds['POLS']} yet")
 
 def main():
+    parser = argparse.ArgumentParser(description="Stack dynamic spectra together according to a folding ephemeris")
+
+    parser.add_argument('coord', help="RA/Dec of source, in the format \"HH:MM:SS.S ±DD:MM:SS.S\"")
+    parser.add_argument('period', type=float, help="The period of the source, in seconds")
+    parser.add_argument('PEPOCH', type=float, help="A reference epoch (MJD) to mark zero rotation phase")
+    parser.add_argument('DM', type=float, help="The dispersion measure, in pc/cm³")
+
+    parser.add_argument('bin_size', type=float, help="The size of a time bin, in seconds")
+    parser.add_argument('--fscrunch_factor', type=int, help="How many frequency channels to average together in the final output plot")
+
+    parser.add_argument('output_pulsestack_image', help="The filename to use for the pulsestack image")
+    parser.add_argument('output_average_ds_image', help="The filename to use for the average DS image")
+
+    parser.add_argument('ds_files', nargs='*', help="The names of the input .pkl files, without the .pkl extension")
+
+    args = parser.parse_args()
+
+    src_coord = SkyCoord(args.coord, unit=(u.hourangle, u.deg), frame='icrs')
+    src_period = args.period * u.s
+    src_pepoch = Time(args.PEPOCH, scale='utc', format='mjd')
+    src_dm = args.DM * u.pc / u.cm**3
+
+    # Binning parameters
+    bin_size = args.bin_size * u.s
+    bin_size_phase = (bin_size / src_period).decompose()
+
+    fscrunch_factor = args.fscrunch_factor
+
+    # Output filenames
+    pulsestack_png = args.output_pulsestack_image
+    average_ds_png = args.output_average_ds_image
+
     min_phase_bin = np.inf
     max_phase_bin = -np.inf
 
-    pkls = sys.argv[1:]
+    pkls = args.ds_files
     dats = []
     phase_bins_list = []
 
@@ -56,7 +76,7 @@ def main():
 
         location = EarthLocation.of_site(dat['TELESCOPE'])
         times = Time(dat['TIMES']/86400.0, scale='utc', format='mjd', location=location)
-        barytimes = barycentre(times)
+        barytimes = barycentre(times, src_coord)
 
         _, phases = fold(barytimes, src_period, src_pepoch)
         phase_bins = np.round(phases / bin_size_phase).astype(int)
@@ -103,6 +123,16 @@ def main():
         #print(phase_bins)
 
     mean_ds = output_ds / counts
+    profile = np.nanmean(mean_ds, axis=1)
+
+    # Draw a curve representing the DM
+    f = dats[0]['FREQS']/1e6 # MHz
+    dmdelay = 4.148808e3 * src_dm.to('pc cm-3').value * (1/f**2 - 1/np.mean(f)**2)
+
+    # Do a bit of extra averaging in frequency
+    mean_ds = np.nanmean(np.reshape(mean_ds, (mean_ds.shape[0], -1, fscrunch_factor)), axis=-1)
+    counts = np.nanmean(np.reshape(counts, (counts.shape[0], -1, fscrunch_factor)), axis=-1)
+    fscr = np.nanmean(np.reshape(f, (-1, fscrunch_factor)), axis=-1)
 
     ax.set_yticks(yticks)
     ax.set_yticklabels(ylabels)
@@ -112,16 +142,22 @@ def main():
     plt.savefig(pulsestack_png)
     plt.close(fig)
 
-    fig, axs = plt.subplots(nrows=3, ncols=1, sharex=True, figsize=(8,12))
+    fig, axs = plt.subplots(nrows=3, ncols=1, sharex=True, figsize=(5,8))
     t = bin_size.to('s').value * (np.arange(nphase_bins) + min_phase_bin)
-    axs[0].plot(t, np.nanmean(mean_ds, axis=1))
-    axs[1].pcolormesh(t, dats[0]['FREQS']/1e6, mean_ds.T, vmin=-0.1, vmax=0.6)
-    cax = axs[2].pcolormesh(t, dats[0]['FREQS']/1e6, counts.T)
+
+    axs[0].plot(t, profile)
+    axs[1].pcolormesh(t, fscr, mean_ds.T, vmin=-0.1, vmax=0.6)
+
+    axs[1].plot(dmdelay - 10, f, 'r--', lw=2, label=f"DM = {src_dm.to('pc cm-3').value} pc/cm³")
+    axs[1].plot(dmdelay + 80, f, 'r--', lw=2)
+
+    cax = axs[2].pcolormesh(t, fscr, counts.T)
     cbar = fig.colorbar(cax, ax=axs[2], orientation='horizontal')
-    cbar.set_label("Number of dynamic spectra that\ncontributed to this point")
+    cbar.set_label("Number of dynamic spectra\nthat contributed to each point")
     axs[-1].set_xlabel("Time (s)")
     axs[0].set_ylabel("Flux density (Jy/beam)")
     axs[1].set_ylabel("Frequency (MHz)")
+    axs[1].legend()
     axs[2].set_ylabel("Frequency (MHz)")
     plt.tight_layout()
     plt.savefig(average_ds_png)
