@@ -38,6 +38,7 @@ def main():
 
     parser.add_argument('bin_size', type=float, help="The size of a time bin, in seconds")
     parser.add_argument('--fscrunch_factor', type=int, help="How many frequency channels to average together in the final output plot")
+    parser.add_argument('--draw_dm_sweep', type=float, nargs='*', help="Time(s) (at centre frequency) at which to draw DM sweep curves in the synamic spectra panel")
 
     parser.add_argument('output_pulsestack_image', help="The filename to use for the pulsestack image")
     parser.add_argument('output_average_ds_image', help="The filename to use for the average DS image")
@@ -130,9 +131,12 @@ def main():
     dmdelay = 4.148808e3 * src_dm.to('pc cm-3').value * (1/f**2 - 1/np.mean(f)**2)
 
     # Do a bit of extra averaging in frequency
-    mean_ds = np.nanmean(np.reshape(mean_ds, (mean_ds.shape[0], -1, fscrunch_factor)), axis=-1)
-    counts = np.nanmean(np.reshape(counts, (counts.shape[0], -1, fscrunch_factor)), axis=-1)
-    fscr = np.nanmean(np.reshape(f, (-1, fscrunch_factor)), axis=-1)
+    if fscrunch_factor is not None:
+        mean_ds = np.nanmean(np.reshape(mean_ds, (mean_ds.shape[0], -1, fscrunch_factor)), axis=-1)
+        counts = np.nanmean(np.reshape(counts, (counts.shape[0], -1, fscrunch_factor)), axis=-1)
+        fscr = np.nanmean(np.reshape(f, (-1, fscrunch_factor)), axis=-1)
+    else:
+        fscr = f
 
     ax.set_yticks(yticks)
     ax.set_yticklabels(ylabels)
@@ -148,18 +152,32 @@ def main():
     axs[0].plot(t, profile)
     axs[1].pcolormesh(t, fscr, mean_ds.T, vmin=-0.1, vmax=0.6)
 
-    axs[1].plot(dmdelay - 10, f, 'r--', lw=2, label=f"DM = {src_dm.to('pc cm-3').value} pc/cm³")
-    axs[1].plot(dmdelay + 80, f, 'r--', lw=2)
+    if args.draw_dm_sweep is not None:
+        first = True
+        for time in args.draw_dm_sweep:
+            label = f"DM = {src_dm.to('pc cm-3').value} pc/cm³" if first else None
+            axs[1].plot(dmdelay + time, f, 'r--', lw=2, label=label)
+            first = False
 
     cax = axs[2].pcolormesh(t, fscr, counts.T)
     cbar = fig.colorbar(cax, ax=axs[2], orientation='horizontal')
-    cbar.set_label("Number of dynamic spectra\nthat contributed to each point")
+    cbar.set_label("Number of dynamic spectra\nthat contribute to each point")
     axs[-1].set_xlabel("Time (s)")
     axs[0].set_ylabel("Flux density (Jy/beam)")
     axs[1].set_ylabel("Frequency (MHz)")
-    axs[1].legend()
+    if args.draw_dm_sweep is not None:
+        axs[1].legend()
     axs[2].set_ylabel("Frequency (MHz)")
+
     plt.tight_layout()
+
+    # Change the shape of the "counts" panel to make the x-label ("Time (s)")
+    # not be obscured by the color bar
+    pos = axs[2].get_position() # [x0, y0, width, height]
+    delta = 0.02 # inches?
+    pos.y0 += delta
+    axs[2].set_position(pos)
+
     plt.savefig(average_ds_png)
 
 if __name__ == '__main__':
