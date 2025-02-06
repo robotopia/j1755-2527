@@ -41,16 +41,16 @@ with open('2023_observations.csv') as csvfile:
     end_times = Time([row[1] for row in rows], scale='utc', format='isot')
 
 # Add DM delay
-start_times -= dmdelay(DM, freq, np.inf*u.MHz)
-end_times -= dmdelay(DM, freq, np.inf*u.MHz)
+dd_start_times = start_times - dmdelay(DM, freq, np.inf*u.MHz)
+dd_end_times = end_times - dmdelay(DM, freq, np.inf*u.MHz)
 
 # Add barycentre corrections
 coord = SkyCoord('17h55m34.9s -25d27m49.1s', frame='icrs')
-start_times += bc_corr(coord, start_times, ephemeris_file=ephemeris_file)
-end_times += bc_corr(coord, start_times, ephemeris_file=ephemeris_file)
+bary_dd_start_times = dd_start_times + bc_corr(coord, dd_start_times, ephemeris_file=ephemeris_file)
+bary_dd_end_times = dd_end_times + bc_corr(coord, dd_end_times, ephemeris_file=ephemeris_file)
 
-start_pulses, start_phases = np.divmod(((start_times - PEPOCH) / P).decompose(), 1)
-end_pulses, end_phases = np.divmod(((end_times - PEPOCH) / P).decompose(), 1)
+start_pulses, start_phases = np.divmod(((bary_dd_start_times - PEPOCH) / P).decompose(), 1)
+end_pulses, end_phases = np.divmod(((bary_dd_end_times - PEPOCH) / P).decompose(), 1)
 end_phases += start_phases > end_phases # Make sure there's no weird wrapping
 
 # Fix the start_pulses so that things that start at phases > 0.5 get added 1 to it
