@@ -97,7 +97,7 @@ def main():
         TAU_SC.to(PHASE_time.unit),
         loc=0.0,
         scale=width.to(PHASE_time.unit)/2
-    ) * np.sqrt(2*np.pi)*width.to(PHASE_time.unit).value/2
+    ) * np.sqrt(2*np.pi)*width.to(PHASE_time.unit).value/2 # <-- normalisation so that peak = 1
 
     # Plot it
     if args.dynspec_plot is not None:
