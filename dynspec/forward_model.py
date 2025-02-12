@@ -75,7 +75,7 @@ def main():
     # Correct for barycentring
     coord = SkyCoord(args.coord, unit=(u.hourangle, u.deg), frame='fk4')
     telescope = EarthLocation.of_site(args.telescope)
-    t -= t.light_travel_time(coord, ephemeris='jpl', location=telescope)
+    t += t.light_travel_time(coord, ephemeris='jpl', location=telescope)
 
     # Convert to pulse phase
     pulse, phase = np.divmod(((t - PEPOCH)/period).decompose() + 0.5, 1.0)
@@ -92,11 +92,16 @@ def main():
 
     # Make an exponentially scattered pulse. Use sigma = width/2
     TAU_SC = tau_sc_1GHz * (F / u.GHz).decompose()**args.sc_idx
-    modelled_pulse = exponnorm.pdf(PHASE_time, TAU_SC, loc=0.0, scale=width/2)
+    modelled_pulse = exponnorm.pdf(
+        PHASE_time,
+        TAU_SC.to(PHASE_time.unit),
+        loc=0.0,
+        scale=width.to(PHASE_time.unit)/2
+    ) * np.sqrt(2*np.pi)*width.to(PHASE_time.unit).value/2
 
     # Plot it
     if args.dynspec_plot is not None:
-        plt.pcolormesh((t - np.mean(t)).to('s').value, f.to('MHz').value, modelled_pulse, shading='auto')
+        plt.pcolormesh((t - np.mean(t)).to('s').value, f.to('MHz').value, modelled_pulse, shading='auto', vmax=1.0, vmin=0.0)
         plt.colorbar()
         plt.xlabel(f"Time (s) since MJD {np.mean(t)}")
         plt.ylabel(f"Frequency (MHz)")
