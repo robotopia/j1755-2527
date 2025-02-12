@@ -1,4 +1,5 @@
 import numpy as np
+from scipy.stats import exponnorm
 from astropy.io import fits
 from astropy.time import Time
 import astropy.units as u
@@ -25,6 +26,7 @@ def main():
 
     parser.add_argument('coord', help="Sky coordinate of LPT in 'HH:MM:SS.S ±DD:MM:SS.S' format")
     parser.add_argument('telescope', help="Telescope name (must be a listed site in Astropy)")
+    parser.add_argument('--dynspec_plot', help="The output filename for the dynamic spectrum plot")
 
     parser_frequency_group = parser.add_argument_group('Frequency arguments')
     parser_frequency_group.add_argument('--fctr_MHz', type=float, default=200.0, help="Centre frequency in MHz (default=200)")
@@ -42,6 +44,7 @@ def main():
     parser_model_group.add_argument('--period', type=float, default=3600.0, help="Pulse period in seconds (default=3600.0)")
     parser_model_group.add_argument('--DM', type=float, default=100.0, help="Dispersion measure (default=100.0)")
     parser_model_group.add_argument('--tau_sc_1GHz', type=float, default=1e-3, help="Scattering timescale at 1 GHz in seconds (default=1e-3)")
+    parser_model_group.add_argument('--sc_idx', type=float, default=-4.0, help="Scattering index (default=-4)")
     parser_model_group.add_argument('--width', type=float, default=100.0, help="Pulse width in seconds (default=100)")
 
     args = parser.parse_args()
@@ -55,6 +58,7 @@ def main():
     period = args.period * u.s
     width = args.width * u.s
     tau_sc_1GHz = args.tau_sc_1GHz * u.s
+    DM = args.DM * u.pc / u.cm**3
 
     if args.t0 is not None:
         t0 = Time(args.t0, scale='utc', format='mjd')
@@ -63,17 +67,15 @@ def main():
 
     nbin = args.nbin or int(np.round((20*width/dt).decompose()))
 
-    coord = SkyCoord(args.coord, unit=(u.hourangle, u.deg), frame='fk4')
-
-    telescope = EarthLocation.of_site(args.telescope)
-
     t = create_time_axis(t0, dt, nbin, t0_is_ctr_of_first_bin=args.t0_is_ctr_of_first_bin)
     f = create_freq_axis(fctr, bw, nchan)
 
     #print(f"{nbin = }, {width = }, {dt = }, {t0 = }, {t[-1] = }")
 
     # Correct for barycentring
-    # ...
+    coord = SkyCoord(args.coord, unit=(u.hourangle, u.deg), frame='fk4')
+    telescope = EarthLocation.of_site(args.telescope)
+    t -= t.light_travel_time(coord, ephemeris='jpl', location=telescope)
 
     # Convert to pulse phase
     pulse, phase = np.divmod(((t - PEPOCH)/period).decompose() + 0.5, 1.0)
@@ -85,17 +87,20 @@ def main():
     PHASE_time = PHASE * period
 
     # Correct for dispersion (scattering is dealt with later)
-    # ...
+    D = 4148.808 * u.MHz**2 * u.cm**3 * u.s / u.pc
+    PHASE_time -= D * DM / F**2
 
-    # Make a pulse. Use sigma = width/2
-    modelled_pulse = np.exp(-0.5*(PHASE_time/(width/2))**2)
+    # Make an exponentially scattered pulse. Use sigma = width/2
+    TAU_SC = tau_sc_1GHz * (F / u.GHz).decompose()**args.sc_idx
+    modelled_pulse = exponnorm.pdf(PHASE_time, TAU_SC, loc=0.0, scale=width/2)
 
     # Plot it
-    plt.pcolormesh((t - np.mean(t)).to('s').value, f.to('MHz').value, modelled_pulse, shading='auto')
-    plt.colorbar()
-    plt.xlabel(f"Time (s) since MJD {np.mean(t)}")
-    plt.ylabel(f"Frequency (MHz)")
-    plt.savefig('foo.png')
+    if args.dynspec_plot is not None:
+        plt.pcolormesh((t - np.mean(t)).to('s').value, f.to('MHz').value, modelled_pulse, shading='auto')
+        plt.colorbar()
+        plt.xlabel(f"Time (s) since MJD {np.mean(t)}")
+        plt.ylabel(f"Frequency (MHz)")
+        plt.savefig(args.dynspec_plot)
 
 if __name__ == '__main__':
     main()
