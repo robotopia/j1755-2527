@@ -67,7 +67,7 @@ def main():
 
     nbin = args.nbin or int(np.round((20*width/dt).decompose()))
 
-    t = create_time_axis(t0, dt, nbin, t0_is_ctr_of_first_bin=args.t0_is_ctr_of_first_bin)
+    bary_t = create_time_axis(t0, dt, nbin, t0_is_ctr_of_first_bin=args.t0_is_ctr_of_first_bin)
     f = create_freq_axis(fctr, bw, nchan)
 
     #print(f"{nbin = }, {width = }, {dt = }, {t0 = }, {t[-1] = }")
@@ -75,10 +75,10 @@ def main():
     # Correct for barycentring
     coord = SkyCoord(args.coord, unit=(u.hourangle, u.deg), frame='fk4')
     telescope = EarthLocation.of_site(args.telescope)
-    t += t.light_travel_time(coord, ephemeris='jpl', location=telescope)
+    topo_t = bary_t + bary_t.light_travel_time(coord, ephemeris='jpl', location=telescope)
 
     # Convert to pulse phase
-    pulse, phase = np.divmod(((t - PEPOCH)/period).decompose() + 0.5, 1.0)
+    pulse, phase = np.divmod(((topo_t - PEPOCH)/period).decompose() + 0.5, 1.0)
     phase -= 0.5
 
     PHASE, F = np.meshgrid(phase, f)
@@ -101,9 +101,9 @@ def main():
 
     # Plot it
     if args.dynspec_plot is not None:
-        plt.pcolormesh((t - np.mean(t)).to('s').value, f.to('MHz').value, modelled_pulse, shading='auto', vmax=1.0, vmin=0.0)
+        plt.pcolormesh((topo_t - topo_t[0]).to('s').value, f.to('MHz').value, modelled_pulse, shading='auto', vmax=1.0, vmin=0.0)
         plt.colorbar()
-        plt.xlabel(f"Time (s) since MJD {np.mean(t)}")
+        plt.xlabel(f"Time (s) since MJD {topo_t[0].mjd:.7f} (= GPS {topo_t[0].gps:.0f})")
         plt.ylabel(f"Frequency (MHz)")
         plt.savefig(args.dynspec_plot)
 
