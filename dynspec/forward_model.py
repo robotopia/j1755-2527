@@ -67,7 +67,7 @@ def main():
 
     nbin = args.nbin or int(np.round((20*width/dt).decompose()))
 
-    bary_t = create_time_axis(t0, dt, nbin, t0_is_ctr_of_first_bin=args.t0_is_ctr_of_first_bin)
+    topo_t = create_time_axis(t0, dt, nbin, t0_is_ctr_of_first_bin=args.t0_is_ctr_of_first_bin)
     f = create_freq_axis(fctr, bw, nchan)
 
     #print(f"{nbin = }, {width = }, {dt = }, {t0 = }, {t[-1] = }")
@@ -75,10 +75,10 @@ def main():
     # Correct for barycentring
     coord = SkyCoord(args.coord, unit=(u.hourangle, u.deg), frame='fk4')
     telescope = EarthLocation.of_site(args.telescope)
-    topo_t = bary_t + bary_t.light_travel_time(coord, ephemeris='jpl', location=telescope)
+    bary_t = topo_t + topo_t.light_travel_time(coord, ephemeris='jpl', location=telescope)
 
     # Convert to pulse phase
-    pulse, phase = np.divmod(((topo_t - PEPOCH)/period).decompose() + 0.5, 1.0)
+    pulse, phase = np.divmod(((bary_t - PEPOCH)/period).decompose() + 0.5, 1.0)
     phase -= 0.5
 
     PHASE, F = np.meshgrid(phase, f)
