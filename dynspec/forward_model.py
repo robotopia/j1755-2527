@@ -1,5 +1,6 @@
 import numpy as np
-from scipy.stats import exponnorm
+#from scipy.stats import exponnorm # <-- this implementation has overflow issues (see https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.exponnorm.html, v1.15.2). Thus implementing this myself using guidelines from https://en.wikipedia.org/wiki/Exponentially_modified_Gaussian_distribution
+from scipy.special import erfc, erfcx
 from astropy.io import fits
 from astropy.time import Time
 import astropy.units as u
@@ -8,6 +9,27 @@ import matplotlib.pyplot as plt
 
 import argparse
 
+
+def exponnorm(x, μ, σ, τ):
+    '''
+    This follows the equations given on Wikipedia:
+       https://en.wikipedia.org/wiki/Exponentially_modified_Gaussian_distribution
+    which is intended to circumvent overflow errors.
+    That makes this implementation superior to exponnorm.pdf from scipy.stats (v1.15.2)
+    '''
+    σ_τ = σ/τ
+    Z = (x - μ)/σ
+    z = np.sqrt(0.5) * (σ_τ - Z)
+
+    mask1 = z < 0
+    mask2 = z <= 6.71e7
+    mask3 = z > 6.71e7
+
+    masked1 = mask1 * (σ_τ * np.sqrt(np.pi/2) * np.exp(0.5*σ_τ**2 - Z) * erfc(z))
+    masked2 = mask2 * (np.exp(-0.5*Z**2) * σ_τ * np.sqrt(np.pi/2) * erfcx(z))
+    masked3 = mask3 * (np.exp(-0.5*Z**2) / (1 + Z/σ_τ))
+
+    return np.nansum([masked1, masked2, masked3], axis=0)
 
 def create_time_axis(t0, dt, nbin, t0_is_ctr_of_first_bin=False):
     if t0_is_ctr_of_first_bin:
@@ -92,12 +114,23 @@ def main():
 
     # Make an exponentially scattered pulse. Use sigma = width/2
     TAU_SC = tau_sc_1GHz * (F / u.GHz).decompose()**args.sc_idx
+    σ = width.to(PHASE_time.unit)/2
+    '''
+    # The scipy.stats version of exponnorm:
     modelled_pulse = exponnorm.pdf(
         PHASE_time,
-        TAU_SC.to(PHASE_time.unit),
+        TAU_SC.to(PHASE_time.unit)/σ, # Yes, apparently the "K" shape parameter is expecting to be normalised by the width
         loc=0.0,
-        scale=width.to(PHASE_time.unit)/2
+        scale=σ,
     ) * np.sqrt(2*np.pi)*width.to(PHASE_time.unit).value/2 # <-- normalisation so that peak = 1
+    '''
+    # My own implementation of exponnorm
+    modelled_pulse = exponnorm(
+        PHASE_time,
+        0.0,
+        σ,
+        TAU_SC.to(PHASE_time.unit),
+    )
 
     # Plot it
     if args.dynspec_plot is not None:
