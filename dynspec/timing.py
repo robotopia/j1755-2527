@@ -7,7 +7,7 @@ import sys
 
 def get_J1755_ephemeris():
     return {
-        'PEPOCH': Time(59965.03767627493, scale='utc', format='mjd'),
+        'PEPOCH': Time(59965.03819710826, scale='utc', format='mjd'),
         'period': 4186.32874813198 * u.s,
         'DM': 710.0 * u.pc / u.cm**3,
         'tau_sc': 0.0*u.s,
