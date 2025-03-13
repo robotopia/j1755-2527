@@ -16,18 +16,18 @@ def cost_function(params, DM, τ_1GHz, t, f, ds, counts):
     toa_offset = toa_offset_s * u.s
 
     # Scattering timescale
-    T, F = np.meshgrid(t, f)
+    F, T = np.meshgrid(f, t)
     τ = τ_1GHz * (f/(1*u.GHz)).decompose()**(-4)
-    TAU = τ[:,np.newaxis]
+    TAU = τ[np.newaxis,:]
 
     # Apply DM
-    T -= calc_dmdelay(DM, f, np.inf*u.MHz)[:,np.newaxis]
+    T -= calc_dmdelay(DM, f, np.inf*u.MHz)[np.newaxis,:]
 
     # Form the pulses
-    pulses = exponnorm(T, tao_offset, width, TAU)
+    pulses = exponnorm(T, toa_offset, width, TAU)
 
     # Apply the spectral index
-    pulses *= brightness_in_lowest_channel * (f[:,np.newaxis]/f[0])**spectral_idx
+    pulses *= brightness_in_lowest_channel * (f[np.newaxis,:]/f[0])**spectral_idx
 
     # Get the weighted residuals squared
     residuals = (pulses - ds)**2 * counts
@@ -55,8 +55,7 @@ def main():
     src_coord = ephemeris['coord']
     src_period = ephemeris['period']
     src_pepoch = ephemeris['PEPOCH']
-    if args.dedisperse:
-        src_dm = ephemeris['DM']
+    src_dm = ephemeris['DM']
 
     # Binning parameters
     bin_size = args.bin_size * u.s
@@ -135,7 +134,9 @@ def main():
     t = bin_size.to('s') * (np.arange(nphase_bins) + min_phase_bin)
 
     # ---- TESTING cost_function() ----
-    #print(cost_function(, dm, 
+    #params = (width_s, toa_offset_s, brightness_in_lowest_channel, spectral_idx)
+    params = (100.0, 0.0, np.max(mean_ds), 0.0)
+    print(cost_function(params, src_dm, 0.02*u.s, t, f, mean_ds, counts))
 
     # ----------- END TEST ------------
 
