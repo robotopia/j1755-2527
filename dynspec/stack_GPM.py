@@ -6,43 +6,7 @@ from astropy.coordinates import SkyCoord, EarthLocation
 import sys
 import argparse
 
-def fold(times, period, pepoch):
-
-    pulses_phases = ((times - pepoch) / period).decompose()
-    pulses, phases = np.divmod(pulses_phases + 0.5, 1)
-    phases -= 0.5
-
-    return pulses, phases
-
-def barycentre(times, src_coord):
-    bc_correction = times.light_travel_time(src_coord, ephemeris='jpl')
-    return times + bc_correction
-
-def calc_dmdelay(dm, f, f_ref):
-    return 4.148808e3 * dm * (1/f**2 - 1/f_ref**2)
-
-def StokesI_ds(dat):
-    if dat['POLS'][0] == 'XX' and dat['POLS'][3] == 'YY':
-        return 0.5*np.real(dat['DS'][:,:,0] + dat['DS'][:,:,3])
-    else:
-        raise NotImplementedError(f"I haven't been taught how to deal with POLS = {ds['POLS']} yet")
-
-def dedisperse_ds(ds, dm, f, f_ref, bin_size_seconds):
-    dmdelays = calc_dmdelay(dm, f, f_ref)
-
-    # It doesn't matter if the edges are wrapped, so use simple FFT to do
-    # the DM delay adjustment (essentially, a "roll" with fractional bins)
-    FFT = np.fft.rfft(ds, axis=0)
-    FFT_freqs = np.fft.rfftfreq(ds.shape[0], d=bin_size_seconds)
-
-    # Make a mesh grid of delays and frequencies with the same size as the FFT matrix
-    DMDELAYS, FFT_FREQS = np.meshgrid(dmdelays, FFT_freqs)
-
-    # Apply the phase ramp
-    FFT *= np.exp(2j*np.pi*FFT_FREQS*DMDELAYS)
-
-    # Invert the FFT
-    return np.fft.irfft(FFT, n=ds.shape[0], axis=0)
+from timing import *
 
 def main():
     parser = argparse.ArgumentParser(description="Stack dynamic spectra together according to a folding ephemeris")
@@ -108,7 +72,7 @@ def main():
         dat['PHASE_BINS'] = phase_bins
         dats.append(dat)
 
-    f = dats[0]['FREQS']/1e6 # MHz
+    f = dats[0]['FREQS'] * u.Hz
     
     # Work out the dimensions of the final output array
     nphase_bins = max_phase_bin - min_phase_bin + 1
@@ -143,14 +107,14 @@ def main():
         #print(phase_bins)
 
     mean_ds = output_ds / counts
-    t = bin_size.to('s').value * (np.arange(nphase_bins) + min_phase_bin)
+    t = bin_size.to('s') * (np.arange(nphase_bins) + min_phase_bin)
 
     # If a DM has been provided, dedisperse the composite dynamic spectrum
     if args.DM is not None:
         f_ref = np.nanmean(f)
-        mean_ds = dedisperse_ds(mean_ds, args.DM, f, f_ref, bin_size.to('s').value)
-        counts = dedisperse_ds(counts, args.DM, f, f_ref, bin_size.to('s').value)
-        t -= calc_dmdelay(args.DM, f_ref, np.inf)
+        mean_ds = dedisperse_ds(mean_ds, src_dm, f, f_ref, bin_size)
+        counts = dedisperse_ds(counts, src_dm, f, f_ref, bin_size)
+        t -= calc_dmdelay(src_dm, f_ref, np.inf * u.MHz)
 
     # Form the profile
     profile = np.nanmean(mean_ds, axis=1)
@@ -174,7 +138,7 @@ def main():
     fig, axs = plt.subplots(nrows=3, ncols=1, sharex=True, figsize=(5,8))
 
     axs[0].plot(t, profile)
-    axs[1].pcolormesh(t, fscr, mean_ds.T, vmin=-0.1, vmax=0.6)
+    axs[1].pcolormesh(t.to('s').value, fscr.to('MHz'), mean_ds.T, vmin=-0.1, vmax=0.6)
 
     # Draw a curve representing the DM
     if args.DM is not None and args.draw_dm_sweep is not None:
@@ -186,7 +150,7 @@ def main():
             axs[1].plot(dmdelay + time, f, 'w', lw=2, label=label)
             first = False
 
-    cax = axs[2].pcolormesh(t, fscr, counts.T)
+    cax = axs[2].pcolormesh(t.to('s').value, fscr.to('MHz').value, counts.T)
     cbar = fig.colorbar(cax, ax=axs[2], orientation='horizontal')
     cbar.set_label("Number of dynamic spectra\nthat contribute to each point")
     axs[-1].set_xlabel("Time (s)")
