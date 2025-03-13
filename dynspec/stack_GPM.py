@@ -11,10 +11,7 @@ from timing import *
 def main():
     parser = argparse.ArgumentParser(description="Stack dynamic spectra together according to a folding ephemeris")
 
-    parser.add_argument('coord', help="RA/Dec of source, in the format \"HH:MM:SS.S ±DD:MM:SS.S\"")
-    parser.add_argument('period', type=float, help="The period of the source, in seconds")
-    parser.add_argument('PEPOCH', type=float, help="A reference epoch (MJD) to mark zero rotation phase")
-    parser.add_argument('--DM', type=float, help="The dispersion measure, in pc/cm³")
+    parser.add_argument('--dedisperse', action='store_true', help="Dedisperse (using DM in timing.py)")
 
     parser.add_argument('bin_size', type=float, help="The size of a time bin, in seconds")
     parser.add_argument('--fscrunch_factor', type=int, help="How many frequency channels to average together in the final output plot")
@@ -27,11 +24,12 @@ def main():
 
     args = parser.parse_args()
 
-    src_coord = SkyCoord(args.coord, unit=(u.hourangle, u.deg), frame='icrs')
-    src_period = args.period * u.s
-    src_pepoch = Time(args.PEPOCH, scale='utc', format='mjd')
-    if args.DM is not None:
-        src_dm = args.DM * u.pc / u.cm**3
+    ephemeris = get_J1755_ephemeris()
+    src_coord = ephemeris['coord']
+    src_period = ephemeris['period']
+    src_pepoch = ephemeris['PEPOCH']
+    if args.dedisperse:
+        src_dm = ephemeris['DM']
 
     # Binning parameters
     bin_size = args.bin_size * u.s
@@ -109,8 +107,8 @@ def main():
     mean_ds = output_ds / counts
     t = bin_size.to('s') * (np.arange(nphase_bins) + min_phase_bin)
 
-    # If a DM has been provided, dedisperse the composite dynamic spectrum
-    if args.DM is not None:
+    # If requested, dedisperse the composite dynamic spectrum
+    if args.dedisperse:
         f_ref = np.nanmean(f)
         mean_ds = dedisperse_ds(mean_ds, src_dm, f, f_ref, bin_size)
         counts = dedisperse_ds(counts, src_dm, f, f_ref, bin_size)
@@ -141,9 +139,9 @@ def main():
     axs[1].pcolormesh(t.to('s').value, fscr.to('MHz'), mean_ds.T, vmin=-0.1, vmax=0.6)
 
     # Draw a curve representing the DM
-    if args.DM is not None and args.draw_dm_sweep is not None:
+    if args.dedisperse and args.draw_dm_sweep is not None:
         first = True
-        dmdelay = -calc_dmdelay(args.DM, f, np.nanmean(f))
+        dmdelay = -calc_dmdelay(src_dm, f, np.nanmean(f))
         # The minus sign ^^^ is because the dynamic spectrum will already be dedispersed
         for time in args.draw_dm_sweep:
             label = f"Zero DM curve" if first else None
@@ -156,10 +154,10 @@ def main():
     axs[-1].set_xlabel("Time (s)")
     axs[0].set_ylabel("Flux density (Jy/beam)")
     axs[1].set_ylabel("Frequency (MHz)")
-    if args.DM is not None and args.draw_dm_sweep is not None:
+    if args.dedisperse and args.draw_dm_sweep is not None:
         axs[1].legend()
-    if args.DM is not None:
-        axs[0].set_title(f"Dedispersed to DM = {args.DM} pc/cm³")
+    if args.dedisperse:
+        axs[0].set_title(f"Dedispersed to DM = {src_dm}")
     axs[2].set_ylabel("Frequency (MHz)")
 
     plt.tight_layout()
