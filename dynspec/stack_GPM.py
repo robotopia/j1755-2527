@@ -1,4 +1,5 @@
 import numpy as np
+from scipy.optimize import minimize
 import matplotlib.pyplot as plt
 import astropy.units as u
 from astropy.time import Time
@@ -7,6 +8,32 @@ import sys
 import argparse
 
 from timing import *
+from forward_model import exponnorm
+
+def cost_function(params, DM, τ_1GHz, t, f, ds, counts):
+    width_s, toa_offset_s, brightness_in_lowest_channel, spectral_idx = params
+    width = width_s * u.s
+    toa_offset = toa_offset_s * u.s
+
+    # Scattering timescale
+    T, F = np.meshgrid(t, f)
+    τ = τ_1GHz * (f/(1*u.GHz)).decompose()**(-4)
+    TAU = τ[:,np.newaxis]
+
+    # Apply DM
+    T -= calc_dmdelay(DM, f, np.inf*u.MHz)[:,np.newaxis]
+
+    # Form the pulses
+    pulses = exponnorm(T, tao_offset, width, TAU)
+
+    # Apply the spectral index
+    pulses *= brightness_in_lowest_channel * (f[:,np.newaxis]/f[0])**spectral_idx
+
+    # Get the weighted residuals squared
+    residuals = (pulses - ds)**2 * counts
+
+    return np.sum(residuals)
+
 
 def main():
     parser = argparse.ArgumentParser(description="Stack dynamic spectra together according to a folding ephemeris")
@@ -107,6 +134,11 @@ def main():
     mean_ds = output_ds / counts
     t = bin_size.to('s') * (np.arange(nphase_bins) + min_phase_bin)
 
+    # ---- TESTING cost_function() ----
+    #print(cost_function(, dm, 
+
+    # ----------- END TEST ------------
+
     # If requested, dedisperse the composite dynamic spectrum
     if args.dedisperse:
         f_ref = np.nanmean(f)
@@ -148,7 +180,7 @@ def main():
             axs[1].plot(dmdelay + time, f, 'w', lw=2, label=label)
             first = False
 
-    cax = axs[2].pcolormesh(t.to('s').value, fscr.to('MHz').value, counts.T)
+    cax = axs[2].pcolormesh(t.to('s').value, fscr.to('MHz').value, counts.T, vmin=0)
     cbar = fig.colorbar(cax, ax=axs[2], orientation='horizontal')
     cbar.set_label("Number of dynamic spectra\nthat contribute to each point")
     axs[-1].set_xlabel("Time (s)")

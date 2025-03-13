@@ -12,9 +12,9 @@ import argparse
 
 def exponnorm(x, μ, σ, τ):
     '''
-    This follows the equations given on Wikipedia:
+    This follows the equations given on Wikipedia
        https://en.wikipedia.org/wiki/Exponentially_modified_Gaussian_distribution
-    which is intended to circumvent overflow errors.
+    which are intended to circumvent overflow errors.
     That makes this implementation superior to exponnorm.pdf from scipy.stats (v1.15.2)
     '''
     σ_τ = σ/τ
