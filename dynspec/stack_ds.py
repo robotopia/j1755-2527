@@ -6,6 +6,7 @@ from astropy.time import Time
 from astropy.coordinates import SkyCoord, EarthLocation
 import sys
 import argparse
+import pickle
 
 from timing import *
 
@@ -21,6 +22,7 @@ def main():
     parser.add_argument('--draw_dm_sweep', type=float, nargs='*', help="Time(s) (at centre frequency) at which to draw DM sweep curves in the synamic spectra panel")
 
     parser.add_argument('--output_average_ds_image', help="The filename to use for the average DS image. If not given, will plt.show() instead.")
+    parser.add_argument('--output_average_ds', help="The filename to use for the average DS. If not given, no output is saved.")
     parser.add_argument('--vmin', type=float)
     parser.add_argument('--vmax', type=float)
 
@@ -136,6 +138,16 @@ def main():
 
     mean_ds = output_ds / counts
     t = bin_size.to('s') * (np.arange(nphase_bins) + min_phase_bin)
+
+    if args.output_average_ds is not None:
+        with open(args.output_average_ds, 'wb') as output_file:
+            pickle.dump({
+                'I': output_ds,
+                't': t.to('s').value,
+                't_unit': 's',
+                'f': f.to('Hz').value,
+                'f_unit': 'Hz',
+            }, output_file)
 
     # If requested, dedisperse the composite dynamic spectrum
     if args.dedisperse is not None:
