@@ -68,7 +68,7 @@ def fit_toa(dat, fit_scattering=False, output_plot=None, obsid=None):
 
     # Fit a pulse to it
     if fit_scattering:
-        p0 = (A0, t_base[peak_idx].value, 0.1*dt.to('s').value, 0.0, 0.0, 30)
+        p0 = (A0, t_base[peak_idx].value, 50.0, 0.0, 0.0, 30)
         bounds = [(0, -np.inf, 1e-6*dt.to('s').value, -np.inf, -np.inf, 0.1*dt.to('s').value), (np.inf, np.inf, np.inf, np.inf, np.inf, np.inf)]
         model = scattered_pulse_model
     else:
@@ -126,7 +126,7 @@ def fit_toa(dat, fit_scattering=False, output_plot=None, obsid=None):
             mini_pcov = np.array([[pcov[5,5], pcov[5,2]], [pcov[2,5], pcov[2,2]]])
             eigenvalues, eigenvectors = np.linalg.eigh(mini_pcov)
             mean = [σ, τ]
-            axs[2].scatter(*mean, color='red', marker='x')
+            axs[2].scatter(*mean, color='red', marker='x', label=f'$\\sigma = {σ:.0f}$ s\n$\\tau = {τ:.0f}$ s')
             for sigma in [1, 2, 3]:
                 width, height = sigma * np.sqrt(eigenvalues)
                 angle = np.degrees(np.arctan2(*eigenvectors[:, 0][::-1]))
@@ -136,10 +136,10 @@ def fit_toa(dat, fit_scattering=False, output_plot=None, obsid=None):
             axs[2].set_ylabel(f"Scattering timescale at {f_ref.to('MHz')} (s)")
             #axs[2].set_xlim(mean[0] - width if mean[0] - width > 0 else 0, mean[0] + width)
             #axs[2].set_ylim(mean[1] - height if mean[1] - height > 0 else 0, mean[1] + height)
-            axs[2].set_xlim([0.0, 60.0])
-            axs[2].set_ylim([0.0, 120.0])
-            axs[2].axhline(2.7477e-4*((f_ref/u.GHz).decompose())**-4, ls='--', c='g', label='NE2001')
-            axs[2].axhline(3.1225e-5*((f_ref/u.GHz).decompose())**-4, ls='--', c='orange', label='YMW16')
+            axs[2].set_xlim([0.0, 50.0])
+            axs[2].set_ylim([0.0, 200.0])
+            axs[2].axhline(6.5691e-02*((f_ref/u.GHz).decompose())**-4, ls='--', c='g', label='NE2001')
+            axs[2].axhline(7.5217e-02*((f_ref/u.GHz).decompose())**-4, ls='--', c='orange', label='YMW16')
             axs[2].legend()
         else:
             fig, axs = plt.subplots(nrows=2, ncols=1, sharex=True, figsize=(6, 9))
@@ -154,7 +154,7 @@ def fit_toa(dat, fit_scattering=False, output_plot=None, obsid=None):
 
         axs[0].legend()
 
-        axs[0].set_title(f"{obsid or ''}\nToA = {toa.mjd} ± {toa_err}")
+        axs[0].set_title(f"{obsid or ''}\nToA = {toa.mjd:.5f} ± {toa_err:.5f}")
 
         plt.tight_layout()
         plt.savefig(output_plot)
