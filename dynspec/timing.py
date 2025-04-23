@@ -52,7 +52,7 @@ def discrete_emg(t, A, μ, σ, τ):
     return pdf_value
 
 
-def pulse_model(t_s, A, μ_s, m=0, c=0, σ_s=1.5):
+def pulse_model(t_s, A, μ_s, m=0, c=0, σ_s=30):
     baseline = m*t_s + c
     return discrete_gaussian(t_s, A, μ_s, σ_s) + baseline
 
