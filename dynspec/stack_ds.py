@@ -54,8 +54,8 @@ def main():
         print(f"Opening {pkl}...")
         dat = np.load(pkl, allow_pickle=True)
         dat['OBSID'] = pkl[:-4].replace('_', ' ')
-        if len(dat['FREQS']) != 768:
-            continue
+        #if len(dat['FREQS']) != 768:
+        #    continue
 
         location = EarthLocation.of_site(dat['TELESCOPE'])
         times = Time(dat['TIMES']/86400.0, scale='utc', format='mjd', location=location)
