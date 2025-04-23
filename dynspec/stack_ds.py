@@ -16,11 +16,11 @@ def main():
     #parser.add_argument('--dedisperse', action='store_true', help="Dedisperse (using DM in timing.py)")
     parser.add_argument('--dedisperse', type=float, help="Dedisperse (using DM in timing.py)")
 
-    parser.add_argument('bin_size', type=float, help="The size of a time bin, in seconds")
+    parser.add_argument('--bin_size', type=float, help="The size of an output time bin, in seconds (default: use that of the first input pickle file)")
     parser.add_argument('--fscrunch_factor', type=int, help="How many frequency channels to average together in the final output plot")
     parser.add_argument('--draw_dm_sweep', type=float, nargs='*', help="Time(s) (at centre frequency) at which to draw DM sweep curves in the synamic spectra panel")
 
-    parser.add_argument('output_average_ds_image', help="The filename to use for the average DS image")
+    parser.add_argument('--output_average_ds_image', help="The filename to use for the average DS image. If not given, will plt.show() instead.")
 
     parser.add_argument('ds_files', nargs='*', help="The names of the input .pkl files, without the .pkl extension")
 
@@ -34,13 +34,14 @@ def main():
     src_dm = args.dedisperse * u.pc/u.cm**3
 
     # Binning parameters
-    bin_size = args.bin_size * u.s
+    if args.bin_size is not None:
+        bin_size = args.bin_size * u.s
+    else:
+        dat = np.load(args.ds_files[0], allow_pickle=True)
+        bin_size = (dat['TIMES'][1] - dat['TIMES'][0]) * u.s
     bin_size_phase = (bin_size / src_period).decompose()
 
     fscrunch_factor = args.fscrunch_factor
-
-    # Output filenames
-    average_ds_png = args.output_average_ds_image
 
     min_phase_bin = np.inf
     max_phase_bin = -np.inf
@@ -58,11 +59,22 @@ def main():
         #    continue
 
         location = EarthLocation.of_site(dat['TELESCOPE'])
+
+        # Do tscrunching, if possible, to get to bin_size
         times = Time(dat['TIMES']/86400.0, scale='utc', format='mjd', location=location)
-        dt = (times[1] - times[0]).to('s').value
-        if np.abs(dt - args.bin_size) > 0.0001:
-            print(f"{dt = } != {args.bin_size = }")
+        dt = (times[1] - times[0]).to('s')
+        tscrunch_factor = (bin_size/dt).decompose() # Leave unrounded for now, to check if int
+        if np.abs(tscrunch_factor - np.round(tscrunch_factor)) > 0.0001:
+            print(f"{bin_size = } is not a close integer multiple of {dt = }")
             continue
+        tscrunch_factor = int(np.round(tscrunch_factor))
+        noutput_bins = len(times) // tscrunch_factor
+        nbins_to_tscrunch = noutput_bins * tscrunch_factor # For truncating excess bins if necessary
+        for pol in ['I']: #"IQUV": All stokes not needed for this exercise
+            S = Stokes_ds(dat, pol=pol, pb_corr=False)[0]
+            dat[pol] = np.mean(np.reshape(S[:nbins_to_tscrunch,:], (noutput_bins, tscrunch_factor, S.shape[1])), axis=1)
+        times = np.mean(np.reshape(times[:nbins_to_tscrunch], (noutput_bins, tscrunch_factor)), axis=1)
+
         f = dat['FREQS'] * u.Hz
         barytimes = barycentre(times, src_coord)
 
@@ -93,7 +105,7 @@ def main():
     for dat in dats:
 
         print(f"Adding spectrum from {dat['OBSID']}...")
-        I = Stokes_ds(dat, pol='I')[0]
+        I = dat['I']
         phase_bins = dat['PHASE_BINS'] - min_phase_bin
 
         # All of the dynamic spectra I'm considering in this run have the same sample time, which is also what the bin size has been set to. This means that each output bin will only ever have one pixel from each dynamic spectrum added to it. If this assumption breaks, then the following method of adding each dynamic spectrum into the output dynamic spectrum won't work.
@@ -149,8 +161,6 @@ def main():
         axs[0].set_title(f"Dedispersed to DM = {src_dm}")
     axs[2].set_ylabel("Frequency (MHz)")
 
-    plt.tight_layout()
-
     # Change the shape of the "counts" panel to make the x-label ("Time (s)")
     # not be obscured by the color bar
     pos = axs[2].get_position() # [x0, y0, width, height]
@@ -158,7 +168,11 @@ def main():
     pos.y0 += delta
     axs[2].set_position(pos)
 
-    plt.savefig(average_ds_png)
+    if args.output_average_ds_image is not None:
+        plt.tight_layout()
+        plt.savefig(args.output_average_ds_image)
+    else:
+        plt.show()
 
 if __name__ == '__main__':
     main()
