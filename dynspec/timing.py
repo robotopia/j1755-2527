@@ -56,11 +56,11 @@ def pulse_model(t_s, A, μ_s, m=0, c=0, σ_s=30):
     baseline = m*t_s + c
     return discrete_gaussian(t_s, A, μ_s, σ_s) + baseline
 
-def scattered_pulse_model(t_s, A, μ_s, τ_s, m=0, c=0, σ_s=1.5):
+def scattered_pulse_model(t_s, A, μ_s, τ_s, m=0, c=0, σ_s=30):
     baseline = m*t_s + c
     return discrete_emg(t_s, A, μ_s, σ_s, τ_s) + baseline
 
-def pulse_fluence(A, μ_s, m=0, c=0, σ_s=1.5):
+def pulse_fluence(A, μ_s, m=0, c=0, σ_s=30):
     return A*σ_s*np.sqrt(2*np.pi)
 
 def fold(times, period, pepoch):

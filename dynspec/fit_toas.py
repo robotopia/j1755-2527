@@ -68,7 +68,7 @@ def fit_toa(dat, fit_scattering=False, output_plot=None, obsid=None):
 
     # Fit a pulse to it
     if fit_scattering:
-        p0 = (A0, t_base[peak_idx].value, 0.1*dt.to('s').value, 0.0, 0.0, 1.5)
+        p0 = (A0, t_base[peak_idx].value, 0.1*dt.to('s').value, 0.0, 0.0, 30)
         bounds = [(0, -np.inf, 1e-6*dt.to('s').value, -np.inf, -np.inf, 0.1*dt.to('s').value), (np.inf, np.inf, np.inf, np.inf, np.inf, np.inf)]
         model = scattered_pulse_model
     else:
@@ -102,7 +102,7 @@ def fit_toa(dat, fit_scattering=False, output_plot=None, obsid=None):
     # Calculate pulse fluence from model
     if fit_scattering:
         A, μ, _, m, c, σ = popt
-        fluence = pulse_fluence(A, μ, σ) * u.Jy * u.s
+        fluence = pulse_fluence(A, μ, σ_s=σ) * u.Jy * u.s
     else:
         fluence = pulse_fluence(*popt) * u.Jy * u.s
     fluence_err = fluence*np.sqrt(pcov[0,0])/popt[0]  # <--- If pulse model changes, change this accordingly
@@ -136,8 +136,8 @@ def fit_toa(dat, fit_scattering=False, output_plot=None, obsid=None):
             axs[2].set_ylabel(f"Scattering timescale at {f_ref.to('MHz')} (s)")
             #axs[2].set_xlim(mean[0] - width if mean[0] - width > 0 else 0, mean[0] + width)
             #axs[2].set_ylim(mean[1] - height if mean[1] - height > 0 else 0, mean[1] + height)
-            axs[2].set_xlim([0.0, 4.0])
-            axs[2].set_ylim([0.0, 4.0])
+            axs[2].set_xlim([0.0, 60.0])
+            axs[2].set_ylim([0.0, 120.0])
             axs[2].axhline(2.7477e-4*((f_ref/u.GHz).decompose())**-4, ls='--', c='g', label='NE2001')
             axs[2].axhline(3.1225e-5*((f_ref/u.GHz).decompose())**-4, ls='--', c='orange', label='YMW16')
             axs[2].legend()
