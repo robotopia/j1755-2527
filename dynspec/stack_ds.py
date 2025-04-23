@@ -17,10 +17,12 @@ def main():
     parser.add_argument('--dedisperse', type=float, help="Dedisperse (using DM in timing.py)")
 
     parser.add_argument('--bin_size', type=float, help="The size of an output time bin, in seconds (default: use that of the first input pickle file)")
-    parser.add_argument('--fscrunch_factor', type=int, help="How many frequency channels to average together in the final output plot")
+    parser.add_argument('--chan_size', type=float, help="The size of an output frequency channel, in MHz (default: use that of the first input pickle file)")
     parser.add_argument('--draw_dm_sweep', type=float, nargs='*', help="Time(s) (at centre frequency) at which to draw DM sweep curves in the synamic spectra panel")
 
     parser.add_argument('--output_average_ds_image', help="The filename to use for the average DS image. If not given, will plt.show() instead.")
+    parser.add_argument('--vmin', type=float)
+    parser.add_argument('--vmax', type=float)
 
     parser.add_argument('ds_files', nargs='*', help="The names of the input .pkl files, without the .pkl extension")
 
@@ -33,15 +35,18 @@ def main():
     #src_dm = ephemeris['DM']
     src_dm = args.dedisperse * u.pc/u.cm**3
 
-    # Binning parameters
+    # Binning and channel parameters
+    dat = np.load(args.ds_files[0], allow_pickle=True)
     if args.bin_size is not None:
         bin_size = args.bin_size * u.s
     else:
-        dat = np.load(args.ds_files[0], allow_pickle=True)
         bin_size = (dat['TIMES'][1] - dat['TIMES'][0]) * u.s
     bin_size_phase = (bin_size / src_period).decompose()
 
-    fscrunch_factor = args.fscrunch_factor
+    if args.chan_size is not None:
+        chan_size = args.chan_size * u.MHz
+    else:
+        chan_size = (dat['FREQS'][1] - dat['FREQS'][0]) * u.Hz
 
     min_phase_bin = np.inf
     max_phase_bin = -np.inf
@@ -67,15 +72,31 @@ def main():
         if np.abs(tscrunch_factor - np.round(tscrunch_factor)) > 0.0001:
             print(f"{bin_size = } is not a close integer multiple of {dt = }")
             continue
+
+        # Do tscrunching, if possible, to get to chan_size
+        f = dat['FREQS'] * u.Hz
+        df = f[1] - f[0]
+        fscrunch_factor = (chan_size/df).decompose() # Leave unrounded for now, to check if int
+        if np.abs(fscrunch_factor - np.round(fscrunch_factor)) > 0.0001:
+            print(f"{chan_size = } is not a close integer multiple of {df = }")
+            continue
+
         tscrunch_factor = int(np.round(tscrunch_factor))
+        fscrunch_factor = int(np.round(fscrunch_factor))
+
         noutput_bins = len(times) // tscrunch_factor
+        noutput_chans = len(f) // fscrunch_factor
+
         nbins_to_tscrunch = noutput_bins * tscrunch_factor # For truncating excess bins if necessary
+        nchans_to_fscrunch = noutput_chans * fscrunch_factor # For truncating excess chans if necessary
+
         for pol in ['I']: #"IQUV": All stokes not needed for this exercise
             S = Stokes_ds(dat, pol=pol, pb_corr=False)[0]
-            dat[pol] = np.mean(np.reshape(S[:nbins_to_tscrunch,:], (noutput_bins, tscrunch_factor, S.shape[1])), axis=1)
+            dat[pol] = np.mean(np.reshape(S[:nbins_to_tscrunch,:nchans_to_fscrunch],
+                                          (noutput_bins, tscrunch_factor, noutput_chans, fscrunch_factor)), axis=(1,3))
         times = np.mean(np.reshape(times[:nbins_to_tscrunch], (noutput_bins, tscrunch_factor)), axis=1)
+        f = np.mean(np.reshape(f[:nchans_to_fscrunch], (noutput_chans, fscrunch_factor)), axis=1)
 
-        f = dat['FREQS'] * u.Hz
         barytimes = barycentre(times, src_coord)
 
         _, phases = fold(barytimes, src_period, src_pepoch)
@@ -88,6 +109,7 @@ def main():
             max_phase_bin = int(np.round(max(phase_bins)))
 
         dat['PHASE_BINS'] = phase_bins
+        dat['FREQS'] = f.to('Hz').value
         dats.append(dat)
 
     f = dats[0]['FREQS'] * u.Hz
@@ -125,18 +147,10 @@ def main():
     # Form the profile
     profile = np.nanmean(mean_ds, axis=1)
 
-    # Do a bit of extra averaging in frequency
-    if fscrunch_factor is not None:
-        mean_ds = np.nanmean(np.reshape(mean_ds, (mean_ds.shape[0], -1, fscrunch_factor)), axis=-1)
-        counts = np.nanmean(np.reshape(counts, (counts.shape[0], -1, fscrunch_factor)), axis=-1)
-        fscr = np.nanmean(np.reshape(f, (-1, fscrunch_factor)), axis=-1)
-    else:
-        fscr = f
-
     fig, axs = plt.subplots(nrows=3, ncols=1, sharex=True, figsize=(12,8))
 
     axs[0].plot(t, profile)
-    axs[1].pcolormesh(t.to('s').value, fscr.to('MHz'), mean_ds.T)
+    axs[1].pcolormesh(t.to('s').value, f.to('MHz'), mean_ds.T, vmin=args.vmin, vmax=args.vmax)
 
     # Draw a curve representing the DM
     if args.dedisperse is not None and args.draw_dm_sweep is not None:
@@ -148,7 +162,7 @@ def main():
             axs[1].plot(dmdelay + time, f, 'w', lw=2, label=label)
             first = False
 
-    cax = axs[2].pcolormesh(t.to('s').value, fscr.to('MHz').value, counts.T, vmin=0)
+    cax = axs[2].pcolormesh(t.to('s').value, f.to('MHz').value, counts.T, vmin=0)
     cbar = fig.colorbar(cax, ax=axs[2], orientation='horizontal')
     cbar.set_label("Number of dynamic spectra\nthat contribute to each point")
     axs[-1].set_xlabel("Time (s)")
