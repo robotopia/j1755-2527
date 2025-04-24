@@ -16,16 +16,16 @@ def calc_dm_delay(DM, f):
     return 4148.808 * DM / f**2
 
 data = [
-    {'pkl': 'D0042_observations_185MHz_stacked.pkl', 'fscrunch_factor': 12,
-     'tscrunch_factor': 1, 'color': 'red', 'label': 'D0042 (185 MHz)'},
-    {'pkl': 'D0042_observations_200MHz_stacked.pkl', 'fscrunch_factor': 12,
-     'tscrunch_factor': 1, 'color': 'orange', 'label': 'D0042 (200 MHz)'},
+    {'pkl': '2023_meerkat_stacked.pkl',              'fscrunch_factor': 16,
+     'tscrunch_factor': 2, 'color': 'blue', 'label': 'MeerKAT (2023)'},
+    {'pkl': '2024_meerkat_stacked.pkl',              'fscrunch_factor': 33,
+     'tscrunch_factor': 1, 'color': 'green', 'label': 'MeerKAT (2024)'},
     {'pkl': 'GPM_observations_stacked.pkl',          'fscrunch_factor': 12,
      'tscrunch_factor': 1, 'color': 'yellow', 'label': 'GPM 2024'},
-    {'pkl': '2023_meerkat_stacked.pkl',              'fscrunch_factor': 16,
-     'tscrunch_factor': 2, 'color': 'green', 'label': 'MeerKAT (2023)'},
-    {'pkl': '2024_meerkat_stacked.pkl',              'fscrunch_factor': 33,
-     'tscrunch_factor': 1, 'color': 'blue', 'label': 'MeerKAT (2024)'},
+    {'pkl': 'D0042_observations_200MHz_stacked.pkl', 'fscrunch_factor': 12,
+     'tscrunch_factor': 1, 'color': 'orange', 'label': 'D0042 (200 MHz)'},
+    {'pkl': 'D0042_observations_185MHz_stacked.pkl', 'fscrunch_factor': 12,
+     'tscrunch_factor': 1, 'color': 'red', 'label': 'D0042 (185 MHz)'},
 ]
 
 fig, axs = plt.subplots(nrows=2, ncols=1, figsize=(5,8))
