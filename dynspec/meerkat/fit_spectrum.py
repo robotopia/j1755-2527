@@ -27,7 +27,7 @@ def pl(nu, norm, alpha):
     spec_nu = nu / ref_nu
     return norm * spec_nu **alpha
 
-val = np.load("./J1755-25_1729341386_scan18.pkl", allow_pickle=True)
+val = np.load("../1413381294_meerkat.pkl", allow_pickle=True)
 mjds = Time((val['TIMES']*u.s).to(u.day), format='mjd')
 freqs = val['FREQS']
 It = 1000*np.real((val['DS'][:,:,0]+val['DS'][:,:,3]))
