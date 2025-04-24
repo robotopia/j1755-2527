@@ -150,7 +150,7 @@ def fit_toa(dat, fit_scattering=False, output_plot=None, obsid=None):
         plt.savefig(output_plot)
         plt.close(fig)
 
-    return f_ref, toa, toa_err, fluence, fluence_err, peak_signal, peak_snr
+    return f_ref, toa, toa_err, fluence, fluence_err, peak_signal, peak_snr, σ*u.s, σ_err*u.s
 
 
 def main():
@@ -163,9 +163,9 @@ def main():
     args = parser.parse_args()
 
     # Summarise everything into a table
-    table = QTable(names=['ObsID', 'freq', 'ToA', 'ToA_err', 'telescope', 'fluence', 'fluence_err', 'fitted_peak_flux_density', 'peak_snr'],
-                   dtype=[str, float, float, float, str, float, float, float, float],
-                   units=[None, u.MHz, None, u.d, None, u.Jy*u.s, u.Jy*u.s, u.Jy, None])
+    table = QTable(names=['ObsID', 'freq', 'ToA', 'ToA_err', 'telescope', 'fluence', 'fluence_err', 'fitted_peak_flux_density', 'peak_snr', 'width', 'width_err'],
+                   dtype=[str, float, float, float, str, float, float, float, float, float, float],
+                   units=[None, u.MHz, None, u.d, None, u.Jy*u.s, u.Jy*u.s, u.Jy, None, u.s, u.s])
 
     for pkl in args.ds_files:
         print(f"{pkl}...")
@@ -176,9 +176,21 @@ def main():
 
         output_plot = f"{pkl[:-4]}_toa.png"
 
-        f_ref, toa, toa_err, fluence, fluence_err, peak_signal, peak_snr = fit_toa(dat, fit_scattering=args.fit_scattering, output_plot=output_plot, obsid=obsid)
+        f_ref, toa, toa_err, fluence, fluence_err, peak_signal, peak_snr, σ, σ_err = fit_toa(dat, fit_scattering=args.fit_scattering, output_plot=output_plot, obsid=obsid)
 
-        table.add_row([obsid, f_ref, toa.mjd, toa_err, dat['TELESCOPE'], fluence, fluence_err, peak_signal, peak_snr])
+        table.add_row([
+            obsid,
+            f_ref,
+            toa.mjd,
+            toa_err,
+            dat['TELESCOPE'],
+            fluence,
+            fluence_err,
+            peak_signal,
+            peak_snr,
+            σ,
+            σ_err,
+        ])
 
     table.write(args.output_table, format="ascii.ecsv", overwrite=True)
 

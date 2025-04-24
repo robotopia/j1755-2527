@@ -80,12 +80,16 @@ def main():
         # Form lightcurve
         lightcurve = np.nanmean(Idd, axis=1)
 
-        # A quick fit of a gaussian in order to smooth out the baseline
-        def model(ph, m, c, A, mu, sigma):
-            return m*ph + c + A*np.exp(-0.5*(ph-mu)**2/sigma**2)
-        p0 = [0, 0, np.max(lightcurve), 0, 10/ephemeris['period'].to('s').value]
+        # Fit a scattered pulse
+        def model(ph, A, μ, m, c, σ):
+            τ = (ephemeris['tau_sc']/ephemeris['period'] * (f_ref/u.GHz)**(-4)).decompose()
+            return scattered_pulse_model(ph, A, μ, m, c, σ, τ)
+        p0 = [np.max(lightcurve), 0, 0, 0, 10/ephemeris['period'].to('s').value]
+        #def model(ph, m, c, A, mu, sigma):
+        #    return m*ph + c + A*np.exp(-0.5*(ph-mu)**2/sigma**2)
+        #p0 = [0, 0, np.max(lightcurve), 0, 10/ephemeris['period'].to('s').value]
         popt, _ = curve_fit(model, phases, lightcurve, p0=p0)
-        m, c, _, _, _ = popt
+        A, μ, m, c, σ = popt
         lightcurve -= m*phases + c
 
         if len(set(pulses)) != 1:
@@ -96,6 +100,10 @@ def main():
             lightcurve = lightcurve[mask]
 
         axs[0][col].plot(phases*ephemeris['period'], lightcurve/np.nanmax(lightcurve) + ys[col], 'k')
+        ph_fine = np.linspace(phases[0], phases[-1], 1000)
+        y = pulse_model(ph_fine, A, μ, 0, 0, σ)
+        ynorm = y / np.nanmax(y)
+        axs[0][col].plot(ph_fine*ephemeris['period'], ynorm + ys[col], 'b--')
         yticks[col].append(ys[col])
         ylabels[col].append(f"{times[0].iso[:16]}\n{dat['TELESCOPE']}")#\n(Pulse #{int(np.round(np.median(pulses)))})")
         ys[col] += 1
