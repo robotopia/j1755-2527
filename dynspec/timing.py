@@ -146,7 +146,8 @@ def get_flags(dat):
     else:
         fmask = set()
 
-    fmask |= set(np.where(np.all(np.isnan(dat['DS']), axis=0))[0])
+    if len(dat['FREQS']) > 1: # A hack to save my single-frequency dynspecs
+        fmask |= set(np.where(np.all(np.isnan(dat['DS']), axis=0))[0])
     fmask = list(fmask)
 
     # Get time flags

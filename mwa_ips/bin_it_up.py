@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from astropy.time import Time
+import pickle
 
 on = np.loadtxt('ts_on_source.txt')
 off = np.loadtxt('ts_off_source.txt')
@@ -56,3 +57,20 @@ plt.legend()
 plt.tight_layout()
 
 plt.savefig(f'binned_to_{b*sample_time:.0f}s.png')
+
+# Save to pickle file
+ds = np.empty((len(binned_on), 1, 4))
+ds[:,0,0] = binned_on # Stokes I
+ds[:,:,1:] = np.nan # Stokes Q, U, V
+dat = {
+    'DS': ds,
+    'DS_MED': ds,
+    'DS_STD': ds,
+    'POLS': ['I', 'Q', 'U', 'V'],
+    'TIMES': t.mjd*86400,
+    'FREQS': np.array([161920000]),
+    'TELESCOPE': 'MWA',
+}
+pkl = f'../dynspec/{t[0].gps:.0f}_ips.pkl'
+with open(pkl, 'wb') as f:
+    pickle.dump(dat, f)

@@ -57,8 +57,6 @@ def main():
             times = times[1::2] - dt/2
             dt *= 2
             t_len = len(times)
-            print(I.shape)
-            print(t_len)
             I = np.nanmean(np.reshape(I[:t_len*2,:], (-1, 2, I.shape[1])), axis=1)
 
         # Dedispersion requires no nans
