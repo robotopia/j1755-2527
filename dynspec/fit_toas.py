@@ -24,7 +24,10 @@ def fit_toa(dat, fit_scattering=False, output_plot=None, obsid=None):
     t = Time(dat['TIMES']/86400.0, scale='utc', format='mjd', location=EarthLocation.of_site(dat['TELESCOPE']))
     dt = t[1] - t[0]
     f = dat['FREQS'] * u.Hz
-    df = f[1] - f[0]
+    try:
+        df = f[1] - f[0]
+    except:
+        df = dat['BW'] * u.Hz
     nchans = len(f)
 
     f += 0.5*df # A hack because frequencies are labelled as lower edge of channels instead of middle of channels where they should be
@@ -79,7 +82,7 @@ def fit_toa(dat, fit_scattering=False, output_plot=None, obsid=None):
     #print(f"{peak_idx = }")
     #print(f"{p0 = }")
     #print(f"{bounds = }")
-    popt, pcov = curve_fit(model, t_base.to('s').value, lightcurve, p0=p0, sigma=noise, bounds=bounds)
+    popt, pcov = curve_fit(model, t_base.to('s').value, lightcurve, p0=p0, sigma=noise if noise != 0.0 else None, bounds=bounds)
 
     # Pull out the ToA
     toa = t[0] + popt[1]*u.s
