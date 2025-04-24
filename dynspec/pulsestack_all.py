@@ -93,6 +93,7 @@ def main():
         if args.xlim:
             axs[0][col].set_xlim(args.xlim)
         axs[0][col].set_ylim([-1, ys[col]+1])
+        axs[0][col].axvline(0, ls='--', alpha=0.5, c='r')
     axs[0][0].set_ylabel("ObsID")
 
     if args.grid:

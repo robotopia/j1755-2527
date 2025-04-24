@@ -13,7 +13,7 @@ from mwa_pb_lookup.lookup_beam import beam_lookup_1d
 def get_J1755_ephemeris():
     return {
         'PEPOCH': Time(59965.0377, scale='utc', format='mjd'),
-        'period': 4186.332579477463 * u.s,
+        'period': 4186.330 * u.s,
         'DM': 710.0 * u.pc / u.cm**3,
         'tau_sc': 0.0*u.s,
         'coord': SkyCoord("17:55:34.87 -25:27:49.1", unit=(u.hourangle, u.deg), frame='icrs'),
