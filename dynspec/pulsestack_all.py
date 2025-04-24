@@ -47,15 +47,22 @@ def main():
 
         I, fmask, _ = Stokes_ds(dat, pol='I')
 
-        # Dedispersion requires no nans
-        I[np.isnan(I)] = 0.0
-
         f = dat['FREQS'] * u.Hz
         #color = cmap(cmap_norm(np.mean(f)))
 
         location = EarthLocation.of_site(dat['TELESCOPE'])
         times = Time(dat['TIMES']/86400.0, scale='utc', format='mjd', location=location)
         dt = (times[1] - times[0]).to('s')
+        if dt < 3*u.s:
+            times = times[1::2] - dt/2
+            dt *= 2
+            t_len = len(times)
+            print(I.shape)
+            print(t_len)
+            I = np.nanmean(np.reshape(I[:t_len*2,:], (-1, 2, I.shape[1])), axis=1)
+
+        # Dedispersion requires no nans
+        I[np.isnan(I)] = 0.0
 
         # Dedisperse
         f_ref = np.mean(f)
