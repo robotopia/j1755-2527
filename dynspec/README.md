@@ -15,3 +15,9 @@ python stack_ds.py 1413381294_meerkat.pkl --dedisperse 0 --output_average_ds 202
 
 python plot_stacked_spectra.py
 ```
+
+## Making a pulsestack
+
+```
+python pulsestack_all.py --ncols 2 --output_pulsestack_image pulsestack.pdf --xlim -300 300 1*pkl
+```

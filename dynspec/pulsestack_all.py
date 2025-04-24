@@ -1,4 +1,5 @@
 import numpy as np
+from scipy.optimize import curve_fit
 import matplotlib.pyplot as plt
 from matplotlib import colormaps, colors, cm
 import astropy.units as u
@@ -26,7 +27,7 @@ def main():
 
     ephemeris = get_J1755_ephemeris()
 
-    fig, axs = plt.subplots(ncols=args.ncols, figsize=(5*args.ncols+2,12), squeeze=False)
+    fig, axs = plt.subplots(ncols=args.ncols, figsize=(4*args.ncols+1.5,10), squeeze=False)
     yticks = [[] for i in range(args.ncols)]
     ylabels = [[] for i in range(args.ncols)]
     #cmap = colormaps[args.colormap]
@@ -74,6 +75,14 @@ def main():
         # Form lightcurve
         lightcurve = np.nanmean(Idd, axis=1)
 
+        # A quick fit of a gaussian in order to smooth out the baseline
+        def model(ph, m, c, A, mu, sigma):
+            return m*ph + c + A*np.exp(-0.5*(ph-mu)**2/sigma**2)
+        p0 = [0, 0, np.max(lightcurve), 0, 10/ephemeris['period'].to('s').value]
+        popt, _ = curve_fit(model, phases, lightcurve, p0=p0)
+        m, c, _, _, _ = popt
+        lightcurve -= m*phases + c
+
         if len(set(pulses)) != 1:
             phase_0_idx = np.argmin(np.abs(phases))
             pulse_at_phase_0 = pulses[phase_0_idx]
@@ -83,7 +92,7 @@ def main():
 
         axs[0][col].plot(phases*ephemeris['period'], lightcurve/np.nanmax(lightcurve) + ys[col], 'k')
         yticks[col].append(ys[col])
-        ylabels[col].append(f"{dat['OBSID']}")#\n(Pulse #{int(np.round(np.median(pulses)))})")
+        ylabels[col].append(f"{times[0].iso[:16]}")#\n(Pulse #{int(np.round(np.median(pulses)))})")
         ys[col] += 1
 
     for col in range(args.ncols):
@@ -93,7 +102,7 @@ def main():
         if args.xlim:
             axs[0][col].set_xlim(args.xlim)
         axs[0][col].set_ylim([-1, ys[col]+1])
-        axs[0][col].axvline(0, ls='--', alpha=0.5, c='r')
+        axs[0][col].axvline(0, ls='--', alpha=0.5, c='r', zorder=-100)
     axs[0][0].set_ylabel("ObsID")
 
     if args.grid:
