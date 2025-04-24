@@ -97,7 +97,7 @@ def main():
 
         axs[0][col].plot(phases*ephemeris['period'], lightcurve/np.nanmax(lightcurve) + ys[col], 'k')
         yticks[col].append(ys[col])
-        ylabels[col].append(f"{times[0].iso[:16]}")#\n(Pulse #{int(np.round(np.median(pulses)))})")
+        ylabels[col].append(f"{times[0].iso[:16]}\n{dat['TELESCOPE']}")#\n(Pulse #{int(np.round(np.median(pulses)))})")
         ys[col] += 1
 
     for col in range(args.ncols):
