@@ -18,6 +18,7 @@ src_period = ephemeris['period']
 #src_Porb = ephemeris['Porb']
 src_pepoch = ephemeris['PEPOCH']
 src_dm = ephemeris['DM']
+src_tau_sc_1GHz = ephemeris['tau_sc']
 
 def fit_toa(dat, fit_scattering=False, output_plot=None, obsid=None):
 
@@ -70,27 +71,32 @@ def fit_toa(dat, fit_scattering=False, output_plot=None, obsid=None):
     A0 = matched_filter_results[peak_idx] / np.sum(model_pulse)
 
     # Fit a pulse to it
+    p0 = (100*A0, t_base[peak_idx].value, 0.0, 0.0, 30) # Not 100% sure why we need 100*A0, but it helps!
+    bounds = [(0,      -np.inf, -np.inf, -np.inf, 0.1*dt.to('s').value),
+              (np.inf,  np.inf,  np.inf,  np.inf, np.inf              )]
+
     if fit_scattering:
-        p0 = (A0, t_base[peak_idx].value, 50.0, 0.0, 0.0, 30)
-        bounds = [(0, -np.inf, 1e-6*dt.to('s').value, -np.inf, -np.inf, 0.1*dt.to('s').value), (np.inf, np.inf, np.inf, np.inf, np.inf, np.inf)]
-        model = scattered_pulse_model
+        def scattered_pulse_model_at_freq(t_s, A, μ_s, m, c, σ_s):
+            τ_s = src_tau_sc_1GHz.to('s').value * (f_ref/u.GHz).decompose()**(-4)
+            return scattered_pulse_model(t_s, A, μ_s, m, c, σ_s, τ_s)
+        model = scattered_pulse_model_at_freq
     else:
-        p0 = (A0, t_base[peak_idx].value, 0.0, 0.0)
-        bounds = [(0, -np.inf, -np.inf, -np.inf), (np.inf, np.inf, np.inf, np.inf)]
         model = pulse_model
     #print(f"{obsid = }")
     #print(f"{peak_idx = }")
     #print(f"{p0 = }")
     #print(f"{bounds = }")
     popt, pcov = curve_fit(model, t_base.to('s').value, lightcurve, p0=p0, sigma=noise if noise != 0.0 else None, bounds=bounds)
+    A, μ, m, c, σ = popt
+    A_err, μ_err, m_err, c_err, σ_err = np.sqrt(np.diag(pcov))
 
     # Pull out the ToA
-    toa = t[0] + popt[1]*u.s
-    toa_err = (np.sqrt(pcov[1,1])*u.s).to('d')
+    toa = t[0] + μ*u.s
+    toa_err = (μ_err*u.s).to('d')
 
     # Estimate peak S/N by getting std of lightcurve with fitted pulse subtracted
     noise = np.std(lightcurve - model(t_base.to('s').value, *popt)) * u.Jy
-    peak_signal = popt[0] * u.Jy # *** MAY NEED TO BE CHANGED IF PULSE MODEL CHANGES ***
+    peak_signal = A * u.Jy
     peak_snr = (peak_signal / noise).decompose().value
 
     # For plotting, do a bit of frequency scrunching
@@ -103,57 +109,38 @@ def fit_toa(dat, fit_scattering=False, output_plot=None, obsid=None):
     t_fine = t[0] + t_fine_base
 
     # Calculate pulse fluence from model
-    if fit_scattering:
-        A, μ, _, m, c, σ = popt
-        fluence = pulse_fluence(A, μ, σ_s=σ) * u.Jy * u.s
-    else:
-        fluence = pulse_fluence(*popt) * u.Jy * u.s
-    fluence_err = fluence*np.sqrt(pcov[0,0])/popt[0]  # <--- If pulse model changes, change this accordingly
+    fluence = pulse_fluence(*popt) * u.Jy * u.s
+    fluence_err = fluence*np.sqrt(A_err)/A
 
     if output_plot is not None:
+
+        # Make plot
+        fig = plt.figure(figsize=(6, 10))
+        gs = gridspec.GridSpec(5, 1, figure=fig)
+        ax0 = fig.add_subplot(gs[:2, 0])
+        ax1 = fig.add_subplot(gs[2:, 0], sharex=ax0)
+        axs = [ax0, ax1]
+
+        baseline = m*(t - t[0]).to('s').value + c
+        axs[0].plot((t - t[0]).to('s'),
+                    lightcurve - baseline,
+                    label='data')
+        #axs[0].plot((t_fine - t[0]).to('s'),
+        #            model(t_fine_base.value, *p0),
+        #            label='initial guess')
+        axs[0].plot((t_fine - t[0]).to('s'),
+                    model(t_fine_base.value, A, μ, m=0, c=0, σ_s=σ),
+                    'r', alpha=0.4, label='model')
         if fit_scattering:
+            axs[0].plot((t_fine - t[0]).to('s'),
+                        pulse_model(t_fine_base.value, A, μ, m=0, c=0, σ_s=σ),
+                        'g--', alpha=0.4, label='model (no scattering)')
 
-            # Make plot
-            fig = plt.figure(figsize=(6, 10))
-            gs = gridspec.GridSpec(5, 1, figure=fig)
-            ax0 = fig.add_subplot(gs[0, 0])
-            ax1 = fig.add_subplot(gs[1:3, 0], sharex=ax0)
-            ax2 = fig.add_subplot(gs[3:, 0])
-            axs = [ax0, ax1, ax2]
-
-            axs[0].plot((t - t[0]).to('s'), lightcurve, label='data')
-            A, μ, τ, m, c, σ = popt
-            axs[0].plot((t_fine - t[0]).to('s'), pulse_model(t_fine_base.value, A, μ, m=m, c=c, σ_s=σ), 'g--', alpha=0.4, label='model (no scattering)')
-
-            # Plot error ellipse
-            mini_pcov = np.array([[pcov[5,5], pcov[5,2]], [pcov[2,5], pcov[2,2]]])
-            eigenvalues, eigenvectors = np.linalg.eigh(mini_pcov)
-            mean = [σ, τ]
-            axs[2].scatter(*mean, color='red', marker='x', label=f'$\\sigma = {σ:.0f}$ s\n$\\tau = {τ:.0f}$ s')
-            for sigma in [1, 2, 3]:
-                width, height = sigma * np.sqrt(eigenvalues)
-                angle = np.degrees(np.arctan2(*eigenvectors[:, 0][::-1]))
-                ellipse = Ellipse(xy=mean, width=width, height=height, angle=angle, edgecolor='black', facecolor='none', lw=2, alpha=1-0.25*sigma)
-                axs[2].add_patch(ellipse)#, label=f'{sigma}σ')
-            axs[2].set_xlabel("σ of unscattered pulse (s)")
-            axs[2].set_ylabel(f"Scattering timescale at {f_ref.to('MHz')} (s)")
-            #axs[2].set_xlim(mean[0] - width if mean[0] - width > 0 else 0, mean[0] + width)
-            #axs[2].set_ylim(mean[1] - height if mean[1] - height > 0 else 0, mean[1] + height)
-            axs[2].set_xlim([0.0, 50.0])
-            axs[2].set_ylim([0.0, 200.0])
-            axs[2].axhline(6.5691e-02*((f_ref/u.GHz).decompose())**-4, ls='--', c='g', label='NE2001')
-            axs[2].axhline(7.5217e-02*((f_ref/u.GHz).decompose())**-4, ls='--', c='orange', label='YMW16')
-            axs[2].legend()
-        else:
-            fig, axs = plt.subplots(nrows=2, ncols=1, sharex=True, figsize=(6, 9))
-            axs[0].plot((t - t[0]).to('s'), lightcurve, label='data')
-
-        axs[0].plot((t_fine - t[0]).to('s'), model(t_fine_base.value, *popt), 'r', alpha=0.4, label='model')
         axs[1].pcolormesh((t - t[0]).to('s').value, fscr.to('MHz').value, Iddscr.T)
 
         axs[0].set_ylabel("Flux density (Jy/beam)")
         axs[1].set_ylabel("Frequency (MHz)")
-        axs[1].set_xlabel("Time (MJD)")
+        axs[1].set_xlabel(f"Time (s) since MJD {t[0].mjd:.5f}")
 
         axs[0].legend()
 
