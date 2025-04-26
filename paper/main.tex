@@ -457,11 +457,11 @@ For the MeerKAT pulse with two components, we fit only the brighter component.
 
 \subsection{Timing solution} \label{sec:timing}
 
-Because the large scattering time scale at low frequencies significantly distorts the pulse shapes, we identified the times of arrival (ToAs) with the fitted $\mu$ parameter in the fits given in Eq. \eqref{eqn:emg}, which represents the location of the Gaussian pulse before scattering.
+Because the large scattering time scale at low frequencies significantly distorts the pulse shapes, we identified the times of arrival (ToAs) with the fitted $\mu$ parameter in the fits given in Eq. \eqref{eqn:emg}, which represents the location of the assumed Gaussian pulse before scattering.
 
 The distortion of the pulse shapes at MWA frequencies creates a degeneracy between DM and scattering time scales that is not easily disambiguated.
 This is demonstrated in Fig. \ref{fig:stacked_spectra}, which shows stacked MWA and MeerKAT spectra.
-Without accounting for scattering, the measured DM would significantly exceed the 710\,pc\,cm$^{-3}$ (cyan lines).
+Without accounting for scattering, the measured DM would significantly exceed the 771\,pc\,cm$^{-3}$ (cyan lines).
 The scattering predicted by Galactic electron density models, however, is sufficient to account for the apparent extra delay.
 
 \begin{figure}[th]
@@ -471,14 +471,27 @@ The scattering predicted by Galactic electron density models, however, is suffic
                   \label{fig:stacked_spectra}
 \end{figure}
 
-The degeneracy between DM and scattering (as well as variations in pulse width and ToA) render the lower frequency pulses less useful for measuring either DM or scattering alone.
+The degeneracy between DM and scattering (as well as variations in pulse width and ToA) render the lower frequency pulses less useful for measuring either DM or scattering alone (\todo{see Appendix \dots}).
 Breaking the degeneracy is possible in principle with a much higher S/N average profile than what is possible with the current data set.
+Having said that, we note that fits of Eq. \eqref{eqn:emg} to the brightest MWA pulses where the scattering time scale was left as a free parameter were broadly consistent with the predictions of the NE2001 and YMW16 models.
 
-For this work, we therefore did not attempt to fit the DM or the scattering time scale individually.
-Instead, we adopted the original ASKAP measurement of ${\rm DM} = 710\,$pc\,cm$^{-3}$ and a scattering timescale of $\tau_{\rm sc,1 GHz} = 0.07\,$s for the timing analysis.
-We did, however, confirm that fits to individual pulses using Eq. \eqref{eqn:emg}, but also allowing the $\tau$ parameter to freely vary, produced fitted values that were broadly consistent with our chosen value.
+Because the scattering time scale could not be reliably measured for all individual pulses, we obtained ToAs by assuming a fixed scattering time of $\tau_{\rm sc,1 GHz} = 0.07\,$s.
+These ToAs were then barycentred and fit for both period and DM, resulting in the values given in Table \ref{tbl:ephemeris}.
+We also tried fitting a timing model that included a spin-down parameter, and found that it was consistent with zero spin-down to within $1\sigma$.
 
-The ToAs were then fit
+\begin{table}
+  \caption{Timing ephemeris for \src{}}
+  \label{tbl:ephemeris}
+  \begin{tabular}[lc]
+    \hline
+    Parameter & Value \\
+    \hline
+    Period (s) & $4186.3288 \pm 0.0003$ \\
+    PEPOCH (MJD) & $59965.03783 \pm 0.00003$ \\
+    DM (pc/cm$^{-3}$) & $771 \pm 27$ \\
+    \hline
+  \end{tabular}
+\end{table}
 
 %Following the positive identification of several pulses in the GPM data set, we performed a grid search of periods that would result in an integer number of pulses between two widely spaced pulses.
 %A candidate period of $P = 4186.4 \pm 0.1$ was found for which all detections fell within a narrow window of ${\sim}0.05$ of phase.
