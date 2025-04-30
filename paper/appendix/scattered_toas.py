@@ -23,7 +23,7 @@ def emg_mode(h, μ, σ, τ):
     t_m = μ - np.sqrt(2)*σ * erf_lib.erfcxinv(arg) + σ**2/τ
     return t_m, emg(t_m, h, μ, σ, τ)
 
-τs = np.logspace(-5, 5, 500)
+τs = np.logspace(-3, 3, 500)
 σ = 1
 h = 1
 μ = 0
@@ -37,18 +37,18 @@ plt.yscale('log')
 plt.show()
 '''
 
-roots = np.array([root(lambda t: emg(t, h, μ, σ, τ) - emg_mode(h, μ, σ, τ)[1]/2, -0.1).x for τ in τs])
+roots = np.array([root(lambda t: emg(t, h, μ, σ, τ) - emg_mode(h, μ, σ, τ)[1]/2, -0.1).x for τ in τs]).squeeze()
 
 #plt.plot(τs, roots, label="numerical \"truth\"")
-plt.plot(τs, np.abs(roots), label="Left edge matching")
-plt.plot(τs, np.full(τs.shape, np.sqrt(2*np.log(2))), 'k--', alpha=0.2, label="expected max deviation")
+plt.plot(τs, np.abs(roots), label="Left at half max")
+#plt.plot(τs, np.full(τs.shape, np.sqrt(2*np.log(2))), 'k--', alpha=0.2, label="expected max deviation")
 #plt.plot(τs, -(np.arctan(np.log(τs)) - π/2)*np.sqrt(2*np.log(2))/π, label="sandbox function (arctan)")
 #plt.plot(τs, 1/(τs + 1)*np.sqrt(2*np.log(2)), label="sandbox function (logistic)")
-plt.plot(τs, 5*τs**(-1), 'k--', alpha=0.2)
+#plt.plot(τs, 4*τs**(-0.97), 'k--', alpha=0.2)
 
 plt.xscale('log')
 plt.yscale('log')
-plt.ylim([1e-5, 4])
+plt.ylim([None, 4])
 plt.legend()
 plt.tight_layout()
 plt.savefig("foo.png")
