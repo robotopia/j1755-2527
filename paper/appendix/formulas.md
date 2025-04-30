@@ -71,12 +71,55 @@ $$
 \end{aligned}
 $$
 
+The last line is verified in Sage:
+```
+var('h mu sigma tau t')
+
+erfcx(x) = exp(x^2)*erfc(x)
+z = (t - mu)/sigma
+Z = sigma/tau - z
+emg(t) = h*sigma/tau * sqrt(pi/2) * exp(-z^2/2) * erfcx(Z/sqrt(2))
+
+bool(diff(emg(t), t) == h/tau * exp(-1/2*z^2) - emg(t)/tau)
+```
+
+----------------------
+
 $$
 \begin{aligned}
 \frac{d^2}{dt^2}{\rm emg}(t)
 &= \frac{d}{dt} \left[ \frac{h}{\tau} \exp \left(
     -\frac{1}{2} \left(\frac{t - \mu}{\sigma}\right)^2
     \right) - \frac{1}{\tau} \, {\rm emg}(t) \right] \\
-&= 
+&= \frac{h}{\tau} \exp \left(
+        -\frac{1}{2} \left(\frac{t - \mu}{\sigma}\right)^2
+    \right) \cdot \left(-\frac{t - \mu}{\sigma}\right)\frac{1}{\sigma} -
+    \frac{1}{\tau} \left[ \frac{h}{\tau} \exp \left(
+        -\frac{1}{2} \left(\frac{t - \mu}{\sigma}\right)^2
+    \right) - \frac{1}{\tau} \, {\rm emg}(t) \right] \\
+&= -\frac{h}{\tau\sigma} \exp \left(
+    \frac{1}{2} \left(\frac{t - \mu}{\sigma}\right)^2
+    \right) \left( \frac{\sigma}{\tau} + \frac{t - \mu}{\sigma} \right) + \frac{1}{\tau^2} \, {\rm emg}(t) \\
+&= -\frac{h}{\tau\sigma} \exp \left(
+    \frac{1}{2} \left(\frac{t - \mu}{\sigma}\right)^2
+    \right) \left( \frac{\sigma}{\tau} + \frac{t - \mu}{\sigma} \right) + \frac{h\sigma}{\tau^3} \sqrt{\frac{\pi}{2}} \exp \left(
+        -\frac{1}{2} \left(\frac{t - \mu}{\sigma}\right)^2
+    \right)
+    {\rm erfcx}\left(
+        \frac{1}{\sqrt{2}} \left(\frac{\sigma}{\tau} - \frac{t - \mu}{\sigma}\right)
+    \right) \\
+&= -\frac{h}{\tau\sigma} \exp \left(
+    \frac{1}{2} \left(\frac{t - \mu}{\sigma}\right)^2
+    \right) \left[ \left( \frac{\sigma}{\tau} + \frac{t - \mu}{\sigma} \right) - \frac{\sigma^2}{\tau^2} \sqrt{\frac{\pi}{2}}
+    {\rm erfcx}\left(
+        \frac{1}{\sqrt{2}} \left(\frac{\sigma}{\tau} - \frac{t - \mu}{\sigma}\right)
+    \right)
+    \right]
 \end{aligned}
 $$
+
+```
+bool(diff(emg(t), t, 2) == -h/tau/sigma*exp(-1/2*z^2)*(sigma/tau + z - (sigma/tau)^2*sqrt(pi/2)*erfcx(Z/sqrt(2))))
+```
+
+--------------------
