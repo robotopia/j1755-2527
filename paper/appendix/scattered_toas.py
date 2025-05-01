@@ -3,8 +3,10 @@ from scipy.optimize import root
 from numpy import pi as π
 import matplotlib.pyplot as plt
 from ctypes import *
+import os
 
-so_file = 'erfcxinv.so' # See Makefile for generating this
+so_file = os.path.join(os.path.dirname(__file__), 'erfcxinv.so')
+
 erf_lib = CDLL(so_file)
 erf_lib.erfcx.argtypes = [c_double]
 erf_lib.erfcx.restype = c_double
