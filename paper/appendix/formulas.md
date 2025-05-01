@@ -143,6 +143,11 @@ $$
     &= \int_{-\infty}^{\infty} {\rm emg}(t_0) \exp \left[ -\frac{1}{2} \left(\frac{(t - t_0) - \mu}{\sigma}\right)^2 \right] \cdot \left( -\frac{(t - t_0) - \mu}{\sigma} \right) \frac{1}{\sigma} \, dt_0 \\
     &= -\int_{-\infty}^{\infty} {\rm emg}(t_0) \frac{\partial}{\partial t_0} \left( \exp \left[ -\frac{1}{2} \left(\frac{(t - t_0) - \mu}{\sigma}\right)^2 \right] \right) \, dt_0 \\
     &= \left[ {\rm emg}(t_0) \exp \left[ -\frac{1}{2} \left(\frac{(t - t_0) - \mu}{\sigma}\right)^2 \right] \right]_{t_0 = -\infty}^{t_0 = \infty} +{} \\
-    &\qquad\qquad \int_{-\infty}^{\infty} \frac{d}{dt_0}\left({\rm emg}(t_0)\right) \exp \left[ -\frac{1}{2} \left(\frac{(t - t_0) - \mu}{\sigma}\right)^2 \right] \, dt_0
+    &\qquad\qquad \int_{-\infty}^{\infty} \frac{d}{dt_0}\left({\rm emg}(t_0)\right) \exp \left[ -\frac{1}{2} \left(\frac{(t - t_0) - \mu}{\sigma}\right)^2 \right] \, dt_0 \\
+    &= \int_{-\infty}^{\infty} \left( \frac{h}{\tau} \exp \left(
+        -\frac{1}{2} \left(\frac{t_0 - \mu}{\sigma}\right)^2
+        \right) - \frac{1}{\tau} \, {\rm emg}(t_0) \right)
+         \exp \left[ -\frac{1}{2} \left(\frac{(t - t_0) - \mu}{\sigma}\right)^2 \right] \, dt_0
 \end{aligned}
 $$
+
