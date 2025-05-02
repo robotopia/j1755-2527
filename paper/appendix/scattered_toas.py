@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.optimize import root
+from scipy.special import erf, erfc
 from numpy import pi as π
 import matplotlib.pyplot as plt
 from ctypes import *
@@ -44,7 +45,7 @@ def matched_filter(ts, lag, h, μ, σ, τ):
     # we're just using this to find a root, so none of this should matter.
     return np.sum(integrand)
 
-τs = np.logspace(-1, 1, 500)
+τs = np.logspace(-1, 10, 500)
 σ = 1
 h = 1
 μ = 0
@@ -93,6 +94,20 @@ axs[0].plot(τs, np.abs(MCHF_roots), label="Matched filter")
 #axs[0].plot(τs, -(np.arctan(np.log(τs)) - π/2)*np.sqrt(2*np.log(2))/π, label="sandbox function (arctan)")
 #axs[0].plot(τs, 1/(τs + 1)*np.sqrt(2*np.log(2)), label="sandbox function (logistic)")
 #axs[0].plot(τs, 4*τs**(-0.97), 'k--', alpha=0.2)
+
+#######
+# A quick test of asymptotic behaviour of LEHM
+#
+Zs = (np.logspace(-10, 0, 1000) - μ)/σ
+arg = Zs/np.sqrt(2)
+#τ_σ = (Zs*erfc(-arg) + np.sqrt(2/π) * np.exp(-arg**2)) / erf(arg)
+τ_σ = 1/np.array([np.sqrt(π)*(erf_lib.erfcx(arg[i]) - np.exp(arg[i]**2))/(np.sqrt(π)*Zs[i]*erf_lib.erfcx(arg[i]) - 2*np.sqrt(π)*Zs[i]*np.exp(arg[i]**2) - np.sqrt(2)) for i in range(len(Zs))])
+axs[0].plot(τ_σ, Zs, 'k--')
+axs[0].plot(τ_σ, 2*π*Zs, 'g--')
+#axs[0].plot(τ_σ, 1/τ_σ, 'g--')
+#
+#
+#######
 
 axs[0].set_xscale('log')
 axs[0].set_yscale('log')
