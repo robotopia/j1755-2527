@@ -60,7 +60,7 @@ Some useful values and asymptotes:
 | | $t \rightarrow -\infty$ | $t = 0$ | $t = 1$ | $t \rightarrow +\infty$ |
 | :--: | :--: | :--: | :--: | :--: |
 | ${\rm erfcx}(t)$ | $\sim 2 \exp(t^2)$ | $1 - \frac{2t}{\sqrt{\pi}} + \mathcal{O}(t^2)$ |  | $\sim \frac{1}{t\sqrt{\pi}}$ |
-| ${\rm erfcxinv}(t)$ | - | $(t \rightarrow 0^+)$: $\sim \frac{1}{t\sqrt{\pi}}$ | $\frac{\sqrt{\pi}(1 - t)}{2} + \mathcal{O}(t^2)$ | $\sim \sqrt{\ln\left(\frac{t}{2}\right)}$ |
+| ${\rm erfcxinv}(t)$ | - | $(t \rightarrow 0^+)$: $\sim \frac{1}{t\sqrt{\pi}}$ | $\frac{\sqrt{\pi}(1 - t)}{2} + \mathcal{O}(t^2)$ | $\sim -\sqrt{\ln\left(\frac{t}{2}\right)}$ |
 
 ### emg
 

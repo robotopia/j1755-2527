@@ -101,9 +101,8 @@ axs[0].plot(τs, np.abs(MCHF_roots), label="Matched filter")
 Zs = (np.logspace(-10, 0, 1000) - μ)/σ
 arg = Zs/np.sqrt(2)
 #τ_σ = (Zs*erfc(-arg) + np.sqrt(2/π) * np.exp(-arg**2)) / erf(arg)
-τ_σ = 1/np.array([np.sqrt(π)*(erf_lib.erfcx(arg[i]) - np.exp(arg[i]**2))/(np.sqrt(π)*Zs[i]*erf_lib.erfcx(arg[i]) - 2*np.sqrt(π)*Zs[i]*np.exp(arg[i]**2) - np.sqrt(2)) for i in range(len(Zs))])
+τ_σ = 1/np.array([(erf_lib.erfcx(arg[i]) - np.exp(arg[i]**2))/(Zs[i]*erf_lib.erfcx(arg[i]) - 2*Zs[i]*np.exp(arg[i]**2) - 2) for i in range(len(Zs))])
 axs[0].plot(τ_σ, Zs, 'k--')
-axs[0].plot(τ_σ, 2*π*Zs, 'g--')
 #axs[0].plot(τ_σ, 1/τ_σ, 'g--')
 #
 #
