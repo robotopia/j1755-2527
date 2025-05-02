@@ -1,6 +1,10 @@
 # Formulas relating to exponentially modified Gaussians (emg)
 
-## PDF
+## Basic properties
+
+Most of the below is summarised on [Wikipedia](https://en.wikipedia.org/wiki/Exponentially_modified_Gaussian_distribution).
+
+### Scattered pulse shape
 
 $$
 \begin{aligned}
@@ -20,7 +24,19 @@ $$
 \end{aligned}
 $$
 
-## Derivatives
+### Mode
+
+Assuming $\tau \ge 0$,
+
+$$
+t_m = \mu - \sqrt{2}\sigma \, {\rm erfcxinv}\left(\frac{\tau}{\sigma} \sqrt{\frac{2}{\pi}} \right) + \frac{\sigma^2}{\tau}
+$$
+
+$$
+{\rm emg}(t_m) = h \exp \left(-\frac{1}{2} \left(\frac{t_m - \mu}{\sigma}\right)^2\right)
+$$
+
+## Derivatives (and other useful properties)
 
 ### erfc
 
@@ -38,6 +54,13 @@ $$
     &= 2t\,{\rm erfcx}(t) - \frac{2}{\sqrt{\pi}}
 \end{aligned}
 $$
+
+Some useful values and asymptotes:
+
+| | $t \rightarrow -\infty$ | $t = 0$ | $t = 1$ | $t \rightarrow +\infty$ |
+| :--: | :--: | :--: | :--: | :--: |
+| ${\rm erfcx}(t)$ | $\sim 2 \exp(t^2)$ | $1 - \frac{2t}{\sqrt{\pi}} + \mathcal{O}(t^2)$ |  | $\sim \frac{1}{t\sqrt{\pi}}$ |
+| ${\rm erfcxinv}(t)$ | - |  |  | $\sim \sqrt{\ln\left(\frac{t}{2}\right)}$ |
 
 ### emg
 
@@ -125,7 +148,58 @@ $$
 bool(diff(emg(t), t, 2) == -h/tau/sigma*exp(-1/2*z^2)*(sigma/tau + z - (sigma/tau)^2*sqrt(pi/2)*erfcx(Z/sqrt(2))))
 ```
 
---------------------
+## Defining ToAs on scattered pulses
+
+### Leading edge at half maximum (LEHM)
+
+This method identifies ToAs with the location where the leading edge reaches half of the (scattered) pulse's maximum value. The maximum value is found by the mode, so this ToA is thus defined at the location which satisfies
+
+$$
+{\rm emg}({\rm ToA_{LEHM}})
+    = \frac{1}{2}{\rm emg}(t_m)
+$$
+
+This can solved numerically.
+
+#### Asymptotic behaviour
+
+For small scattering timescales ($\tau \ll \sigma$), ${\rm ToA_{LEHM}}$ approaches $\frac12$FWHM of the unscattered pulse, which occurs at
+
+$$
+\lim_{\tau/\sigma \rightarrow 0} {\rm ToA_{LEHM}} = \mu - \sigma\sqrt{2\ln 2}.
+$$
+
+##### Proof of asymptotic behaviour
+
+The equation which ${\rm ToA_{LEHM}}$ satisfies can be expanded to
+
+$$
+\begin{aligned}
+\frac{h\sigma}{\tau} \sqrt{\frac{\pi}{2}} & {} \exp \left(
+        -\frac{1}{2} \left(\frac{{\rm ToA_{LEHM}} - \mu}{\sigma}\right)^2
+    \right)
+    {\rm erfcx}\left(
+        \frac{1}{\sqrt{2}} \left(\frac{\sigma}{\tau} - \frac{{\rm ToA_{LEHM}} - \mu}{\sigma}\right)
+    \right) \\
+&= \frac{1}{2} h \exp \left(-\frac{1}{2} \left(\sqrt{2}\, {\rm erfcxinv}\left(\frac{\tau}{\sigma} \sqrt{\frac{2}{\pi}} \right) - \frac{\sigma}{\tau}\right)^2\right) \\
+\frac{\sigma}{\tau} \sqrt{2\pi} & {} \exp \left(
+        -\frac{1}{2} \left(\frac{{\rm ToA_{LEHM}} - \mu}{\sigma}\right)^2
+    \right)
+    {\rm erfcx}\left(
+        \frac{1}{\sqrt{2}} \left(\frac{\sigma}{\tau} - \frac{{\rm ToA_{LEHM}} - \mu}{\sigma}\right)
+    \right) \\
+&= \exp \left(-\frac{1}{2} \left(\sqrt{2}\, {\rm erfcxinv}\left(\frac{\tau}{\sigma} \sqrt{\frac{2}{\pi}} \right) - \frac{\sigma}{\tau}\right)^2\right) 
+\end{aligned}
+$$
+
+When $\tau \ll \sigma$, ${\rm erfcx}
+
+### Inflection point on leading edge (IPLE)
+
+
+
+
+### Matched filter
 
 Towards a matched filter approach, we compute the convolution of the emg with another Gaussian matched to the unscattered pulse. 
 
@@ -140,7 +214,14 @@ $$
 \begin{aligned}
 0   &= \frac{d}{dt} \int_{-\infty}^{\infty} {\rm emg}(t_0) \exp \left[ -\frac{1}{2} \left(\frac{(t - t_0) - \mu}{\sigma}\right)^2 \right] \, dt_0 \\
     &= \int_{-\infty}^{\infty} \frac{\partial}{\partial t} \left( {\rm emg}(t_0) \exp \left[ -\frac{1}{2} \left(\frac{(t - t_0) - \mu}{\sigma}\right)^2 \right] \right) \, dt_0 \\
-    &= \int_{-\infty}^{\infty} {\rm emg}(t_0) \exp \left[ -\frac{1}{2} \left(\frac{(t - t_0) - \mu}{\sigma}\right)^2 \right] \cdot \left( -\frac{(t - t_0) - \mu}{\sigma} \right) \frac{1}{\sigma} \, dt_0 \\
+    &= \int_{-\infty}^{\infty} {\rm emg}(t_0) \exp \left[ -\frac{1}{2} \left(\frac{(t - t_0) - \mu}{\sigma}\right)^2 \right] \cdot \left( -\frac{(t - t_0) - \mu}{\sigma} \right) \frac{1}{\sigma} \, dt_0
+\end{aligned}
+$$
+
+The following is a continuation of the above, arriving at an alternative, but equivalent expression:
+
+$$
+\begin{aligned}
     &= -\int_{-\infty}^{\infty} {\rm emg}(t_0) \frac{\partial}{\partial t_0} \left( \exp \left[ -\frac{1}{2} \left(\frac{(t - t_0) - \mu}{\sigma}\right)^2 \right] \right) \, dt_0 \\
     &= \left[ {\rm emg}(t_0) \exp \left[ -\frac{1}{2} \left(\frac{(t - t_0) - \mu}{\sigma}\right)^2 \right] \right]_{t_0 = -\infty}^{t_0 = \infty} +{} \\
     &\qquad\qquad \int_{-\infty}^{\infty} \frac{d}{dt_0}\left({\rm emg}(t_0)\right) \exp \left[ -\frac{1}{2} \left(\frac{(t - t_0) - \mu}{\sigma}\right)^2 \right] \, dt_0 \\
@@ -151,3 +232,8 @@ $$
 \end{aligned}
 $$
 
+
+
+## Numerical derivatives
+
+In constructing plots using the above, I have used logarithmically spaced NumPy arrays (`np.logspace()`) for the abscissae. Now that I am also interested in plotting the derivatives of these functions, it is easier to just compute the derivatives numerically from their already-derived values rather than 
