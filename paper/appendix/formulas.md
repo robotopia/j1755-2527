@@ -52,7 +52,8 @@ $$
 \frac{d}{dt}{\rm erfcx(t)} &= 2t \exp(t^2) \cdot {\rm erfc}(t) +
 \exp(t^2) \cdot \left(-\frac{2}{\sqrt{\pi}} \exp(-t^2) \right) \\
     &= 2t\,{\rm erfcx}(t) - \frac{2}{\sqrt{\pi}} \\
-{\rm erfcx}(t) &\sim \frac{1}{t\sqrt{\pi}} \left( 1 + \frac{1}{2t^2} + \frac{3}{4t^4} + \frac{15}{8t^6} + \cdots\right) \qquad \text{as } t \rightarrow \infty
+{\rm erfcx}(t) &\sim \frac{1}{t\sqrt{\pi}} \left( 1 + \frac{1}{2t^2} + \frac{3}{4t^4} + \frac{15}{8t^6} + \cdots\right) \qquad \text{as } t \rightarrow \infty \\
+{\rm erfcx}(t) &\sim 2\exp\left(t^2\right) - \frac{1}{t\sqrt{\pi}} \left( 1 - \frac{1}{2t^2} - \cdots \right) \qquad \text{as } t \rightarrow -\infty
 \end{aligned}
 $$
 
@@ -251,7 +252,7 @@ $$
 \end{aligned}
 $$
 
-For the right hand side, we need a Taylor expansion about $\sigma/\tau \rightarrow 0^+$ for
+For the right hand side, we need a Taylor expansion about $\sigma/\tau \rightarrow 0^+$:
 
 $$
 \exp \left(-\frac{1}{2} \left(\sqrt{2}\, {\rm erfcxinv}\left(\frac{\tau}{\sigma} \sqrt{\frac{2}{\pi}} \right) - \frac{\sigma}{\tau} \right)^2\right)
@@ -281,15 +282,27 @@ $$
 > [!warning]
 > When I plot this up, it doesn't seem to match LEHM. Instead, weirdly, it seems to match IPLE, which in turn seems to just show the asymptotic behaviour ${\rm ToA}/\sigma \approx (\tau/\sigma)^{-1}$.
 > 
-> Sage confirms my expansion ($x = \sigma/\tau$):
-> ```
-> bool(taylor(exp(-Z^2/2)*erfcx(1/sqrt(2)*(x-Z)), x, 0, 1) == erfc(-Z/sqrt(2))*(1 - x*Z) - x*sqrt(2/pi)*exp(-Z^2/2))
-> ```
-> which returns `True`.
+> I have determined that the remaining error is in the expansion of the right hand side. Evidently, more terms are needed. The trouble is that the next term is far from having a simple form, and Sage insists that the next term includes combinations of $\ln(\sigma/\tau)$ and $\sqrt{\ln(\sigma/\tau)}$, so even if I wrote it all out, the last step of equating the left and right hand sides wouldn't be solvable in either $Z$ or $\sigma/\tau$ anyway.
 
 ### Inflection point on leading edge (IPLE)
 
-\[TODO\]
+This point occurs when
+
+$$
+\frac{d^2}{dt^2}{\rm emg}(t) = 0,
+$$
+
+which occurs when
+
+$$
+\begin{aligned}
+\frac{\sigma}{\tau} + \frac{t - \mu}{\sigma}
+    &= \frac{\sigma^2}{\tau^2} \sqrt{\frac{\pi}{2}}
+        {\rm erfcx}\left(
+            \frac{1}{\sqrt{2}} \left(\frac{\sigma}{\tau} - \frac{t - \mu}{\sigma}\right)
+        \right)
+\end{aligned}
+$$
 
 ### Matched filter
 

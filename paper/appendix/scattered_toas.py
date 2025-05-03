@@ -56,7 +56,7 @@ def main():
     parser.add_argument('--output_image', help='File name of output image. Supports same image formats as "plt.savefig()". If not provided, will plt.show().')
     args = parser.parse_args()
 
-    τs = np.logspace(2, 10, 500)
+    τs = np.logspace(-1, 5, 500)
     σ = 1
     h = 1
     μ = 0
@@ -71,10 +71,10 @@ def main():
     '''
 
     LEHM_roots = np.array([root(lambda t: emg(t, h, μ, σ, τ) - 0.5*emg_mode(h, μ, σ, τ)[1], -0.1).x for τ in τs]).squeeze()
-    #LEHM_roots = np.array([root(lambda t: h*σ/τ*np.sqrt(π/2)*np.exp(-0.5*((t-μ)/σ)**2)*erfcx(1/np.sqrt(2)*(σ/τ - (t[0]-μ)/σ)) - 0.5*h*np.exp(-0.5*(np.sqrt(2)*erfcxinv(τ/σ*np.sqrt(2/π)) - σ/τ)**2), -0.1).x for τ in τs]).squeeze()
-    #LEHM_roots = np.array([root(lambda t: h*σ/τ*np.sqrt(π/2)*np.exp(-0.5*((t-μ)/σ)**2)*erfcx(1/np.sqrt(2)*(σ/τ - (t[0]-μ)/σ)) - 0.5*h*np.exp(-0.5*(np.sqrt(2)*erfcxinv(τ/σ*np.sqrt(2/π)))**2), -0.1).x for τ in τs]).squeeze()
-    #LEHM_roots = np.array([root(lambda t: h*σ/τ*np.sqrt(π/2)*np.exp(-0.5*((t-μ)/σ)**2)*erfcx(1/np.sqrt(2)*(σ/τ - (t[0]-μ)/σ)) - 0.5*h*np.exp(-0.5*(np.sqrt(2)*np.sqrt(np.log(τ/σ*np.sqrt(1/(2*π)))) - σ/τ)**2), -0.1).x for τ in τs]).squeeze()
-    #LEHM_roots = np.array([root(lambda t: h*σ/τ*np.sqrt(π/2)*np.exp(-0.5*((t-μ)/σ)**2)*erfcx(1/np.sqrt(2)*(σ/τ - (t[0]-μ)/σ)) - 0.5*h*np.exp(-0.5*(np.sqrt(2)*np.sqrt(np.log(τ/σ*np.sqrt(1/(2*π)))))**2), -0.1).x for τ in τs]).squeeze()
+    #LEHM_roots_approx = np.array([root(lambda t: h*σ/τ*np.sqrt(π/2)*np.exp(-0.5*((t-μ)/σ)**2)*erfcx(1/np.sqrt(2)*(σ/τ - (t[0]-μ)/σ)) - 0.5*h*np.exp(-0.5*(np.sqrt(2)*erfcxinv(τ/σ*np.sqrt(2/π)) - σ/τ)**2), -0.1).x for τ in τs]).squeeze()
+    LEHM_roots_approx = np.array([root(lambda t: h*σ/τ*np.sqrt(π/2)*np.exp(-0.5*((t-μ)/σ)**2)*erfcx(1/np.sqrt(2)*(σ/τ - (t[0]-μ)/σ)) - 0.5*h*np.exp(-0.5*(np.sqrt(2)*erfcxinv(τ/σ*np.sqrt(2/π)))**2), -0.1).x for τ in τs]).squeeze()
+    #LEHM_roots_approx = np.array([root(lambda t: h*σ/τ*np.sqrt(π/2)*np.exp(-0.5*((t-μ)/σ)**2)*erfcx(1/np.sqrt(2)*(σ/τ - (t[0]-μ)/σ)) - 0.5*h*np.exp(-0.5*(np.sqrt(2)*np.sqrt(np.log(τ/σ*np.sqrt(1/(2*π)))) - σ/τ)**2), -0.1).x for τ in τs]).squeeze()
+    #LEHM_roots_approx = np.array([root(lambda t: h*σ/τ*np.sqrt(π/2)*np.exp(-0.5*((t-μ)/σ)**2)*erfcx(1/np.sqrt(2)*(σ/τ - (t[0]-μ)/σ)) - 0.5*h*np.exp(-0.5*(np.sqrt(2)*np.sqrt(np.log(τ/σ*np.sqrt(1/(2*π)))))**2), -0.1).x for τ in τs]).squeeze()
     IPLE_roots = np.array([root(lambda t: σ/τ + (t - μ)/σ - (σ/τ)**2*np.sqrt(π/2) * erfcx(1/np.sqrt(2)*(σ/τ - (t[0] - μ)/σ)), -0.1).x for τ in τs]).squeeze()
     MODE_roots = np.array([emg_mode(h, μ, σ, τ)[0] for τ in τs]).squeeze()
     ts = np.linspace(-10, 10, 1000)
@@ -102,6 +102,7 @@ def main():
     fig, axs = plt.subplots(nrows=2, ncols=1, figsize=(6,10))
 
     axs[0].plot(τs, np.abs(LEHM_roots), label="Leading edge at half max (LEHM)")
+    #axs[0].plot(τs, np.abs(LEHM_roots_approx), '--', label="Leading edge at half max (LEHM) (approx)")
     axs[0].plot(τs, np.abs(IPLE_roots), label="Inflection point on leading edge (IPLE)")
     axs[0].plot(τs, np.abs(MODE_roots), label="Mode")
     axs[0].plot(τs, np.abs(MCHF_roots), label="Matched filter")
@@ -113,11 +114,11 @@ def main():
     #######
     # A quick test of asymptotic behaviour of LEHM
     #
-    Zs = LEHM_roots #(np.logspace(-10, 0, 1000) - μ)/σ
-    arg = Zs/np.sqrt(2)
+    #Zs = -LEHM_roots #(np.logspace(-10, 0, 1000) - μ)/σ
+    #arg = Zs/np.sqrt(2)
     #τ_σ = (Zs*erfc(-arg) + np.sqrt(2/π) * np.exp(-arg**2)) / erf(arg)
-    τ_σ = 1/np.array([(erfcx(arg[i]) - np.exp(arg[i]**2))/(Zs[i]*erfcx(arg[i]) - 2*Zs[i]*np.exp(arg[i]**2) - 2) for i in range(len(Zs))])
-    axs[0].plot(τ_σ, Zs, 'k--')
+    #τ_σ = 1/np.array([(erfcx(arg[i]) - np.exp(arg[i]**2))/(Zs[i]*erfcx(arg[i]) - 2*Zs[i]*np.exp(arg[i]**2) - 2) for i in range(len(Zs))])
+    #axs[0].plot(τ_σ, Zs, 'k--', label="Asymptote (LEHM)")
     #axs[0].plot(τ_σ, 1/τ_σ, 'g--')
     #
     #
