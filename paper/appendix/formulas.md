@@ -48,10 +48,31 @@ $$
 
 $$
 \begin{aligned}
-{\rm erfcx}(t) &= \exp(t^2) \cdot {\rm erfc}(t) \\
+{\rm erfcx}(t) &\equiv \exp(t^2) \cdot {\rm erfc}(t) \\
 \frac{d}{dt}{\rm erfcx(t)} &= 2t \exp(t^2) \cdot {\rm erfc}(t) +
 \exp(t^2) \cdot \left(-\frac{2}{\sqrt{\pi}} \exp(-t^2) \right) \\
-    &= 2t\,{\rm erfcx}(t) - \frac{2}{\sqrt{\pi}}
+    &= 2t\,{\rm erfcx}(t) - \frac{2}{\sqrt{\pi}} \\
+{\rm erfcx}(t) &\sim \frac{1}{t\sqrt{\pi}} \left( 1 + \frac{1}{2t^2} + \frac{3}{4t^4} + \frac{15}{8t^6} + \cdots\right) \qquad \text{as } t \rightarrow \infty
+\end{aligned}
+$$
+
+### erfcxinv
+
+$$
+\frac{d}{dt}{\rm erfcxinv}(t)
+    = \frac{1}{2t\,{\rm erfcxinv}(t) - \frac{2}{\sqrt{\pi}}}
+$$
+
+$$
+\frac{d^2}{dt^2}{\rm erfcxinv}(t)
+    = -\frac{2{\rm erfcxinv}(t)\left(2t\,{\rm erfcxinv}(t) - \frac{2}{\sqrt{\pi}}\right) + 1}{\left(2t\,{\rm erfcxinv}(t) - \frac{2}{\sqrt{\pi}}\right)^3}
+$$
+
+$$
+\begin{aligned}
+{\rm erfcxinv}(t)
+    &\sim \frac{1}{t\sqrt{\pi}} \left( 1 - \frac{\pi t^2}{2} + \cdots\right) \\
+    &= \frac{1}{t\sqrt{\pi}} - \frac{t\sqrt{\pi}}{2} + \mathcal{O}(t^3)  \qquad \text{as } t \rightarrow 0^+
 \end{aligned}
 $$
 
@@ -61,6 +82,7 @@ Some useful values and asymptotes:
 | :--: | :--: | :--: | :--: | :--: |
 | ${\rm erfcx}(t)$ | $\sim 2 \exp(t^2)$ | $1 - \frac{2t}{\sqrt{\pi}} + \mathcal{O}(t^2)$ |  | $\sim \frac{1}{t\sqrt{\pi}}$ |
 | ${\rm erfcxinv}(t)$ | - | $(t \rightarrow 0^+)$: $\sim \frac{1}{t\sqrt{\pi}}$ | $\frac{\sqrt{\pi}(1 - t)}{2} + \mathcal{O}(t^2)$ | $\sim -\sqrt{\ln\left(\frac{t}{2}\right)}$ |
+| $\frac{d}{dt}{\rm erfcxinv}(t)$ | - | $(t \rightarrow 0^+)$:  | | |
 
 ### emg
 
@@ -213,7 +235,7 @@ Z^2 &= 2 \ln 2 \\
 $$
 where the sign of the square root was chosen appropriate for the half-maximum point on the leading edge. Since this is a regime in which this definition of ToAs will never be chosen, the first order (constant) behaviour of the asymptote is sufficient.
 
-When $\tau \gg \sigma$, the left hand side of the earlier expression can be expanded about $Z$ to
+When $\tau \gg \sigma$, the left hand side of the earlier expression can be expanded to
 
 $$
 \begin{aligned}
@@ -221,40 +243,31 @@ $$
     {\rm erfcx}\left(
         \frac{1}{\sqrt{2}} \left(\frac{\sigma}{\tau} - Z\right)
     \right) \\
-    &\approx \frac{\sigma}{\tau} \sqrt{2\pi} \exp \left( -\frac{Z^2}{2} \right)
-    \left[
-        {\rm erfcx}\left( -\frac{Z}{\sqrt{2}} \right)
-        + \frac{1}{\sqrt{2}}\frac{\sigma}{\tau}\left(-2\frac{Z}{\sqrt{2}} \, {\rm erfcx}\left( -\frac{Z}{\sqrt{2}} \right) - \frac{2}{\sqrt{\pi}} \right)
-    \right] \\
-    &= \frac{\sigma}{\tau} \sqrt{2\pi} \exp \left( -\frac{Z^2}{2} \right)
-    \left[
-        {\rm erfcx}\left( -\frac{Z}{\sqrt{2}} \right) \left(
-        1 - \frac{\sigma}{\tau}Z \right) - \frac{\sigma}{\tau}\sqrt{\frac{2}{\pi}}
-    \right] \\
-    &= \frac{\sigma}{\tau} \sqrt{2\pi} 
-    \left[
-        {\rm erfc}\left( -\frac{Z}{\sqrt{2}} \right) \left(
-        1 - \frac{\sigma}{\tau}Z \right) - \frac{\sigma}{\tau}\sqrt{\frac{2}{\pi}} \exp \left( -\frac{Z^2}{2} \right)
-    \right]
+    &\sim \sqrt{2\pi}\frac{\sigma}{\tau} \, {\rm erfc}\left(-\frac{Z}{\sqrt{2}}\right) -
+    \left(\frac{\sigma}{\tau}\right)^2 \left(
+        \sqrt{2\pi} Z \, {\rm erfc}\left(-\frac{Z}{\sqrt{2}}\right) +
+        2\exp\left(-\frac{Z^2}{2}\right)
+    \right)
 \end{aligned}
 $$
 
-and the right hand side,
+For the right hand side, we need a Taylor expansion about $\sigma/\tau \rightarrow 0^+$ for
 
 $$
-\begin{aligned}
 \exp \left(-\frac{1}{2} \left(\sqrt{2}\, {\rm erfcxinv}\left(\frac{\tau}{\sigma} \sqrt{\frac{2}{\pi}} \right) - \frac{\sigma}{\tau} \right)^2\right)
-    &\approx \exp \left(-\frac{1}{2} \left(\sqrt{2}\, \sqrt{\ln\left(\frac{\tau}{\sigma} \sqrt{\frac{1}{2\pi}} \right)}\right)^2\right) \\
-    &= \exp \left(\ln\left(\frac{\sigma}{\tau} \sqrt{2\pi} \right)\right) \\
-    &= \frac{\sigma}{\tau} \sqrt{2\pi}
-\end{aligned}
+    \sim \sqrt{2\pi}\frac{\sigma}{\tau}
 $$
+
+...
 
 Equating both sides, we find
 
 $$
-1 = {\rm erfc}\left( -\frac{Z}{\sqrt{2}} \right) \left(
-        1 - \frac{\sigma}{\tau}Z \right) - \frac{\sigma}{\tau}\sqrt{\frac{2}{\pi}} \exp \left( -\frac{Z^2}{2} \right)
+1 = {\rm erfc}\left(-\frac{Z}{\sqrt{2}}\right) -
+    \frac{\sigma}{\tau} \left(
+        Z \, {\rm erfc}\left(-\frac{Z}{\sqrt{2}}\right) +
+        \sqrt{\frac{2}{\pi}}\exp\left(-\frac{Z^2}{2}\right)
+    \right)
 $$
 
 I'm finding this one a bit hard to solve for $Z$ (and hence, ${\rm ToA_{LEHM}}$), but the inverse (solving for $\tau/\sigma$) is
