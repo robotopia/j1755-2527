@@ -1,27 +1,27 @@
 %% Beginning of file 'sample631.tex'
 %%
-%% Modified 2022 May  
+%% Modified 2022 May
 %%
 %% This is a sample manuscript marked up using the
 %% AASTeX v6.31 LaTeX 2e macros.
 %%
-%% AASTeX is now based on Alexey Vikhlinin's emulateapj.cls 
+%% AASTeX is now based on Alexey Vikhlinin's emulateapj.cls
 %% (Copyright 2000-2015).  See the classfile for details.
 
 %% AASTeX requires revtex4-1.cls and other external packages such as
-%% latexsym, graphicx, amssymb, longtable, and epsf.  Note that as of 
-%% Oct 2020, APS now uses revtex4.2e for its journals but remember that 
-%% AASTeX v6+ still uses v4.1. All of these external packages should 
+%% latexsym, graphicx, amssymb, longtable, and epsf.  Note that as of
+%% Oct 2020, APS now uses revtex4.2e for its journals but remember that
+%% AASTeX v6+ still uses v4.1. All of these external packages should
 %% already be present in the modern TeX distributions but not always.
 %% For example, revtex4.1 seems to be missing in the linux version of
 %% TexLive 2020. One should be able to get all packages from www.ctan.org.
-%% In particular, revtex v4.1 can be found at 
+%% In particular, revtex v4.1 can be found at
 %% https://www.ctan.org/pkg/revtex4-1.
 
 %% The first piece of markup in an AASTeX v6.x document is the \documentclass
-%% command. LaTeX will ignore any data that comes before this command. The 
+%% command. LaTeX will ignore any data that comes before this command. The
 %% documentclass can take an optional argument to modify the output style.
-%% The command below calls the preprint style which will produce a tightly 
+%% The command below calls the preprint style which will produce a tightly
 %% typeset, one-column, single-spaced document.  It is the default and thus
 %% does not need to be explicitly stated.
 %%
@@ -35,19 +35,19 @@
 %% can be invoked like this:
 %%
 %% \documentclass[arguments]{aastex631}
-%% 
+%%
 %% where the layout options are:
 %%
 %%  twocolumn   : two text columns, 10 point font, single spaced article.
 %%                This is the most compact and represent the final published
 %%                derived PDF copy of the accepted manuscript from the publisher
 %%  manuscript  : one text column, 12 point font, double spaced article.
-%%  preprint    : one text column, 12 point font, single spaced article.  
+%%  preprint    : one text column, 12 point font, single spaced article.
 %%  preprint2   : two text columns, 12 point font, single spaced article.
 %%  modern      : a stylish, single text column, 12 point font, article with
 %%      wider left and right margins. This uses the Daniel
 %%      Foreman-Mackey and David Hogg design.
-%%  RNAAS       : Supresses an abstract. Originally for RNAAS manuscripts 
+%%  RNAAS       : Supresses an abstract. Originally for RNAAS manuscripts
 %%                but now that abstracts are required this is obsolete for
 %%                AAS Journals. Authors might need it for other reasons. DO NOT
 %%                use \begin{abstract} and \end{abstract} with this style.
@@ -57,19 +57,19 @@
 %% There are other optional arguments one can invoke to allow other stylistic
 %% actions. The available options are:
 %%
-%%   astrosymb    : Loads Astrosymb font and define \astrocommands. 
-%%   tighten      : Makes baselineskip slightly smaller, only works with 
+%%   astrosymb    : Loads Astrosymb font and define \astrocommands.
+%%   tighten      : Makes baselineskip slightly smaller, only works with
 %%                  the twocolumn substyle.
 %%   times        : uses times font instead of the default
 %%   linenumbers  : turn on lineno package.
 %%   trackchanges : required to see the revision mark up and print its output
-%%   longauthor   : Do not use the more compressed footnote style (default) for 
+%%   longauthor   : Do not use the more compressed footnote style (default) for
 %%                  the author/collaboration/affiliations. Instead print all
-%%                  affiliation information after each name. Creates a much 
-%%                  longer author list but may be desirable for short 
+%%                  affiliation information after each name. Creates a much
+%%                  longer author list but may be desirable for short
 %%                  author papers.
 %% twocolappendix : make 2 column appendix.
-%%   anonymous    : Do not show the authors, affiliations and acknowledgments 
+%%   anonymous    : Do not show the authors, affiliations and acknowledgments
 %%                  for dual anonymous review.
 %%
 %% these can be used in any combination, e.g.
@@ -103,6 +103,12 @@
 \newcommand{\srcfull}{ASKAP J175534.9$-$252749.1}
 
 \DeclareMathOperator{\erfcx}{erfcx}
+\DeclareMathOperator{\erf}{erf}
+\DeclareMathOperator{\emg}{emg}
+
+\newcommand{\deriv}[2]{\frac{{\rm d}{#1}}{{\rm d}{#2}}}
+\newcommand{\dd}[2]{\frac{{\rm d^2}{#1}}{{\rm d}{#2}^2}}
+\newcommand{\ToA}[1]{{\rm ToA}_{\rm {#1}}}
 
 \defcitealias{2024MNRAS.535..909D}{Paper~I}
 
@@ -116,7 +122,7 @@
 %\submitjournal{PSJ}
 
 %% For manuscript that include authors in collaborations, AASTeX v6.31
-%% builds on the \collaboration command to allow greater freedom to 
+%% builds on the \collaboration command to allow greater freedom to
 %% keep the traditional author+affiliation information but only show
 %% subsets. The \collaboration command now must appear AFTER the group
 %% of authors in the collaboration and it takes TWO arguments. The last
@@ -127,11 +133,11 @@
 %% collaboration the \nocollaboration command is used. This command takes
 %% one argument which is also the number of authors above to show. A
 %% dashed line is shown to indicate no collaboration. This example manuscript
-%% shows how these commands work to display specific set of authors 
+%% shows how these commands work to display specific set of authors
 %% on the front page.
 %%
-%% For manuscript without any need to use \collaboration the 
-%% \AuthorCollaborationLimit command from v6.2 can still be used to 
+%% For manuscript without any need to use \collaboration the
+%% \AuthorCollaborationLimit command from v6.2 can still be used to
 %% show a subset of authors.
 %
 %\AuthorCollaborationLimit=2
@@ -164,10 +170,10 @@
 %\shorttitle{AASTeX v6.3.1 Sample article}
 %\shortauthors{Schwarz et al.}
 %%
-%% You can add a light gray and diagonal water-mark to the first page 
+%% You can add a light gray and diagonal water-mark to the first page
 %% with this command:
 %% \watermark{text}
-%% where "text", e.g. DRAFT, is the text to appear.  If the text is 
+%% where "text", e.g. DRAFT, is the text to appear.  If the text is
 %% long you can control the water-mark size with:
 %% \setwatermarkfontsize{dimension}
 %% where dimension is any recognized LaTeX dimension, e.g. pt, in, etc.
@@ -185,9 +191,9 @@
 %% one line. However, you may use \\ to force a line break if
 %% you desire. In v6.31 you can include a footnote in the title.
 
-%% A significant change from earlier AASTEX versions is in the structure for 
-%% calling author and affiliations. The change was necessary to implement 
-%% auto-indexing of affiliations which prior was a manual process that could 
+%% A significant change from earlier AASTEX versions is in the structure for
+%% calling author and affiliations. The change was necessary to implement
+%% auto-indexing of affiliations which prior was a manual process that could
 %% easily be tedious in large author manuscripts.
 %%
 %% The \author command is the same as before except it now takes an optional
@@ -196,7 +202,7 @@
 %%
 %% This will hyperlink the author name to the author's ORCID page. Note that
 %% during compilation, LaTeX will do some limited checking of the format of
-%% the ID to make sure it is valid. If the "orcid-ID.png" image file is 
+%% the ID to make sure it is valid. If the "orcid-ID.png" image file is
 %% present or in the LaTeX pathway, the OrcID icon will appear next to
 %% the authors name.
 %%
@@ -204,9 +210,9 @@
 %% to \affiliation. AASTeX v6.31 will automatically index these in the header.
 %% When a duplicate is found its index will be the same as its previous entry.
 %%
-%% Note that \altaffilmark and \altaffiltext have been removed and thus 
+%% Note that \altaffilmark and \altaffiltext have been removed and thus
 %% can not be used to document secondary affiliations. If they are used latex
-%% will issue a specific error message and quit. Please use multiple 
+%% will issue a specific error message and quit. Please use multiple
 %% \affiliation calls for to document more than one affiliation.
 %%
 %% The new \altaffiliation can be used to indicate some secondary information
@@ -263,25 +269,25 @@
 %\affiliation{TeXnology Inc.}
 
 %% Note that the \and command from previous versions of AASTeX is now
-%% depreciated in this version as it is no longer necessary. AASTeX 
+%% depreciated in this version as it is no longer necessary. AASTeX
 %% automatically takes care of all commas and "and"s between authors names.
 
 %% AASTeX 6.31 has the new \collaboration and \nocollaboration commands to
-%% provide the collaboration status of a group of authors. These commands 
+%% provide the collaboration status of a group of authors. These commands
 %% can be used either before or after the list of corresponding authors. The
 %% argument for \collaboration is the collaboration identifier. Authors are
-%% encouraged to surround collaboration identifiers with ()s. The 
+%% encouraged to surround collaboration identifiers with ()s. The
 %% \nocollaboration command takes no argument and exists to indicate that
 %% the nearby authors are not part of surrounding collaborations.
 
-%% Mark off the abstract in the ``abstract'' environment. 
+%% Mark off the abstract in the ``abstract'' environment.
 \begin{abstract}
 
   [Abstract goes here\dots]
 
 \end{abstract}
 
-%% Keywords should appear after the \end{abstract} command. 
+%% Keywords should appear after the \end{abstract} command.
 %% The AAS Journals now uses Unified Astronomy Thesaurus concepts:
 %% https://astrothesaurus.org
 %% You will be asked to selected these concepts during the submission process
@@ -302,7 +308,7 @@
 %% We recommend that authors also use the natbib \citep
 %% and \citet commands to identify citations.  The citations are
 %% tied to the reference list via symbolic KEYs. The KEY corresponds
-%% to the KEY in the \bibitem in the reference list below. 
+%% to the KEY in the \bibitem in the reference list below.
 
 \section{Introduction} \label{sec:introduction}
 
@@ -326,9 +332,9 @@ The main conclusions are summarized in \S\ref{sec:conclusions}.
 \begin{deluxetable*}{lcl}
   \tablecaption{Known and candidate LPTs, arranged in ascending order of period\label{tbl:lpts}}
   \tablehead{
-    \colhead{LPT} & \colhead{Period} & \colhead{References} \\ 
-     & \colhead{(min)} & 
-   } 
+    \colhead{LPT} & \colhead{Period} & \colhead{References} \\
+     & \colhead{(min)} &
+   }
    \startdata
    %AR Scorpii (J162147.28-225310.3) & 1.97 &  \\
    %ASKAP J175154.89-255135.3 & ${\sim}$3.6 &  \\
@@ -348,7 +354,7 @@ The main conclusions are summarized in \S\ref{sec:conclusions}.
 
 \section{Observations} \label{sec:observations}
 
-The observations included in this paper were made at the Murchison Widefield Array \citep[MWA;][]{Tingay2013}, 
+The observations included in this paper were made at the Murchison Widefield Array \citep[MWA;][]{Tingay2013},
 
 \subsection{MWA} \label{sec:mwa}
 
@@ -359,9 +365,9 @@ The observations included in this paper were made at the Murchison Widefield Arr
 %\begin{deluxetable*}{cccccc}
 %\tablecaption{Pulse detections and non-detections}
 %\tablehead{
-%\colhead{Obs start} & \colhead{Duration} & \colhead{Telescope} & \colhead{$\nu$} & %\colhead{$\Delta\nu$} & \colhead{Detected?} \\ 
+%\colhead{Obs start} & \colhead{Duration} & \colhead{Telescope} & \colhead{$\nu$} & %\colhead{$\Delta\nu$} & \colhead{Detected?} \\
 %\colhead{time (UTC)} & \colhead{(s)} & & \colhead{(MHz)} & \colhead{(MHz)} &
-%} 
+%}
 %\startdata
 %2024-09-19 09:25:02 & 592\tablenotemark{a} & MWA & 184.96 & 30.72 & Y \\ % 1410773120 and 1410773416
 %2024-09-19 10:34:06 & 592\tablenotemark{a} & MWA & 184.96 & 30.72 & Y \\ % 1410777264 and 1410777560
@@ -395,9 +401,9 @@ The observations included in this paper were made at the Murchison Widefield Arr
 \begin{deluxetable*}{cccccc}
   \tablecaption{Observations}
   \tablehead{
-    \colhead{Date range} & \colhead{Telescope} & Project & \colhead{$\nu$} & \colhead{$\Delta\nu$} & \colhead{Number of} \\ 
+    \colhead{Date range} & \colhead{Telescope} & Project & \colhead{$\nu$} & \colhead{$\Delta\nu$} & \colhead{Number of} \\
     \colhead{(MJD)} & & & \colhead{(MHz)} & \colhead{(MHz)} & \colhead{pulses}
-  } 
+  }
   \startdata
   59965 & ASKAP\tablenotemark{a} & SB47253 & 887.5 & 288 & 1 \\
   59966 & MWA & G0060 & 161.92 & 15.36 & 1 \\
@@ -421,9 +427,9 @@ The observations included in this paper were made at the Murchison Widefield Arr
 All observed pulses consist of a single burst, approximately Gaussian in shape, with the sole exception of the MeerKAT pulse observed on 2024-10-19, for which two bursts were observed separated by ${\sim}125\,$s.
 Generally, the low-frequency (MWA) pulses tend
 \begin{itemize}
-        \item to be wider than their higher frequency counterparts,
-              \item to exhibit an asymmetry similar to scattering, and
-                    \item to have minimal pulse-to-pulse variation.
+    \item to be wider than their higher frequency counterparts,
+    \item to exhibit an asymmetry resembling a scatter-broadened tail, and
+    \item to have minimal pulse-to-pulse morphological variation.
 \end{itemize}
 
 The low-frequency asymmetry is consistent with a scattering time scale of a few tens of seconds at MWA frequencies, which scales to a few tens of milliseconds at 1\,GHz.
@@ -432,9 +438,9 @@ This is in broad agreement with the model predictions of NE2001 ($\tau_{\rm sc,1
 To account for the asymmetry, we fit exponentially modified Gaussians to each pulse with the form,
 \begin{equation}
   \begin{aligned}
-        y(t) &= A \frac{\sigma}{\tau}\sqrt{\frac{\pi}{2}}
+        \emg(t) &= A \frac{\sigma}{\tau}\sqrt{\frac{\pi}{2}}
                    \exp\left(-\frac12 \left( \frac{t - \mu}{\tau} \right)^2 \right) \\
-                            &\qquad \erfcx \left(\frac{1}{\sqrt{2}} \left(\frac{\sigma}{\tau} 
+                            &\qquad \erfcx \left(\frac{1}{\sqrt{2}} \left(\frac{\sigma}{\tau}
                              - \frac{t - \mu}{\tau} \right) \right),
   \end{aligned}
   \label{eqn:emg}
@@ -484,7 +490,7 @@ We also tried fitting a timing model that included a spin-down parameter, and fo
 \begin{table}
   \caption{Timing ephemeris for \src{}}
   \label{tbl:ephemeris}
-  \begin{tabular}[lc]
+  \begin{tabular}{lc}
     \hline
     Parameter & Value \\
     \hline
@@ -511,7 +517,7 @@ We also tried fitting a timing model that included a spin-down parameter, and fo
 The precursor burst seen with MeerKAT is apparently unique, and is not visible at other telescopes and frequencies, even after averaging them together to make a single profile.
 The only burst of comparable S/N, and at a similar frequency, in which the dimmer precursor component might be expected to be visible is the original 2023-01-21 ASKAP burst \citep{2024MNRAS.535..909D}, where again it is absent.
 
-The two pulses observed in January 2023 (the original ASKAP pulse and the MWA (IPS) pulse observed the following day) are significantly wider than all other pulses, suggesting that a morphological change occurred between 
+The two pulses observed in January 2023 (the original ASKAP pulse and the MWA (IPS) pulse observed the following day) are significantly wider than all other pulses, suggesting that a morphological change occurred between
 
 \begin{enumerate}
         \item Why does the source appear to not be active all the time at higher frequencies?
@@ -528,27 +534,27 @@ The two pulses observed in January 2023 (the original ASKAP pulse and the MWA (I
 
 \end{acknowledgments}
 
-%% To help institutions obtain information on the effectiveness of their 
-%% telescopes the AAS Journals has created a group of keywords for telescope 
+%% To help institutions obtain information on the effectiveness of their
+%% telescopes the AAS Journals has created a group of keywords for telescope
 %% facilities.
 %
 %% Following the acknowledgments section, use the following syntax and the
-%% \facility{} or \facilities{} macros to list the keywords of facilities used 
-%% in the research for the paper.  Each keyword is check against the master 
-%% list during copy editing.  Individual instruments can be provided in 
+%% \facility{} or \facilities{} macros to list the keywords of facilities used
+%% in the research for the paper.  Each keyword is check against the master
+%% list during copy editing.  Individual instruments can be provided in
 %% parentheses, after the keyword, but they are not verified.
 
 %\vspace{5mm}
 %\facilities{HST(STIS), Swift(XRT and UVOT), AAVSO, CTIO:1.3m,
 %CTIO:1.5m,CXO}
 
-%% Similar to \facility{}, there is the optional \software command to allow 
-%% authors a place to specify which programs were used during the creation of 
+%% Similar to \facility{}, there is the optional \software command to allow
+%% authors a place to specify which programs were used during the creation of
 %% the manuscript. Authors should list each code and include either a
 %% citation or url to the code inside ()s when available.
 
-%\software{astropy \citep{2013A&A...558A..33A,2018AJ....156..123A},  
-%          Cloudy \citep{2013RMxAA..49..137F}, 
+%\software{astropy \citep{2013A&A...558A..33A,2018AJ....156..123A},
+%          Cloudy \citep{2013RMxAA..49..137F},
 %          Source Extractor \citep{1996A&AS..117..393B}
 %          }
 
@@ -561,8 +567,90 @@ The two pulses observed in January 2023 (the original ASKAP pulse and the MWA (I
 %% command and will number appendix equations (A1), (A2), etc. The
 %% Figure and Table counter will not reset.
 
-%\appendix
+\appendix
 
+It can be shown that pulses scatter-broadened by a thin screen will appear to the observer as the original pulse convolved with a one-sided exponential kernel with an associated timescale $\tau$ [CITATION].
+For intrinsically Gaussian pulses of scale $\sigma$, the result of this convolution is well described by the \textit{exponentially modified Gaussian} (EMG), as given in Eq. \eqref{eqn:emg}.
+
+In the regime $\tau \ll \sigma$, the effect of scattering is negligible and the scattered pulse resembles the original pulse.
+ToAs can be obtained in the usual way, i.e., using a matched filter ``template'' constructed from the average pulse profile.
+
+On the other hand, in the regime $\tau \gg \sigma$, the leading edge of the EMG rises sharply (resembling the error function, $\erf$) and the trailing edge resembles the exponential kernel itself.
+For this reason, pulse ToAs are typically mapped to the rising edge of highly scattered pulses, which closely approximates the centre of the original unscattered pulse.
+
+In this appendix, we discuss the effect of scattering on measuring a DM from pulse observations if scattering is not taken into account.
+As will be shown, the effect is most dramatic when $\tau \approx \sigma$, and in the case of wide, highly scattered pulses from LPTs like \src{}, can lead to a discrepant DM measurement of several hundreds of pm\,cm$^{-3}$.
+
+We consider four methods for defining ToAs:
+\begin{subequations}
+(1) the position where the leading edge reaches half-maximum (LEHM),
+\begin{equation}
+    \emg(\ToA{LEHM}) = \frac{1}{2} A\exp\left(-\frac{1}{2}\left(\frac{\mu - t_m}{\sigma}\right)^2\right),
+\end{equation}
+where
+\begin{equation*}
+    t_m = \mu - \sqrt{2}\sigma\erfcx^{-1}\left(\frac{\tau}{\sigma}\sqrt{\frac{2}{\pi}}\right) + \frac{\sigma^2}{\tau^2}
+\end{equation*}
+is the mode of the EMG,
+(2) the inflection point on the leading edge (IPLE),
+\begin{equation}
+    \left.\dd{\emg(t)}{t}\right|_{t = \ToA{IPLE}} = 0,
+\end{equation}
+(3) the position of the peak of the pulse (PEAK),
+\begin{equation}
+    \ToA{PEAK} = t_m,
+\end{equation}
+and (4) the maximum of the convolution of the pulse with a Gaussian profile with scale $\sigma$ (TMPL)
+\begin{equation}
+    \left.\deriv{}{t}\left(\emg(t) \ast \exp\left[ -\frac{1}{2} \left(\frac{t - \mu}{\sigma}\right)^2 \right]\right)\right|_{t = \ToA{TMPL}} = 0.
+\end{equation}
+The last definition is akin to template matching with a high-frequency (negligibly scattered) pulse profile.
+\end{subequations}
+
+None of the methods is entirely accurate in the presence of scattering.
+We define the errors of the ToAs to be the difference between the measured ToA and the mean of the unscattered pulse,
+\begin{equation}
+    \Delta \ToA{} \equiv \ToA{} - \mu.
+\end{equation}
+For LEHM and IPLE, the ToA is measured to be earlier than $\mu$ ($\Delta{\rm ToA} < 0$); for PEAK and TMPL, later ($\Delta{\rm ToA} > 0$).
+$\ToA{LEHM}$ and $\ToA{IPLE}$ will perform much better than $\ToA{PEAK}$ and $\ToA{TMPL}$ highly scattered pulses ($\tau \gg \sigma$), whereas the converse is true when scattering is minimal ($\tau \ll \sigma$).
+All methods, however, perform relatively poorly in the intermediate regime when $\tau \approx \sigma$.
+
+\begin{figure}[th]
+    \centering
+    \includegraphics[width=0.98\linewidth]{scattering_DM.png}
+    \caption{Analysis of DM measurement errors if scattering is not properly taken into account. Panel (a) shows the errors measured for each defined type of ToA, normalised to the scale of the original pulse, $\sigma$. In panel (b), the predicted error in DM is shown if the ToA error (compared to a high-frequency ToA measurement) is erroneously attributed to dispersion. Panel (c) shows the rate of change of the ToA error with frequency, and panel (d) shows the error in DM measured if this rate of change (the ``slope'' of the pulse across the observed dynamic spectrum) is erroneously attributed to dispersion. In panels (c) and (d), the derived DM errors assume a pulse scale of $\sigma = 25\,$s and $\nu_s = 230\,$MHz, as estimated for \src{}. In all panels, the blue curves indicate \emph{negative} ToA errors (i.e. the measured ToAs are earlier than the pulse's unscattered mean, $\mu$), and the red curves indicate positive quantities.}
+    \label{fig:scattering_DM}
+\end{figure}
+
+We computed numerically \citep[using SciPy's \texttt{root} function;][]{2020NatMe..17..261V} the errors for the four ToA types defined above, in the regime around $\tau \approx \sigma$.
+These are shown in the panel (a) of Fig. \ref{fig:scattering_DM}, normalised to the scale of the pulse, $\sigma$.
+The axis along the top shows the normalised timescale (inverted, with largest timescales on the left), while the axis along the bottom shows the equivalent frequencies normalised to $\nu_s$, defined as the frequency at which $\tau = \sigma$.
+We have assumed a scattering index of $-4$, such that
+\begin{equation}
+    \frac{\tau}{\sigma} = \left(\frac{\nu}{\nu_s}\right)^{-4}.
+\end{equation}
+
+A set of ToAs may be converted to DM measurements in two ways: (1) by comparing the ToAs to those measured at much higher frequencies (e.g. with TMPL) where the scattering is known to be negligible, and (2) by measuring the slope of the pulse in the dynamic spectrum (for example, by measuring the ToAs in subbands across the observed frequency range).
+Panel (c) of Fig. \ref{fig:scattering_DM} shows the expected slope measurements for the ToA errors given in the panel (a).
+
+In the first case, the ToA error of a pulse measured at frequency $\nu$, if attributed erroneously to the effect of dispersion, will yield a discrepant DM of
+\begin{equation}
+    \Delta{\rm DM}_{\rm hi-freq} \approx \frac{\Delta\ToA{}\,\nu^2}{\mathcal{D}}.
+\end{equation}
+For the specific case of \src{}, for which we estimate $\sigma = 25\,$s and $\nu_s = 230\,$MHz, consistent with $\tau_{\rm sc,1 GHz} = 70\,$ms, the DM error can be as high as a few hundreds of pc\,cm$^{-3}$.
+When using this DM method, it is better to use LEHM or IPLE at frequencies $\nu \lesssim \nu_s$, and PEAK or TMPL for $\nu \gtrsim \nu_s$; however, it should be remembered that LRHM and IPLE will \emph{underestimate} the DM, while PEAK and TMPL will \emph{overestimate} it.
+All ToA definitions produce sizeable DM errors in the approximate range $\nu_s \lesssim \nu \lesssim 3\nu_s$.
+
+The situation is not much improved for DMs determined via the slope of the pulse across the observed band, for which the scattering-induced slope is mapped to an (erroneous) equivalent DM measurement of
+\begin{equation}
+    \Delta{\rm DM}_{\rm in-band} \approx \deriv{{\rm ToA}}{\nu} \frac{\nu^3}{2\mathcal{D}}
+\end{equation}
+The calculated numbers for \src{} are illustrated in panel (d).
+For this case, LEHM and IPLE are always preferred to PEAK and TMPL, but the magnitude of the derived DM error is still in the hundreds of pc\,cm$^{-3}$ at frequencies in the range $\nu_s \lesssim \nu \lesssim 3\nu_s$.
+
+We confirm the order of magnitude of the above results by reporting a measured in-band DM for one of the MWA pulses at 185\,MHz, using the TMPL method to measure ToAs in 1.28\,MHz subbands from ${\sim}170$ to ${\sim}200\,$MHz, of ${\rm DM}_{\rm in-band} = 1221\pm257\,$pc\,cm$^{-3}$.
+This exceeds the DM reported in this work by ${\sim}450\,$pc\,cm$^{-3}$, in excess of the prediction shown in panel (d), but consistent within measurement errors.
 
 \bibliography{biblio}{}
 \bibliographystyle{aasjournal}
@@ -579,4 +667,5 @@ The two pulses observed in January 2023 (the original ASKAP pulse and the MWA (I
 \end{document}
 
 % End of file `sample631.tex'.
+
 
