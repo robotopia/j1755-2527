@@ -202,8 +202,8 @@ def main():
     #ax3.set_ylim([-500, 500])
 
     ax0.text(0.97, 0.95, "(a)", transform=ax0.transAxes, va='top', ha='right')
-    ax1.text(0.97, 0.95, "(b)", transform=ax1.transAxes, va='top', ha='right')
-    ax2.text(0.97, 0.95, "(c)", transform=ax2.transAxes, va='top', ha='right')
+    ax1.text(0.97, 0.95, "(c)", transform=ax1.transAxes, va='top', ha='right')
+    ax2.text(0.97, 0.95, "(b)", transform=ax2.transAxes, va='top', ha='right')
     ax3.text(0.97, 0.95, "(d)", transform=ax3.transAxes, va='top', ha='right')
 
     plt.setp(ax0.get_xticklabels(), visible=False)
