@@ -92,7 +92,7 @@ def main():
     IPLE_roots = np.array([root(lambda t: σ/τ + (t - μ)/σ - (σ/τ)**2*np.sqrt(π/2) * erfcx(1/np.sqrt(2)*(σ/τ - (t[0] - μ)/σ)), -0.1).x for τ in τs]).squeeze()
     PEAK_roots = np.array([emg_mode(h, μ, σ, τ)[0] for τ in τs]).squeeze()
     ts = np.linspace(-10, 10, 1000)
-    MCHF_roots = np.array([root(lambda lag: matched_filter(ts, lag, h, μ, σ, τ), 1.0).x for τ in τs]).squeeze()
+    TMPL_roots = np.array([root(lambda lag: matched_filter(ts, lag, h, μ, σ, τ), 1.0).x for τ in τs]).squeeze()
 
     # Get the rate of change per frequency (relative to the frequency at which τ=σ)
     νs = τs**-0.25
@@ -100,41 +100,48 @@ def main():
     _, LEHM_roots_slope = slope_for_logspace_data(νs, LEHM_roots)
     _, IPLE_roots_slope = slope_for_logspace_data(νs, IPLE_roots)
     _, PEAK_roots_slope = slope_for_logspace_data(νs, PEAK_roots)
-    νs_gm, MCHF_roots_slope = slope_for_logspace_data(νs, MCHF_roots)
+    νs_gm, TMPL_roots_slope = slope_for_logspace_data(νs, TMPL_roots)
 
     # Equivalent DM from above slopes. Choose ν_s = 200 MHz and σ = 1 min. Will change later as needed
     import astropy.units as u
-    σ_ref = 1 * u.min
-    ν_s = 200 * u.MHz
+    σ_ref = 25 * u.s
+    ν_s = (((70*u.ms)/σ_ref)**(0.25)*1*u.GHz).to('MHz')
+    print(f'{ν_s = }')
     D = 4148.808 * u.MHz**2 / u.pc * u.cm**3 * u.s
 
-    LEHM_DM = (0.5 * νs_gm**3 * LEHM_roots_slope * σ_ref * ν_s**2 / D).to('pc cm-3')
-    IPLE_DM = (0.5 * νs_gm**3 * IPLE_roots_slope * σ_ref * ν_s**2 / D).to('pc cm-3')
-    PEAK_DM = (0.5 * νs_gm**3 * PEAK_roots_slope * σ_ref * ν_s**2 / D).to('pc cm-3')
-    MCHF_DM = (0.5 * νs_gm**3 * MCHF_roots_slope * σ_ref * ν_s**2 / D).to('pc cm-3')
+    LEHM_DM = (LEHM_roots * σ_ref*νs**2*ν_s**2/D).to('pc cm-3')
+    IPLE_DM = (IPLE_roots * σ_ref*νs**2*ν_s**2/D).to('pc cm-3')
+    PEAK_DM = (PEAK_roots * σ_ref*νs**2*ν_s**2/D).to('pc cm-3')
+    TMPL_DM = (TMPL_roots * σ_ref*νs**2*ν_s**2/D).to('pc cm-3')
+
+    LEHM_DM_slope = (0.5 * νs_gm**3 * LEHM_roots_slope * σ_ref * ν_s**2 / D).to('pc cm-3')
+    IPLE_DM_slope = (0.5 * νs_gm**3 * IPLE_roots_slope * σ_ref * ν_s**2 / D).to('pc cm-3')
+    PEAK_DM_slope = (0.5 * νs_gm**3 * PEAK_roots_slope * σ_ref * ν_s**2 / D).to('pc cm-3')
+    TMPL_DM_slope = (0.5 * νs_gm**3 * TMPL_roots_slope * σ_ref * ν_s**2 / D).to('pc cm-3')
     #                ^^^^^ Meaning of this is dimensionless ratios ν/ν_s, evaluated at "mid-way" points
 
     # Plots!
-    fig = plt.figure(figsize=(4.5, 7))
-    gs = GridSpec(3, 1, hspace=0)
-    ax0 = fig.add_subplot(gs[0])
-    ax1 = fig.add_subplot(gs[1], sharex=ax0)
-    ax2 = fig.add_subplot(gs[2], sharex=ax0)
+    fig = plt.figure(figsize=(10, 7))
+    gs = GridSpec(2, 2, hspace=0)
+    ax0 = fig.add_subplot(gs[0,0])
+    ax1 = fig.add_subplot(gs[1,0], sharex=ax0)
+    ax2 = fig.add_subplot(gs[0,1], sharex=ax0)
+    ax3 = fig.add_subplot(gs[1,1], sharex=ax0)
 
     # Define some colors, linestyles, etc
-    colors = {'LEHM': 'tab:blue', 'IPLE': 'tab:blue', 'PEAK': 'tab:red', 'MCHF': 'tab:red'} # Using color to indicate whether ΔToA is positive or negative
-    linestyles = {'LEHM': '--', 'IPLE': '-', 'PEAK': '-', 'MCHF': '--'} # Using linestyle to indicate whether ΔToA is better or worse, for the given sign
+    colors = {'LEHM': 'tab:blue', 'IPLE': 'tab:blue', 'PEAK': 'tab:red', 'TMPL': 'tab:red'} # Using color to indicate whether ΔToA is positive or negative
+    linestyles = {'LEHM': '--', 'IPLE': '-', 'PEAK': '-', 'TMPL': '--'} # Using linestyle to indicate whether ΔToA is better or worse, for the given sign
     plot_styles = {
         'LEHM': {'c': 'tab:blue', 'ls': '--', 'label': 'Leading edge at half max (LEHM)'},
         'IPLE': {'c': 'tab:blue', 'ls': '-' , 'label': 'Inflection point on leading edge (IPLE)'},
         'PEAK': {'c': 'tab:red',  'ls': '-' , 'label': 'Peak position (PEAK)'},
-        'MCHF': {'c': 'tab:red',  'ls': '--', 'label': 'Matched filter (MCHF)'},
+        'TMPL': {'c': 'tab:red',  'ls': '--', 'label': 'Matched filter (TMPL)'},
     }
 
     ax0.plot(νs, np.abs(LEHM_roots), **plot_styles['LEHM'])
     ax0.plot(νs, np.abs(IPLE_roots), **plot_styles['IPLE'])
     ax0.plot(νs, np.abs(PEAK_roots), **plot_styles['PEAK'])
-    ax0.plot(νs, np.abs(MCHF_roots), **plot_styles['MCHF'])
+    ax0.plot(νs, np.abs(TMPL_roots), **plot_styles['TMPL'])
     #ax0.plot(τs, np.full(τs.shape, np.sqrt(2*np.log(2))), 'k--', alpha=0.2, label="expected max deviation")
     #ax0.plot(τs, -(np.arctan(np.log(τs)) - π/2)*np.sqrt(2*np.log(2))/π, label="sandbox function (arctan)")
     #ax0.plot(τs, 1/(τs + 1)*np.sqrt(2*np.log(2)), label="sandbox function (logistic)")
@@ -163,7 +170,7 @@ def main():
     ax1.plot(νs_gm, np.abs(LEHM_roots_slope), **plot_styles['LEHM'])
     ax1.plot(νs_gm, np.abs(IPLE_roots_slope), **plot_styles['IPLE'])
     ax1.plot(νs_gm, np.abs(PEAK_roots_slope), **plot_styles['PEAK'])
-    ax1.plot(νs_gm, np.abs(MCHF_roots_slope), **plot_styles['MCHF'])
+    ax1.plot(νs_gm, np.abs(TMPL_roots_slope), **plot_styles['TMPL'])
 
     #ax1.set_xlabel("$\\nu/\\nu_s$")
     ax1.set_ylabel("$\\left.d\\left|\\dfrac{\\Delta{\\rm ToA}}{\\sigma}\\right|\\middle/d\\left(\\dfrac{\\nu_s}{\\nu}\\right)\\right.$")
@@ -173,25 +180,41 @@ def main():
     #ax1.set_ylim([-1, 1])
     ax1.legend()
 
-    ax2.plot(νs_gm, np.abs(LEHM_DM), **plot_styles['LEHM'])
-    ax2.plot(νs_gm, np.abs(IPLE_DM), **plot_styles['IPLE'])
-    ax2.plot(νs_gm, np.abs(PEAK_DM), **plot_styles['PEAK'])
-    ax2.plot(νs_gm, np.abs(MCHF_DM), **plot_styles['MCHF'])
+    ax2.plot(νs, np.abs(LEHM_DM), **plot_styles['LEHM'])
+    ax2.plot(νs, np.abs(IPLE_DM), **plot_styles['IPLE'])
+    ax2.plot(νs, np.abs(PEAK_DM), **plot_styles['PEAK'])
+    ax2.plot(νs, np.abs(TMPL_DM), **plot_styles['TMPL'])
 
-    ax2.set_xlabel("$\\nu/\\nu_s$")
-    ax2.set_ylabel("Equivalent |DM| (pc/cm³)")
-    ax2.set_xscale('log')
-    #ax2.set_yscale('log')
-    ax2.set_xlim([0.1, 10])
-    #ax2.set_ylim([-500, 500])
+    ax2.set_ylim([-20, 370])
+    ax2.set_ylabel("$|{\\rm DM}_{\\rm hi-freq}|$ (${\\rm pc}\,{\\rm cm}^{-3}$)")
+
+    ax3.plot(νs_gm, np.abs(LEHM_DM_slope), **plot_styles['LEHM'])
+    ax3.plot(νs_gm, np.abs(IPLE_DM_slope), **plot_styles['IPLE'])
+    ax3.plot(νs_gm, np.abs(PEAK_DM_slope), **plot_styles['PEAK'])
+    ax3.plot(νs_gm, np.abs(TMPL_DM_slope), **plot_styles['TMPL'])
+
+    ax1.set_xlabel("$\\nu/\\nu_s$")
+    ax3.set_xlabel("$\\nu/\\nu_s$")
+    ax3.set_ylabel("$|{\\rm DM}_{\\rm in-band}|$ (${\\rm pc}\,{\\rm cm}^{-3}$)")
+    ax3.set_xscale('log')
+    #ax3.set_yscale('log')
+    ax3.set_xlim([0.1, 10])
+    #ax3.set_ylim([-500, 500])
+
+    ax0.text(0.97, 0.95, "(a)", transform=ax0.transAxes, va='top', ha='right')
+    ax1.text(0.97, 0.95, "(b)", transform=ax1.transAxes, va='top', ha='right')
+    ax2.text(0.97, 0.95, "(c)", transform=ax2.transAxes, va='top', ha='right')
+    ax3.text(0.97, 0.95, "(d)", transform=ax3.transAxes, va='top', ha='right')
 
     plt.setp(ax0.get_xticklabels(), visible=False)
-    plt.setp(ax1.get_xticklabels(), visible=False)
+    plt.setp(ax2.get_xticklabels(), visible=False)
 
     def forward(x): return x**-4
     def inverse(x): return x**-0.25
-    secax = ax0.secondary_xaxis('top', functions=(forward, inverse))
-    secax.set_xlabel("$\\tau/\\sigma$")
+    secax0 = ax0.secondary_xaxis('top', functions=(forward, inverse))
+    secax0.set_xlabel("$\\tau/\\sigma$")
+    secax2 = ax2.secondary_xaxis('top', functions=(forward, inverse))
+    secax2.set_xlabel("$\\tau/\\sigma$")
 
     if args.output_image is not None:
         plt.tight_layout()
