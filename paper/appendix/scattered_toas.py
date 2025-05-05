@@ -3,6 +3,7 @@ from scipy.optimize import root
 from scipy.special import erf, erfc
 from numpy import pi as π
 import matplotlib.pyplot as plt
+from matplotlib.gridspec import GridSpec
 from ctypes import *
 import os
 import argparse
@@ -69,7 +70,7 @@ def main():
     parser.add_argument('--output_image', help='File name of output image. Supports same image formats as "plt.savefig()". If not provided, will plt.show().')
     args = parser.parse_args()
 
-    τs = np.logspace(-3, 3, 500)
+    τs = np.logspace(-4, 4, 500)
     σ = 1
     h = 1
     μ = 0
@@ -89,7 +90,7 @@ def main():
     #LEHM_roots_approx = np.array([root(lambda t: h*σ/τ*np.sqrt(π/2)*np.exp(-0.5*((t-μ)/σ)**2)*erfcx(1/np.sqrt(2)*(σ/τ - (t[0]-μ)/σ)) - 0.5*h*np.exp(-0.5*(np.sqrt(2)*np.sqrt(np.log(τ/σ*np.sqrt(1/(2*π)))) - σ/τ)**2), -0.1).x for τ in τs]).squeeze()
     #LEHM_roots_approx = np.array([root(lambda t: h*σ/τ*np.sqrt(π/2)*np.exp(-0.5*((t-μ)/σ)**2)*erfcx(1/np.sqrt(2)*(σ/τ - (t[0]-μ)/σ)) - 0.5*h*np.exp(-0.5*(np.sqrt(2)*np.sqrt(np.log(τ/σ*np.sqrt(1/(2*π)))))**2), -0.1).x for τ in τs]).squeeze()
     IPLE_roots = np.array([root(lambda t: σ/τ + (t - μ)/σ - (σ/τ)**2*np.sqrt(π/2) * erfcx(1/np.sqrt(2)*(σ/τ - (t[0] - μ)/σ)), -0.1).x for τ in τs]).squeeze()
-    MODE_roots = np.array([emg_mode(h, μ, σ, τ)[0] for τ in τs]).squeeze()
+    PEAK_roots = np.array([emg_mode(h, μ, σ, τ)[0] for τ in τs]).squeeze()
     ts = np.linspace(-10, 10, 1000)
     MCHF_roots = np.array([root(lambda lag: matched_filter(ts, lag, h, μ, σ, τ), 1.0).x for τ in τs]).squeeze()
 
@@ -98,7 +99,7 @@ def main():
 
     _, LEHM_roots_slope = slope_for_logspace_data(νs, LEHM_roots)
     _, IPLE_roots_slope = slope_for_logspace_data(νs, IPLE_roots)
-    _, MODE_roots_slope = slope_for_logspace_data(νs, MODE_roots)
+    _, PEAK_roots_slope = slope_for_logspace_data(νs, PEAK_roots)
     νs_gm, MCHF_roots_slope = slope_for_logspace_data(νs, MCHF_roots)
 
     # Equivalent DM from above slopes. Choose ν_s = 200 MHz and σ = 1 min. Will change later as needed
@@ -109,26 +110,35 @@ def main():
 
     LEHM_DM = (0.5 * νs_gm**3 * LEHM_roots_slope * σ_ref * ν_s**2 / D).to('pc cm-3')
     IPLE_DM = (0.5 * νs_gm**3 * IPLE_roots_slope * σ_ref * ν_s**2 / D).to('pc cm-3')
-    MODE_DM = (0.5 * νs_gm**3 * MODE_roots_slope * σ_ref * ν_s**2 / D).to('pc cm-3')
+    PEAK_DM = (0.5 * νs_gm**3 * PEAK_roots_slope * σ_ref * ν_s**2 / D).to('pc cm-3')
     MCHF_DM = (0.5 * νs_gm**3 * MCHF_roots_slope * σ_ref * ν_s**2 / D).to('pc cm-3')
     #                ^^^^^ Meaning of this is dimensionless ratios ν/ν_s, evaluated at "mid-way" points
 
     # Plots!
+    fig = plt.figure(figsize=(4.5, 7))
+    gs = GridSpec(3, 1, hspace=0)
+    ax0 = fig.add_subplot(gs[0])
+    ax1 = fig.add_subplot(gs[1], sharex=ax0)
+    ax2 = fig.add_subplot(gs[2], sharex=ax0)
 
-    fig, axs = plt.subplots(nrows=3, ncols=1, figsize=(6,10))
+    # Define some colors, linestyles, etc
+    colors = {'LEHM': 'tab:blue', 'IPLE': 'tab:blue', 'PEAK': 'tab:red', 'MCHF': 'tab:red'} # Using color to indicate whether ΔToA is positive or negative
+    linestyles = {'LEHM': '--', 'IPLE': '-', 'PEAK': '-', 'MCHF': '--'} # Using linestyle to indicate whether ΔToA is better or worse, for the given sign
+    plot_styles = {
+        'LEHM': {'c': 'tab:blue', 'ls': '--', 'label': 'Leading edge at half max (LEHM)'},
+        'IPLE': {'c': 'tab:blue', 'ls': '-' , 'label': 'Inflection point on leading edge (IPLE)'},
+        'PEAK': {'c': 'tab:red',  'ls': '-' , 'label': 'Peak position (PEAK)'},
+        'MCHF': {'c': 'tab:red',  'ls': '--', 'label': 'Matched filter (MCHF)'},
+    }
 
-    # Define some colors, linestyles
-    colors = {'LEHM': 'blue', 'IPLE': 'blue', 'MODE': 'red', 'MCHF': 'red'} # Using color to indicate whether ΔToA is positive or negative
-    linestyles = {'LEHM': '--', 'IPLE': '-', 'MODE': '-', 'MCHF': '--'} # Using linestyle to indicate whether ΔToA is better or worse, for the given sign
-
-    axs[0].plot(τs, np.abs(LEHM_roots), c=colors['LEHM'], ls=linestyles['LEHM'], label="Leading edge at half max (LEHM)")
-    axs[0].plot(τs, np.abs(IPLE_roots), c=colors['IPLE'], ls=linestyles['IPLE'], label="Inflection point on leading edge (IPLE)")
-    axs[0].plot(τs, np.abs(MODE_roots), c=colors['MODE'], ls=linestyles['MODE'], label="Mode")
-    axs[0].plot(τs, np.abs(MCHF_roots), c=colors['MCHF'], ls=linestyles['MCHF'], label="Matched filter")
-    #axs[0].plot(τs, np.full(τs.shape, np.sqrt(2*np.log(2))), 'k--', alpha=0.2, label="expected max deviation")
-    #axs[0].plot(τs, -(np.arctan(np.log(τs)) - π/2)*np.sqrt(2*np.log(2))/π, label="sandbox function (arctan)")
-    #axs[0].plot(τs, 1/(τs + 1)*np.sqrt(2*np.log(2)), label="sandbox function (logistic)")
-    #axs[0].plot(τs, 4*τs**(-0.97), 'k--', alpha=0.2)
+    ax0.plot(νs, np.abs(LEHM_roots), **plot_styles['LEHM'])
+    ax0.plot(νs, np.abs(IPLE_roots), **plot_styles['IPLE'])
+    ax0.plot(νs, np.abs(PEAK_roots), **plot_styles['PEAK'])
+    ax0.plot(νs, np.abs(MCHF_roots), **plot_styles['MCHF'])
+    #ax0.plot(τs, np.full(τs.shape, np.sqrt(2*np.log(2))), 'k--', alpha=0.2, label="expected max deviation")
+    #ax0.plot(τs, -(np.arctan(np.log(τs)) - π/2)*np.sqrt(2*np.log(2))/π, label="sandbox function (arctan)")
+    #ax0.plot(τs, 1/(τs + 1)*np.sqrt(2*np.log(2)), label="sandbox function (logistic)")
+    #ax0.plot(τs, 4*τs**(-0.97), 'k--', alpha=0.2)
 
     #######
     # A quick test of asymptotic behaviour of LEHM
@@ -137,46 +147,55 @@ def main():
     #arg = Zs/np.sqrt(2)
     #τ_σ = (Zs*erfc(-arg) + np.sqrt(2/π) * np.exp(-arg**2)) / erf(arg)
     #τ_σ = 1/np.array([(erfcx(arg[i]) - np.exp(arg[i]**2))/(Zs[i]*erfcx(arg[i]) - 2*Zs[i]*np.exp(arg[i]**2) - 2) for i in range(len(Zs))])
-    #axs[0].plot(τ_σ, Zs, 'k--', label="Asymptote (LEHM)")
-    #axs[0].plot(τ_σ, 1/τ_σ, 'g--')
+    #ax0.plot(τ_σ, Zs, 'k--', label="Asymptote (LEHM)")
+    #ax0.plot(τ_σ, 1/τ_σ, 'g--')
     #
     #
     #######
 
-    axs[0].set_xscale('log')
-    axs[0].set_yscale('log')
-    #axs[0].ylim([None, 4])
-    axs[0].set_xlabel("$\\tau/\\sigma$")
-    axs[0].set_ylabel("$\\dfrac{|\\Delta{\\rm ToA}|}{\\sigma}$")
-    axs[0].legend()
+    ax0.set_xscale('log')
+    ax0.set_yscale('log')
+    #ax0.set_xlim([1e-4, 1e4])
+    #ax0.set_xlabel("$\\tau/\\sigma$")
+    ax0.set_ylabel("$\\dfrac{|\\Delta{\\rm ToA}|}{\\sigma}$")
+    #ax0.legend()
 
-    axs[1].plot(νs_gm, np.abs(LEHM_roots_slope), c=colors['LEHM'], ls=linestyles['LEHM'], label="Leading edge at half max (LEHM)")
-    axs[1].plot(νs_gm, np.abs(IPLE_roots_slope), c=colors['IPLE'], ls=linestyles['IPLE'], label="Left inflection point")
-    axs[1].plot(νs_gm, np.abs(MODE_roots_slope), c=colors['MODE'], ls=linestyles['MODE'], label="Mode")
-    axs[1].plot(νs_gm, np.abs(MCHF_roots_slope), c=colors['MCHF'], ls=linestyles['MCHF'], label="Matched filter")
+    ax1.plot(νs_gm, np.abs(LEHM_roots_slope), **plot_styles['LEHM'])
+    ax1.plot(νs_gm, np.abs(IPLE_roots_slope), **plot_styles['IPLE'])
+    ax1.plot(νs_gm, np.abs(PEAK_roots_slope), **plot_styles['PEAK'])
+    ax1.plot(νs_gm, np.abs(MCHF_roots_slope), **plot_styles['MCHF'])
 
-    axs[1].set_xlabel("$\\nu/\\nu_s$")
-    axs[1].set_ylabel("$\\left.d\\left|\\dfrac{\\Delta{\\rm ToA}}{\\sigma}\\right|\\middle/d\\left(\\dfrac{\\nu_s}{\\nu}\\right)\\right.$")
-    axs[1].set_xscale('log')
-    axs[1].set_yscale('log')
-    #axs[1].set_xlim([0.1, 10])
-    #axs[1].set_ylim([-1, 1])
+    #ax1.set_xlabel("$\\nu/\\nu_s$")
+    ax1.set_ylabel("$\\left.d\\left|\\dfrac{\\Delta{\\rm ToA}}{\\sigma}\\right|\\middle/d\\left(\\dfrac{\\nu_s}{\\nu}\\right)\\right.$")
+    ax1.set_xscale('log')
+    ax1.set_yscale('log')
+    #ax1.set_xlim([0.1, 10])
+    #ax1.set_ylim([-1, 1])
+    ax1.legend()
 
-    axs[2].plot(νs_gm, np.abs(LEHM_DM), c=colors['LEHM'], ls=linestyles['LEHM'])
-    axs[2].plot(νs_gm, np.abs(IPLE_DM), c=colors['IPLE'], ls=linestyles['IPLE'])
-    axs[2].plot(νs_gm, np.abs(MODE_DM), c=colors['MODE'], ls=linestyles['MODE'])
-    axs[2].plot(νs_gm, np.abs(MCHF_DM), c=colors['MCHF'], ls=linestyles['MCHF'])
+    ax2.plot(νs_gm, np.abs(LEHM_DM), **plot_styles['LEHM'])
+    ax2.plot(νs_gm, np.abs(IPLE_DM), **plot_styles['IPLE'])
+    ax2.plot(νs_gm, np.abs(PEAK_DM), **plot_styles['PEAK'])
+    ax2.plot(νs_gm, np.abs(MCHF_DM), **plot_styles['MCHF'])
 
-    axs[2].set_xlabel("$\\nu/\\nu_s$")
-    axs[2].set_ylabel("Equivalent |DM| (pc/cm³)")
-    axs[2].set_xscale('log')
-    #axs[2].set_yscale('log')
-    #axs[2].set_xlim([0.1, 10])
-    #axs[2].set_ylim([-500, 500])
+    ax2.set_xlabel("$\\nu/\\nu_s$")
+    ax2.set_ylabel("Equivalent |DM| (pc/cm³)")
+    ax2.set_xscale('log')
+    #ax2.set_yscale('log')
+    ax2.set_xlim([0.1, 10])
+    #ax2.set_ylim([-500, 500])
+
+    plt.setp(ax0.get_xticklabels(), visible=False)
+    plt.setp(ax1.get_xticklabels(), visible=False)
+
+    def forward(x): return x**-4
+    def inverse(x): return x**-0.25
+    secax = ax0.secondary_xaxis('top', functions=(forward, inverse))
+    secax.set_xlabel("$\\tau/\\sigma$")
 
     if args.output_image is not None:
         plt.tight_layout()
-        plt.savefig("foo.png")
+        plt.savefig(args.output_image)
     else:
         plt.show()
 
