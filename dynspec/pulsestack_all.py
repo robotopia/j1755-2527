@@ -27,7 +27,7 @@ def main():
 
     ephemeris = get_J1755_ephemeris()
 
-    fig, axs = plt.subplots(ncols=args.ncols, figsize=(4*args.ncols+1.5,10), squeeze=False)
+    fig, axs = plt.subplots(ncols=args.ncols, figsize=(4*args.ncols+1.5,12), squeeze=False)
     yticks = [[] for i in range(args.ncols)]
     ylabels = [[] for i in range(args.ncols)]
     #cmap = colormaps[args.colormap]
@@ -99,11 +99,11 @@ def main():
             phases = phases[mask]
             lightcurve = lightcurve[mask]
 
-        axs[0][col].plot(phases*ephemeris['period'], lightcurve/np.nanmax(lightcurve) + ys[col], 'k')
+        axs[0][col].plot(phases*ephemeris['period'], 0.9*lightcurve/np.nanmax(lightcurve) + ys[col], 'k', lw=0.5, alpha=0.5)
         ph_fine = np.linspace(phases[0], phases[-1], 1000)
         y = pulse_model(ph_fine, A, μ, 0, 0, σ)
         ynorm = y / np.nanmax(y)
-        axs[0][col].plot(ph_fine*ephemeris['period'], ynorm + ys[col], 'b--')
+        axs[0][col].plot(ph_fine*ephemeris['period'], 0.9*ynorm + ys[col], 'b--')
         yticks[col].append(ys[col])
         ylabels[col].append(f"{times[0].iso[:16]}\n{dat['TELESCOPE']}")#\n(Pulse #{int(np.round(np.median(pulses)))})")
         ys[col] += 1
@@ -114,9 +114,9 @@ def main():
         axs[0][col].set_xlabel("Time (s)")
         if args.xlim:
             axs[0][col].set_xlim(args.xlim)
-        axs[0][col].set_ylim([-1, ys[col]+1])
+        axs[0][col].set_ylim([-0.5, ys[col]+0.5])
         axs[0][col].axvline(0, ls='--', alpha=0.5, c='r', zorder=-100)
-    axs[0][0].set_ylabel("ObsID")
+    axs[0][0].set_ylabel("Observation start time (UTC)")
 
     if args.grid:
         plt.grid(axis='x')
