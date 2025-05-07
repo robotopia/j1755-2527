@@ -36,13 +36,6 @@ $$
 {\rm emg}(t_m) = h \exp \left(-\frac{1}{2} \left(\frac{t_m - \mu}{\sigma}\right)^2\right)
 $$
 
-$$
-\begin{aligned}
-\frac{d(t_m/\sigma)}{d(\tau/\sigma)}
-    &= -\frac{2}{\sqrt{\pi}} {\rm erfcxinv^\prime\left(\frac{\tau}{\sigma} \sqrt{\frac{2}{\pi}}\right)} - \left(\frac{\sigma}{\tau}\right)^2 \\
-    &= \frac{1}{ \frac{t_m - \mu}{\sigma}}\frac{\sigma}{\tau} - \left(\frac{\sigma}{\tau}\right)^2
-\end{aligned}
-$$
 
 ## Derivatives (and other useful properties)
 
@@ -178,6 +171,24 @@ $$
 
 bool(diff(emg(t), t, 2) == -h/tau/sigma*exp(-1/2*z^2)*(sigma/tau + z - (sigma/tau)^2*sqrt(pi/2)*erfcx(Z/sqrt(2))))
 ```
+
+### Mode
+
+$$
+\begin{aligned}
+\frac{d(t_m/\sigma)}{d(\tau/\sigma)}
+    &= -\frac{2}{\sqrt{\pi}} {\rm erfcxinv^\prime\left(\frac{\tau}{\sigma} \sqrt{\frac{2}{\pi}}\right)} - \left(\frac{\sigma}{\tau}\right)^2 \\
+    &= \frac{1}{ \frac{t_m - \mu}{\sigma}}\frac{\sigma}{\tau} - \left(\frac{\sigma}{\tau}\right)^2
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+\frac{d^2(t_m/\sigma)}{d(\tau/\sigma)^2}
+    &= -\frac{1}{ \left(\frac{t_m - \mu}{\sigma}\right)^2}\left(\frac{1}{ \frac{t_m - \mu}{\sigma}}\frac{\sigma}{\tau} - \left(\frac{\sigma}{\tau}\right)^2\right)\frac{\sigma}{\tau} - \frac{1}{ \frac{t_m - \mu}{\sigma}} \left(\frac{\sigma}{\tau}\right)^2 + 2\left(\frac{\sigma}{\tau}\right)^3 \\
+    &= -\frac{1}{ \left(\frac{t_m - \mu}{\sigma}\right)^3}\left(\frac{\sigma}{\tau}\right)^2 + \frac{1}{ \left(\frac{t_m - \mu}{\sigma}\right)^2}\left(\frac{\sigma}{\tau}\right)^3 - \frac{1}{ \frac{t_m - \mu}{\sigma}} \left(\frac{\sigma}{\tau}\right)^2 + 2\left(\frac{\sigma}{\tau}\right)^3
+\end{aligned}
+$$
 
 ## Defining ToAs on scattered pulses
 

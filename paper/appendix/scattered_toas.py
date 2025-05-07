@@ -70,7 +70,7 @@ def main():
     parser.add_argument('--output_image', help='File name of output image. Supports same image formats as "plt.savefig()". If not provided, will plt.show().')
     args = parser.parse_args()
 
-    τs = np.logspace(-4, 4, 500)
+    τs = np.logspace(-4, 4, 501)
     σ = 1
     h = 1
     μ = 0
@@ -96,11 +96,17 @@ def main():
 
     # Get the rate of change per frequency (relative to the frequency at which τ=σ)
     νs = τs**-0.25
+    τs_gm = np.sqrt(τs[1:]*τs[:-1])
+    one_idx = len(τs)//2
 
     _, LEHM_roots_slope = slope_for_logspace_data(νs, LEHM_roots)
     _, IPLE_roots_slope = slope_for_logspace_data(νs, IPLE_roots)
     _, PEAK_roots_slope = slope_for_logspace_data(νs, PEAK_roots)
     νs_gm, TMPL_roots_slope = slope_for_logspace_data(νs, TMPL_roots)
+
+    print(f'{τs_gm[one_idx] = }')
+    print(f'{np.log(PEAK_roots[one_idx]/PEAK_roots[one_idx-1])/np.log(τs[one_idx]/τs[one_idx-1]) = }')
+    print(f'{np.log(PEAK_roots_slope[one_idx]/PEAK_roots_slope[one_idx-1])/np.log(τs[one_idx]/τs[one_idx-1]) = }')
 
     # Equivalent DM from above slopes. Choose ν_s = 200 MHz and σ = 1 min. Will change later as needed
     import astropy.units as u
@@ -144,9 +150,12 @@ def main():
     ax0.plot(νs, np.abs(TMPL_roots), **plot_styles['TMPL'])
     #ax0.plot(νs, τs, 'k')
     #ax0.plot(νs, np.sqrt(np.log(τs**2/2/π)) + 1/τs, 'g')
-    ax0.plot(νs, np.exp(-0.360440368132497 + 0.206684133125372*np.log(τs) + 0.185148765236309*np.log(τs)**2), 'g')
-    print(f'{erfcxinv(np.sqrt(2/π)) = }')
-    print(f'{emg_mode(h, μ, σ, 1)[0] = }')
+    #A = 0.983609933711519
+    #B = -0.624608147601429
+    #C = -1.13780849255619
+    #ax0.plot(νs, np.exp(A*np.sqrt(np.log(τs) + B) + C), 'g')
+    #print(f'{erfcxinv(np.sqrt(2/π)) = }')
+    #print(f'{emg_mode(h, μ, σ, 1)[0] = }')
     #print(f'{erfcx(0) = }')
     #ax0.plot(τs, np.full(τs.shape, np.sqrt(2*np.log(2))), 'k--', alpha=0.2, label="expected max deviation")
     #ax0.plot(τs, -(np.arctan(np.log(τs)) - π/2)*np.sqrt(2*np.log(2))/π, label="sandbox function (arctan)")
