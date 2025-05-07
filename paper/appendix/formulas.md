@@ -66,7 +66,7 @@ $$
 
 $$
 \frac{d^2}{dt^2}{\rm erfcxinv}(t)
-    = -\frac{2{\rm erfcxinv}(t)\left(2t\,{\rm erfcxinv}(t) - \frac{2}{\sqrt{\pi}}\right) + 1}{\left(2t\,{\rm erfcxinv}(t) - \frac{2}{\sqrt{\pi}}\right)^3}
+    = -\frac{2{\rm erfcxinv}(t)\left(2t\,{\rm erfcxinv}(t) - \frac{2}{\sqrt{\pi}}\right) + 2t}{\left(2t\,{\rm erfcxinv}(t) - \frac{2}{\sqrt{\pi}}\right)^3}
 $$
 
 $$
