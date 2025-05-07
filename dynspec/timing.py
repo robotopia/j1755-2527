@@ -6,7 +6,7 @@ from astropy.io import fits
 from astropy.time import Time
 from astropy.coordinates import SkyCoord, EarthLocation
 import sys
-#from mwa_pb_lookup.lookup_beam import beam_lookup_1d
+from mwa_pb_lookup.lookup_beam import beam_lookup_1d
 
 π = np.pi
 
