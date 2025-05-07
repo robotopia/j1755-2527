@@ -344,7 +344,7 @@ The main conclusions are summarized in \S\ref{sec:conclusions}.
    GPM J1839-10               & 22.0 & \citet{2023Natur.619..487H} \\
    ASKAP J1832-0911           & 44.3 & \todo{Wang} \\
    ASKAP J193505.1+214841.0   & 53.8 & \citet{2024NatAs...8.1159C} \\
-   ASKAP J175534.9-252749.1   & 69.8 & \citet{2024MNRAS.535..909D} \\
+   ASKAP J175534.9-252749.1   & 69.8 & \citetalias{2024MNRAS.535..909D} \\
    GCRT J1745-3009            & 77.0 & \citet{2005Natur.434...50H} \\
    ILT J1101+5521             & 126  & \citet{2024arXiv240811536D} \\
    GLEAM-X J0704-37           & 175  & \citet{2024arXiv240815757H} \\
@@ -415,7 +415,7 @@ The observations included in this paper were made at the Murchison Widefield Arr
   60592 - 60602 & MWA & D0042 & 200.32 & 30.72 & 16 \\
   60602 & MeerKAT & & 812.8 & 495.3 & 1 \\
   \enddata
-  \tablenotetext{a}{Original discovery \citep{2024MNRAS.535..909D}}
+  \tablenotetext{a}{Original discovery \citepalias{2024MNRAS.535..909D}}
 \end{deluxetable*}
 
 \section{Analysis \& results} \label{sec:analysis}
@@ -433,7 +433,7 @@ Generally, the low-frequency (MWA) pulses tend
 \end{itemize}
 
 The low-frequency asymmetry is consistent with a scattering time scale of a few tens of seconds at MWA frequencies, which scales to a few tens of milliseconds at 1\,GHz.
-This is in broad agreement with the model predictions of NE2001 ($\tau_{\rm sc,1GHz} = 0.066\,$s) and YMW16 ($\tau_{\rm sc,1 GHz} = 0.075\,$s) at the source's location assuming a DM of 710\,pc\,cm$^{-3}$.
+This is in broad agreement with the model predictions of NE2001 ($\tau_{\rm sc,1GHz} = 0.066\,$s) and YMW16 ($\tau_{\rm sc,1 GHz} = 0.075\,$s) at the source's location assuming the DM value of 710\,pc\,cm$^{-3}$ reported in \citepalias{2024MNRAS.535..909D}.
 
 To account for the asymmetry, we fit exponentially modified Gaussians to each pulse with the form,
 \begin{equation}
@@ -447,14 +447,14 @@ To account for the asymmetry, we fit exponentially modified Gaussians to each pu
 \end{equation}
 where $A$, $\mu$, and $\sigma$ are the height, location, and scale of an unscattered Gaussian pulse, and the scattering time scale was fixed at
 \begin{equation}
-      \tau = 0.07\, \left(\frac{\nu}{\rm GHz}\right)^{-4} \, {\rm s},
+      \tau(\nu) = 0.07\, \left(\frac{\nu}{\rm GHz}\right)^{-4} \, {\rm s},
 \end{equation}
 according to each observation's centre frequency.
 A pulse stack containing all observed pulses and their fits is shown in Fig. \ref{fig:pulsestack}.
 
 \begin{figure*}[tp]
       \centering
-          \includegraphics[width=0.9\linewidth]{pulsestack.pdf}
+          \includegraphics[width=0.95\linewidth]{pulsestack.pdf}
               \caption{Pulsestack of barycentred, dedispersed profiles from the ephemeris. The dashed red vertical line marks zero phase. Baselines have been fitted and subtracted from each lightcurve. The blue dashed lines show (normalised) fitted Gaussians without scattering (see main text for details).}
                   \label{fig:pulsestack}
 \end{figure*}
@@ -463,12 +463,12 @@ For the MeerKAT pulse with two components, we fit only the brighter component.
 
 \subsection{Timing solution} \label{sec:timing}
 
-Because the large scattering time scale at low frequencies significantly distorts the pulse shapes, we identified the times of arrival (ToAs) with the fitted $\mu$ parameter in the fits given in Eq. \eqref{eqn:emg}, which represents the location of the assumed Gaussian pulse before scattering.
+Because the large scattering time scale at low frequencies significantly distorts the pulse shapes, common methods for defining ToAs can potentially result in systematic errors of up to tens of seconds, as discussed in detail in Appendix \ref{app:scattering_dm}.
+These systematic errors set up a degeneracy between DM and scattering time scales that is not easily disambiguated.
 
-The distortion of the pulse shapes at MWA frequencies creates a degeneracy between DM and scattering time scales that is not easily disambiguated.
 This is demonstrated in Fig. \ref{fig:stacked_spectra}, which shows stacked MWA and MeerKAT spectra.
-Without accounting for scattering, the measured DM would significantly exceed the 771\,pc\,cm$^{-3}$ (cyan lines).
-The scattering predicted by Galactic electron density models, however, is sufficient to account for the apparent extra delay.
+The cyan lines show the expected ToAs across the whole observed frequency range if one assumes only a DM measured at higher frequencies, where scattering is negligible.
+The scattering predicted by Galactic electron density models, however, is sufficient to account for the apparent extra delay, as is evidenced by the relatively good agreement with the modelled unscattered pulses with the expected ToAs derived from the ephemeris, illustrated in the pulsestack shown in Fig. \ref{fig:pulsestack}.
 
 \begin{figure}[th]
       \centering
@@ -477,35 +477,117 @@ The scattering predicted by Galactic electron density models, however, is suffic
                   \label{fig:stacked_spectra}
 \end{figure}
 
-The degeneracy between DM and scattering (as well as variations in pulse width and ToA) render the lower frequency pulses less useful for measuring either DM or scattering alone (\todo{see Appendix \dots}).
-Breaking the degeneracy is possible in principle with a much higher S/N average profile than what is possible with the current data set.
-Having said that, we note that fits of Eq. \eqref{eqn:emg} to the brightest MWA pulses where the scattering time scale was left as a free parameter were broadly consistent with the predictions of the NE2001 and YMW16 models.
-
+We therefore identified the times of arrival (ToAs) with the $\mu$ parameter in the fits given in Eq. \eqref{eqn:emg}, which represents the location of the assumed Gaussian pulse before scattering.
 Because the scattering time scale could not be reliably measured for all individual pulses, we obtained ToAs by assuming a fixed scattering time of $\tau_{\rm sc,1 GHz} = 0.07\,$s.
-These ToAs were then barycentred and fit for both period and DM, resulting in the values given in Table \ref{tbl:ephemeris}.
-The measured DM of $771 \pm 27\,{\rm pc}\,{\rm cm}^{-3}$ is slightly higher than, but still consistent with, the in-band measurement of \citetalias{2024MNRAS.535..909D}.
+The pulse parameters from these fits, including their ToAs are given in Table \ref{tbl:toas}.
 
-We also tried fitting a timing model that included a spin-down parameter, and found that it was consistent with zero spin-down to within $1\sigma$.
+\begin{deluxetable*}{ccccc}
+  \tablecaption{Times of arrival and pulse properties\label{tbl:toas}}
+  \tablehead{
+    \colhead{Telescope} & \colhead{$\nu$} & \colhead{ToA} & \colhead{Fluence} & \colhead{$\sigma$} \\
+    & \colhead{(MHz)} & \colhead{(MJD)} & \colhead{($10^3$\,Jy\,s)} & \colhead{(s)}
+  }
+  \startdata
+ASKAP & 1032 & 59965.0425644(45) & 1.03(4) & 29.4(5) \\
+MWA & 170 & 59966.061584(40) & 31.7(7) & 40(7) \\
+MeerKAT & 1284 & 60092.899547(10) & - & 13(1) \\
+MeerKAT & 1284 & 60092.947978(10) & - & 11(1) \\
+MeerKAT & 1284 & 60092.996463(10) & - & 15(1) \\
+MeerKAT & 1284 & 60093.044917(12) & - & 17(1) \\
+MWA & 200 & 60481.637466(65) & 3.0(2) & 24(8) \\
+MWA & 200 & 60485.658977(33) & 1.18(7) & 16(4) \\
+MWA & 200 & 60489.632266(20) & 1.65(6) & 14(2) \\
+MWA & 200 & 60492.588020(24) & 3.12(9) & 14(3) \\
+MWA & 200 & 60496.609639(18) & 2.87(8) & 17(2) \\
+MWA & 200 & 60503.587085(14) & 3.40(8) & 17(2) \\
+ASKAP & 1032 & 60503.634781(17) & 0.13(2) & 15(2) \\
+MWA & 200 & 60506.542809(33) & 1.35(6) & 9(4) \\
+MWA & 200 & 60510.564531(11) & 3.08(7) & 16(1) \\
+MWA & 200 & 60519.528812(29) & 3.1(1) & 14(4) \\
+MWA & 200 & 60522.533028(16) & 3.50(8) & 18(2) \\
+MWA & 200 & 60527.524033(14) & 2.89(7) & 16(2) \\
+MWA & 200 & 60530.528339(16) & 2.90(8) & 17(2) \\
+MWA & 200 & 60537.506042(13) & 3.91(9) & 17(2) \\
+MWA & 200 & 60541.479448(47) & 1.48(9) & 14(5) \\
+MWA & 200 & 60544.483761(15) & 3.91(9) & 20(2) \\
+MWA & 200 & 60551.461625(16) & 3.35(8) & 16(2) \\
+MWA & 185 & 60572.395455(15) & 2.86(7) & 15(2) \\
+MWA & 185 & 60572.443943(21) & 3.01(8) & 16(2) \\
+MWA & 185 & 60572.540824(18) & 2.57(8) & 16(2) \\
+MWA & 185 & 60572.589281(31) & 4.3(2) & 21(4) \\
+MWA & 200 & 60592.456765(27) & 1.63(8) & 19(3) \\
+MWA & 200 & 60592.505159(33) & 1.67(9) & 19(4) \\
+MWA & 200 & 60593.474369(26) & 1.08(6) & 15(3) \\
+MWA & 200 & 60593.522901(46) & 1.3(1) & 19(5) \\
+MWA & 200 & 60594.443484(20) & 1.94(8) & 18(2) \\
+MWA & 200 & 60594.491990(33) & 0.55(5) & 12(4) \\
+MWA & 200 & 60595.461118(29) & 1.53(8) & 19(3) \\
+MWA & 200 & 60595.509617(25) & 0.89(5) & 13(3) \\
+MWA & 200 & 60596.430282(20) & 1.55(7) & 16(2) \\
+MWA & 200 & 60596.478721(23) & 1.65(7) & 17(3) \\
+MWA & 200 & 60597.447846(41) & 0.86(7) & 16(5) \\
+MWA & 200 & 60597.496319(30) & 1.82(9) & 19(3) \\
+MWA & 200 & 60599.434635(17) & 1.28(5) & 13(2) \\
+MWA & 200 & 60599.483121(24) & 1.00(5) & 13(3) \\
+MWA & 200 & 60600.500655(31) & 1.24(7) & 16(4) \\
+MWA & 200 & 60602.438964(32) & 1.9(1) & 21(4) \\
+MWA & 200 & 60602.487394(27) & 1.98(9) & 20(3) \\
+MeerKAT & 813 & 60602.5835731(40) & 0.061(7) & 14.9(4)
+  \enddata
+\end{deluxetable*}
+
+These ToAs were then barycentred and fit for both period and DM, resulting in the values given in Table \ref{tbl:ephemeris}.
+We also tried fitting a timing model that included a spin-down parameter, and found that it was consistent with zero spin-down to within $1\sigma$, and so is not included in the ephemeris.
 
 \begin{table}
   \caption{Timing ephemeris for \src{}}
   \label{tbl:ephemeris}
   \begin{tabular}{lc}
-    \hline
+    \tableline
     Parameter & Value \\
-    \hline
+    \tableline
     Period (s) & $4186.3288 \pm 0.0003$ \\
     PEPOCH (MJD) & $59965.03783 \pm 0.00003$ \\
     DM (pc/cm$^{-3}$) & $771 \pm 27$ \\
-    \hline
+    $\tau_{\rm sc,1 GHz}$ (s) & ${\sim}0.07$\tablenotemark{a} \\
+    \tableline
   \end{tabular}
+ \tablenotetext{a}{Assumed value, degenerate with DM (see main text).}
 \end{table}
+
+The measured DM of $771 \pm 27\,{\rm pc}\,{\rm cm}^{-3}$ is slightly higher than, but still consistent with, the in-band measurement of $710^{+200}_{-180}\,{\rm pc}\,{\rm cm}^{-3}$ given in \citetalias{2024MNRAS.535..909D}.
+Because we have not attempted to simultaneously fit for both DM and scattering timescale, there will remain some small systematic error on this reported DM measurement.
+Breaking the degeneracy is possible in principle with a much higher S/N average profile than what is possible with the current data set.
+
+For planning observations of \src{} at low ($\lesssim 300 MHz$), care should be taken to incorporate scattering into the predicted ToAs.
+The $N$th pulse since PEPOCH is predicted to arrive at the Solar System barycentre at
+\begin{equation}
+    {\rm MJD} = {\rm PEPOCH} + NP + \Delta t_{\rm DM}(\nu) + \Delta t_{\rm sc}(\nu),
+\end{equation}
+where PEPOCH and the period, $P$, are given in Table \ref{tbl:ephemeris},
+\begin{equation}
+    \Delta t_{\rm DM}(\nu) = 4148\,{\rm s} \, \left(\frac{\rm DM}{{\rm pc\,cm}^{-3}}\right) \left(\frac{\nu}{\rm MHz}\right)^{-2}
+\end{equation}
+is the usual dispersion attributed to the interstellar medium, and
+\begin{equation}
+    \Delta t_{\rm sc}(\nu) = -\sqrt{2}\sigma\erfcx^{-1}\left(\frac{\tau(\nu)}{\sigma}\sqrt{\frac{2}{\pi}}\right) + \frac{\sigma^2}{\tau(\nu)}
+    \label{eqn:scattering_delay}
+\end{equation}
+is the amount that the \emph{peak} of the observed pulse is delayed by scattering.
+When calculating this quantity, we recommend using $\sigma = 15\,$s, a typical value for low-frequency pulses (see Table \ref{tbl:ephemeris}).
+At frequencies above $300\,$MHz, $\tau(\nu) \ll \sigma$, and the delay due to scattering, which asymptotically behaves like $\Delta t_{\rm sc}(\nu) \sim \tau$, can be safely neglected.
+At frequencies below $150\,$MHz, the asymptotic behaviour
+\begin{equation}
+    \Delta t_{\rm sc}(\nu) \sim \sigma \sqrt{\ln \left(\frac{\tau^2}{2\pi \sigma^2}\right)} + \frac{\sigma^2}{\tau}
+\end{equation}
+is accurate to within a few seconds.
+At intermediate frequencies, Eq. \eqref{eqn:scattering_delay} should be used directly.
 
 %Following the positive identification of several pulses in the GPM data set, we performed a grid search of periods that would result in an integer number of pulses between two widely spaced pulses.
 %A candidate period of $P = 4186.4 \pm 0.1$ was found for which all detections fell within a narrow window of ${\sim}0.05$ of phase.
 % We further refined this by attempting to phase connect to Dougal's original pulse, and got $4186.33 \pm 0.02$ s, but this needn't be part of the story, since even the above was enough to motivate the MWA campaign that followed.
 %This motivated the follow-up MWA observations (under project code D0042) in which two consecutive pulses ${\sim}4190$ seconds apart were detected without any discernible emission between them, ruling out periods $P/n$, for $n \ge 2$.
-%The lever arm afforded by both the GPM and D0042 detections proved sufficient to phase-connect to the original pulse published by \citet{2024MNRAS.535..909D}, yielding a refined period of $P = 4186.33 \pm 0.02$~s.
+%The lever arm afforded by both the GPM and D0042 detections proved sufficient to phase-connect to the original pulse published by \citetalias{2024MNRAS.535..909D}, yielding a refined period of $P = 4186.33 \pm 0.02$~s.
 
 %We then measured times of arrival (ToAs) of individual pulses.
 %The ASKAP and MWA pulses were morphologically similar and well fit by a simple Gaussian.
@@ -515,7 +597,7 @@ We also tried fitting a timing model that included a spin-down parameter, and fo
 \section{Discussion} \label{sec:discussion}
 
 The precursor burst seen with MeerKAT is apparently unique, and is not visible at other telescopes and frequencies, even after averaging them together to make a single profile.
-The only burst of comparable S/N, and at a similar frequency, in which the dimmer precursor component might be expected to be visible is the original 2023-01-21 ASKAP burst \citep{2024MNRAS.535..909D}, where again it is absent.
+The only burst of comparable S/N, and at a similar frequency, in which the dimmer precursor component might be expected to be visible is the original 2023-01-21 ASKAP burst \citepalias{2024MNRAS.535..909D}, where again it is absent.
 
 The two pulses observed in January 2023 (the original ASKAP pulse and the MWA (IPS) pulse observed the following day) are significantly wider than all other pulses, suggesting that a morphological change occurred between
 
@@ -568,6 +650,9 @@ The two pulses observed in January 2023 (the original ASKAP pulse and the MWA (I
 %% Figure and Table counter will not reset.
 
 \appendix
+
+\section{The effect of scattering on timing}
+\label{app:scattering_dm}
 
 It can be shown that pulses scatter-broadened by a thin screen will appear to the observer as the original pulse convolved with a one-sided exponential kernel with an associated timescale $\tau$ [CITATION].
 For intrinsically Gaussian pulses of scale $\sigma$, the result of this convolution is well described by the \textit{exponentially modified Gaussian} (EMG), as given in Eq. \eqref{eqn:emg}.

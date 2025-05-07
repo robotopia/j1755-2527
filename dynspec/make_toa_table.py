@@ -26,7 +26,7 @@ def main():
         width_precision = int(np.floor(-np.log10(width_err.to('s').value))) + 1
         width_str = f"{width.to('s').value:.{width_precision}f}({int(np.round(width_err.to('s').value*10**(width_precision))):.0f})"
 
-        print(f"{row['telescope']} & {row['freq'].to('MHz').value:.0f} & {toa_str} & {fluence_str} & {width_str}")
+        print(f"{row['telescope']} & {row['freq'].to('MHz').value:.0f} & {toa_str} & {fluence_str} & {width_str} \\\\")
 
 if __name__ == '__main__':
     main()
