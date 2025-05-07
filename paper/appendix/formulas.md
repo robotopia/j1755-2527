@@ -36,6 +36,14 @@ $$
 {\rm emg}(t_m) = h \exp \left(-\frac{1}{2} \left(\frac{t_m - \mu}{\sigma}\right)^2\right)
 $$
 
+$$
+\begin{aligned}
+\frac{d(t_m/\sigma)}{d(\tau/\sigma)}
+    &= -\frac{2}{\sqrt{\pi}} {\rm erfcxinv^\prime\left(\frac{\tau}{\sigma} \sqrt{\frac{2}{\pi}}\right)} - \left(\frac{\sigma}{\tau}\right)^2 \\
+    &= \frac{1}{ \frac{t_m - \mu}{\sigma}}\frac{\sigma}{\tau} - \left(\frac{\sigma}{\tau}\right)^2
+\end{aligned}
+$$
+
 ## Derivatives (and other useful properties)
 
 ### erfc
