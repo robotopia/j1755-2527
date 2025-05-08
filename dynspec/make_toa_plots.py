@@ -37,13 +37,13 @@ def main():
     ncols = 3
     width_ratios = [1, 1, 8]
     fig, axs = plt.subplots(nrows=nrows, ncols=ncols, sharex='col', sharey='row',
-                            gridspec_kw={'width_ratios': width_ratios, 'wspace': 0.03, 'hspace': 0},
-                            figsize=(10,10))
+                            gridspec_kw={'width_ratios': width_ratios,},# 'wspace': 0.03, 'hspace': 0},
+                            figsize=(10,10), constrained_layout=True)
     toa_row, fluence_row, width_row = 0, 1, 2
 
     # Colormap setup
     cmap = plt.cm.rainbow_r
-    norm = PowerNorm(0.3, freq.min().value, 1400)
+    norm = PowerNorm(0.6, 150, 1400)
 
     for col in range(ncols):
         for i in range(len(table['ToA'])):
@@ -86,7 +86,9 @@ def main():
                 axs[i, j].yaxis.tick_right()
 
     # Add shared x label
-    fig.text(0.5, 0.04, 'Time (MJD)', ha='center')
+    #fig.text(0.5, 0.04, 'Time (MJD)', ha='center')
+    #fig.subplots_adjust(bottom=0.15)
+    fig.supxlabel('Time (MJD)                       ', y=0.0, ha='center', fontsize=10)
 
     # Add secondary y-axis for residuals
     def forward(y): return y/ephem['period'].to('s').value
@@ -107,7 +109,7 @@ def main():
     cbar = fig.colorbar(sm, ax=axs[:, -1])
     cbar.set_label(f'Frequency ({freq.unit})')
 
-    plt.tight_layout()
+    #plt.tight_layout()
     plt.savefig(args.output_plot)
     #plt.show()
 
