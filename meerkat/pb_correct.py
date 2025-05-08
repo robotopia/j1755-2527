@@ -36,7 +36,7 @@ print(f"Beam sigma = {sigma}")
 sep = coords_1.separation(coords_2)
 print(f"Distance from pointing centre = {sep.deg} deg")
 
-print(gaussian_1d(sep.deg, 0, sigma.value))
+print(f"Primary beam correction (divide by this): {gaussian_1d(sep.deg, 0, sigma.value)}")
 
 from matplotlib import pyplot as plt
 
