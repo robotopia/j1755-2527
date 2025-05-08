@@ -4,3 +4,4 @@ mwa_source_finder @ git+https://github.com/cplee1/mwa_source_finder.git@dd726230
 git+https://github.com/robotopia/mwa_pb_lookup.git
 pygedm
 h5py
+brokenaxes
