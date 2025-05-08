@@ -1,6 +1,7 @@
 import numpy as np
 import pickle
 import argparse
+from mwa_pb_lookup.lookup_beam import beam_lookup_1d
 from astropy.io import fits
 from timing import *
 
