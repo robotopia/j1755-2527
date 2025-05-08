@@ -34,17 +34,26 @@ def main():
     # Make plots
     nrows = 3
     ncols = 3
-    width_ratios = [1, 3, 5]
+    width_ratios = [1, 1, 8]
     fig, axs = plt.subplots(nrows=nrows, ncols=ncols, sharex='col', sharey='row',
-                            gridspec_kw={'width_ratios': [0.1, 0.1, 0.8], 'wspace': 0.05, 'hspace': 0},
+                            gridspec_kw={'width_ratios': width_ratios, 'wspace': 0.03, 'hspace': 0},
                             figsize=(10,10))
     toa_row, fluence_row, width_row = 0, 1, 2
 
-    point_fmt = {'fmt': 'o', 'ls': 'none', 'capsize': 4, 'markersize': 2}
+    # Colormap setup
+    cmap = plt.cm.viridis
+    norm = plt.Normalize(freq.min().value, freq.max().value)
+    print(norm)
+
     for col in range(ncols):
-        axs[fluence_row, col].errorbar(table['ToA'], table['fluence'], yerr=table['fluence_err'], **point_fmt)
-        axs[width_row, col].errorbar(table['ToA'], table['width'], yerr=table['width_err'], **point_fmt)
-        axs[toa_row, col].errorbar(table['ToA'], phases*ephem['period'].to('s'), yerr=table['ToA_err'].to('s'), **point_fmt)
+        for i in range(len(table['ToA'])):
+            color = cmap(norm(i))
+            point_fmt = {'fmt': 'o', 'ls': 'none', 'capsize': 4, 'markersize': 2, 'color': color, 'ecolor': color}
+            axs[fluence_row, col].errorbar(table['ToA'][i], table['fluence'][i], yerr=table['fluence_err'][i], **point_fmt)
+            axs[width_row, col].errorbar(table['ToA'][i], table['width'][i], yerr=table['width_err'][i], **point_fmt)
+            axs[toa_row, col].errorbar(table['ToA'][i], phases[i]*ephem['period'].to('s'), yerr=table['ToA_err'][i].to('s'), **point_fmt)
+        axs[toa_row, col].axhline(0, ls='--', color='k', alpha=0.2)
+
     axs[fluence_row, 0].set_ylabel(f"Fluence ({table['fluence'].unit})")
     axs[width_row, 0].set_ylabel(f"$\\sigma$ ({table['width'].unit})")
     axs[toa_row, 0].set_ylabel(f"Timing residual (s)")
@@ -77,8 +86,16 @@ def main():
                 axs[i, j].yaxis.tick_right()
 
     # Add shared x label
-    fig.text(0.5, 0.04, 'Time (x)', ha='center')
+    fig.text(0.5, 0.04, 'Time (MJD)', ha='center')
 
+    # Add secondary y-axis for residuals
+    def forward(y): return y/ephem['period'].to('s').value
+    def inverse(y): return y*ephem['period'].to('s').value
+    axs[0, -1].tick_params(axis='y', which='both', right=False, labelright=False)
+    secax = axs[0, -1].secondary_yaxis('right', functions=(forward, inverse))
+    secax.set_ylabel("Rotation phase")
+
+    # Set xlims for each time chunk
     axs[0, 0].set_xlim([59964, 59967])
     axs[0, 1].set_xlim([60092.85, 60093.1])
     axs[0, 2].set_xlim([60475, 60610])
