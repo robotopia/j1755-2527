@@ -1,6 +1,7 @@
 import argparse
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.colors import PowerNorm
 from astropy.table import QTable
 from astropy.time import Time
 from astropy.coordinates import EarthLocation
@@ -41,13 +42,12 @@ def main():
     toa_row, fluence_row, width_row = 0, 1, 2
 
     # Colormap setup
-    cmap = plt.cm.viridis
-    norm = plt.Normalize(freq.min().value, freq.max().value)
-    print(norm)
+    cmap = plt.cm.rainbow_r
+    norm = PowerNorm(0.3, freq.min().value, 1400)
 
     for col in range(ncols):
         for i in range(len(table['ToA'])):
-            color = cmap(norm(i))
+            color = cmap(norm(freq[i].value))
             point_fmt = {'fmt': 'o', 'ls': 'none', 'capsize': 4, 'markersize': 2, 'color': color, 'ecolor': color}
             axs[fluence_row, col].errorbar(table['ToA'][i], table['fluence'][i], yerr=table['fluence_err'][i], **point_fmt)
             axs[width_row, col].errorbar(table['ToA'][i], table['width'][i], yerr=table['width_err'][i], **point_fmt)
@@ -99,6 +99,13 @@ def main():
     axs[0, 0].set_xlim([59964, 59967])
     axs[0, 1].set_xlim([60092.85, 60093.1])
     axs[0, 2].set_xlim([60475, 60610])
+
+    # Add colorbar manually
+    from matplotlib.cm import ScalarMappable
+    sm = ScalarMappable(cmap=cmap, norm=norm)
+    sm.set_array([])
+    cbar = fig.colorbar(sm, ax=axs[:, -1])
+    cbar.set_label(f'Frequency ({freq.unit})')
 
     plt.tight_layout()
     plt.savefig(args.output_plot)
