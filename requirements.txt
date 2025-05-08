@@ -1,4 +1,7 @@
 numpy
 scipy
 mwa_source_finder @ git+https://github.com/cplee1/mwa_source_finder.git@dd726230e075fac04ebc4c515e8bd26bc1398b75
+git+https://github.com/robotopia/mwa_pb_lookup.git
 pygedm
+h5py
+brokenaxes

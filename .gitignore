@@ -176,8 +176,9 @@ paper/main.pdf
 
 # Miscellaneous
 *DM*.pkl
-*_and_*.pkl
+#*_and_*.pkl
 *_and_*.csv
 *.fits
 *.tar.gz
 *.gif
+*.metafits
