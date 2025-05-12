@@ -5,3 +5,4 @@ git+https://github.com/robotopia/mwa_pb_lookup.git
 pygedm
 h5py
 brokenaxes
+jplephem
