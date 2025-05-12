@@ -38,21 +38,42 @@ def main():
     width_ratios = [1, 1, 8]
     fig, axs = plt.subplots(nrows=nrows, ncols=ncols, sharex='col', sharey='row',
                             gridspec_kw={'width_ratios': width_ratios,},# 'wspace': 0.03, 'hspace': 0},
-                            figsize=(10,10), constrained_layout=True)
+                            figsize=(8,6), constrained_layout=True)
     toa_row, fluence_row, width_row = 0, 1, 2
 
     # Colormap setup
     cmap = plt.cm.rainbow_r
-    norm = PowerNorm(0.6, 150, 1400)
+    norm = PowerNorm(0.4, 150, 1400)
+    point_types = {
+        170:  {'label': 'MWA (170 MHz)',      'color': '#CC79A7', 'fmt': '.'},
+        185:  {'label': 'MWA (185 MHz)',      'color': '#F0E442', 'fmt': 'x'},
+        200:  {'label': 'MWA (200 MHz)',      'color': '#D55E00', 'fmt': 's'},
+        813:  {'label': 'MeerKAT (813 MHz)',  'color': '#009E73', 'fmt': '+'},
+        888:  {'label': 'ASKAP (888 MHz)',    'color': '#0072B2', 'fmt': '*'},
+        1284: {'label': 'MeerKAT (1284 MHz)', 'color': '#000000', 'fmt': 'D'},
+    }
 
     for col in range(ncols):
         for i in range(len(table['ToA'])):
-            color = cmap(norm(freq[i].value))
-            point_fmt = {'fmt': 'o', 'ls': 'none', 'capsize': 4, 'markersize': 2, 'color': color, 'ecolor': color}
+            #color = cmap(norm(freq[i].value))
+            rounded_freq = int(np.round(freq[i].value))
+            color = point_types[rounded_freq]['color']
+            fmt = point_types[rounded_freq]['fmt']
+            point_fmt = {
+                'fmt': fmt,
+                'ls': 'none',
+                'capsize': 4,
+                #'markersize': 2,
+                'color': color,
+                'ecolor': color
+            }
             axs[fluence_row, col].errorbar(table['ToA'][i], table['fluence'][i], yerr=table['fluence_err'][i], **point_fmt)
             axs[width_row, col].errorbar(table['ToA'][i], table['width'][i], yerr=table['width_err'][i], **point_fmt)
             axs[toa_row, col].errorbar(table['ToA'][i], phases[i]*ephem['period'].to('s'), yerr=table['ToA_err'][i].to('s'), **point_fmt)
         axs[toa_row, col].axhline(0, ls='--', color='k', alpha=0.2)
+
+    #custom_lines = [
+    #    Line2D([0][0]...
 
     axs[fluence_row, 0].set_ylabel(f"Fluence ({table['fluence'].unit})")
     axs[width_row, 0].set_ylabel(f"$\\sigma$ ({table['width'].unit})")
@@ -103,11 +124,11 @@ def main():
     axs[0, 2].set_xlim([60475, 60610])
 
     # Add colorbar manually
-    from matplotlib.cm import ScalarMappable
-    sm = ScalarMappable(cmap=cmap, norm=norm)
-    sm.set_array([])
-    cbar = fig.colorbar(sm, ax=axs[:, -1])
-    cbar.set_label(f'Frequency ({freq.unit})')
+    #from matplotlib.cm import ScalarMappable
+    #sm = ScalarMappable(cmap=cmap, norm=norm)
+    #sm.set_array([])
+    #cbar = fig.colorbar(sm, ax=axs[:, -1])
+    #cbar.set_label(f'Frequency ({freq.unit})')
 
     #plt.tight_layout()
     plt.savefig(args.output_plot)
