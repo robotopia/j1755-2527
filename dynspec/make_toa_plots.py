@@ -1,7 +1,12 @@
 import argparse
 import numpy as np
+
 import matplotlib.pyplot as plt
 from matplotlib.colors import PowerNorm
+from matplotlib.lines import Line2D
+from matplotlib.ticker import ScalarFormatter
+from matplotlib.gridspec import GridSpec
+
 from astropy.table import QTable
 from astropy.time import Time
 from astropy.coordinates import EarthLocation
@@ -11,7 +16,7 @@ from brokenaxes import brokenaxes
 def main():
     parser = argparse.ArgumentParser(description="Construct a LaTeX table from ToA data (default=toas.ecsv) and print to stdout")
     parser.add_argument('--toas_file', default="toas.ecsv", help="Choose a different input file from the default 'toas.ecsv")
-    parser.add_argument('--output_plot', default="toa_details.pdf", help="Set output plot filename (default='toa_details.pdf')")
+    parser.add_argument('--output_plot', help="Set output plot filename (default: display using plt.show())")
 
     args = parser.parse_args()
 
@@ -36,21 +41,28 @@ def main():
     nrows = 3
     ncols = 3
     width_ratios = [1, 1, 8]
-    fig, axs = plt.subplots(nrows=nrows, ncols=ncols, sharex='col', sharey='row',
-                            gridspec_kw={'width_ratios': width_ratios,},# 'wspace': 0.03, 'hspace': 0},
-                            figsize=(8,6), constrained_layout=True)
+    fig = plt.figure(figsize=(9,5), constrained_layout=True)
+    gs = GridSpec(nrows, ncols, width_ratios=width_ratios, left=0.075, right=0.75, wspace=0.03, hspace=0)
+    axs = np.empty((3, 3), dtype=object)
+    for i in range(3):
+        for j in range(3):
+            axs[i, j] = fig.add_subplot(gs[i, j], sharex=axs[0, j] if i > 0 else None)
+    #fig, axs = plt.subplots(nrows=nrows, ncols=ncols, sharex='col', sharey='row',
+    #                        gridspec_kw={'width_ratios': width_ratios,},# 'wspace': 0.03, 'hspace': 0},
+    #                        figsize=(9,5), constrained_layout=True)
+    #fig.subplots_adjust(right=0.8)
     toa_row, fluence_row, width_row = 0, 1, 2
 
     # Colormap setup
     cmap = plt.cm.rainbow_r
     norm = PowerNorm(0.4, 150, 1400)
     point_types = {
-        170:  {'label': 'MWA (170 MHz)',      'color': '#CC79A7', 'fmt': '.'},
-        185:  {'label': 'MWA (185 MHz)',      'color': '#F0E442', 'fmt': 'x'},
-        200:  {'label': 'MWA (200 MHz)',      'color': '#D55E00', 'fmt': 's'},
-        813:  {'label': 'MeerKAT (813 MHz)',  'color': '#009E73', 'fmt': '+'},
-        888:  {'label': 'ASKAP (888 MHz)',    'color': '#0072B2', 'fmt': '*'},
-        1284: {'label': 'MeerKAT (1284 MHz)', 'color': '#000000', 'fmt': 'D'},
+        170:  {'label': 'MWA (170 MHz)',      'color': '#F0E422', 'marker': '.'},
+        185:  {'label': 'MWA (185 MHz)',      'color': '#009E73', 'marker': '.'},
+        200:  {'label': 'MWA (200 MHz)',      'color': '#0072B2', 'marker': '.'},
+        813:  {'label': 'MeerKAT (813 MHz)',  'color': '#CC79A7', 'marker': 'x'},
+        888:  {'label': 'ASKAP (888 MHz)',    'color': '#D55E00', 'marker': 'o', 'markerfacecolor': 'none'},
+        1284: {'label': 'MeerKAT (1284 MHz)', 'color': '#000000', 'marker': 'x'},
     }
 
     for col in range(ncols):
@@ -58,22 +70,24 @@ def main():
             #color = cmap(norm(freq[i].value))
             rounded_freq = int(np.round(freq[i].value))
             color = point_types[rounded_freq]['color']
-            fmt = point_types[rounded_freq]['fmt']
+            fmt = point_types[rounded_freq]['marker']
+            markerfacecolor = point_types[rounded_freq].get('markerfacecolor')
             point_fmt = {
                 'fmt': fmt,
                 'ls': 'none',
                 'capsize': 4,
                 #'markersize': 2,
                 'color': color,
-                'ecolor': color
+                'ecolor': color,
+                'markerfacecolor': markerfacecolor,
             }
             axs[fluence_row, col].errorbar(table['ToA'][i], table['fluence'][i], yerr=table['fluence_err'][i], **point_fmt)
             axs[width_row, col].errorbar(table['ToA'][i], table['width'][i], yerr=table['width_err'][i], **point_fmt)
             axs[toa_row, col].errorbar(table['ToA'][i], phases[i]*ephem['period'].to('s'), yerr=table['ToA_err'][i].to('s'), **point_fmt)
         axs[toa_row, col].axhline(0, ls='--', color='k', alpha=0.2)
 
-    #custom_lines = [
-    #    Line2D([0][0]...
+    custom_lines = [Line2D([0], [0], **v) for v in point_types.values()]
+    fig.legend(handles=custom_lines, loc='center right', bbox_to_anchor=(1.0, 0.22))
 
     axs[fluence_row, 0].set_ylabel(f"Fluence ({table['fluence'].unit})")
     axs[width_row, 0].set_ylabel(f"$\\sigma$ ({table['width'].unit})")
@@ -122,6 +136,17 @@ def main():
     axs[0, 0].set_xlim([59964, 59967])
     axs[0, 1].set_xlim([60092.85, 60093.1])
     axs[0, 2].set_xlim([60475, 60610])
+    axs[-1, 0].ticklabel_format(useOffset=False, style='plain')
+    axs[-1, 1].ticklabel_format(useOffset=False, style='plain')
+    axs[-1, 2].ticklabel_format(useOffset=False, style='plain')
+    axs[0, 0].set_xticks([])
+    axs[1, 0].set_xticks([])
+    axs[2, 0].set_xticks([59964, 59966])
+    axs[0, 1].set_xticks([])
+    axs[1, 1].set_xticks([])
+    axs[2, 1].set_xticks([60092.9, 60093])
+    axs[-1, 0].tick_params(axis='x', labelrotation=35)
+    axs[-1, 1].tick_params(axis='x', labelrotation=35)
 
     # Add colorbar manually
     #from matplotlib.cm import ScalarMappable
@@ -130,9 +155,15 @@ def main():
     #cbar = fig.colorbar(sm, ax=axs[:, -1])
     #cbar.set_label(f'Frequency ({freq.unit})')
 
-    #plt.tight_layout()
-    plt.savefig(args.output_plot)
-    #plt.show()
+    #formatter = ScalarFormatter(useOffset=True, useMathText=False)
+    #formatter.set_powerlimits((-1000, 1000))  # Prevent scientific notation
+    #axs[-1,0].xaxis.set_major_formatter(formatter)
+
+    if args.output_plot is not None:
+        #plt.tight_layout()
+        plt.savefig(args.output_plot)
+    else:
+        plt.show()
 
 if __name__ == '__main__':
     main()
