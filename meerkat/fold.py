@@ -13,10 +13,10 @@ ephemeris_file = os.getenv("PLANETARY_EPHEMERIS")
 
 ###########################
 
-PEPOCH = Time(59965.03767627493, scale='utc', format='mjd')
-P = 4186.32874813198 * u.s
-DM = 710 * u.pc / u.cm**3
-freq = 1069.89 * u.MHz
+PEPOCH = Time(59965.037908, scale='utc', format='mjd')
+P = 4186.32827 * u.s
+DM = 765 * u.pc / u.cm**3
+freq = 887.5 * u.MHz
 
 ###########################
 
