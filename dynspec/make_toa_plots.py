@@ -42,11 +42,12 @@ def main():
     ncols = 3
     width_ratios = [1, 1, 8]
     fig = plt.figure(figsize=(9,5), constrained_layout=True)
-    gs = GridSpec(nrows, ncols, width_ratios=width_ratios, left=0.075, right=0.75, wspace=0.03, hspace=0)
+    gs = GridSpec(nrows, ncols, figure=fig, width_ratios=width_ratios, left=0.075, right=0.75, wspace=0.03, hspace=0)
     axs = np.empty((3, 3), dtype=object)
     for i in range(3):
         for j in range(3):
-            axs[i, j] = fig.add_subplot(gs[i, j], sharex=axs[0, j] if i > 0 else None)
+            axs[i, j] = fig.add_subplot(gs[i, j],
+                                        sharey=axs[i, 0] if j > 0 else None)
     #fig, axs = plt.subplots(nrows=nrows, ncols=ncols, sharex='col', sharey='row',
     #                        gridspec_kw={'width_ratios': width_ratios,},# 'wspace': 0.03, 'hspace': 0},
     #                        figsize=(9,5), constrained_layout=True)
@@ -133,20 +134,22 @@ def main():
     secax.set_ylabel("Rotation phase")
 
     # Set xlims for each time chunk
-    axs[0, 0].set_xlim([59964, 59967])
-    axs[0, 1].set_xlim([60092.85, 60093.1])
-    axs[0, 2].set_xlim([60475, 60610])
+    for i in range(nrows):
+        axs[i, 0].set_xlim([59964, 59967])
+        axs[i, 1].set_xlim([60092.85, 60093.1])
+        axs[i, 2].set_xlim([60475, 60610])
+        for j in range(ncols):
+            axs[i, j].set_xticks([])
+
+    # Set custom xticks for clarity
+    axs[-1, 0].set_xticks([59964, 59966])
+    axs[-1, 1].set_xticks([60092.9, 60093])
     axs[-1, 0].ticklabel_format(useOffset=False, style='plain')
     axs[-1, 1].ticklabel_format(useOffset=False, style='plain')
-    axs[-1, 2].ticklabel_format(useOffset=False, style='plain')
-    axs[0, 0].set_xticks([])
-    axs[1, 0].set_xticks([])
-    axs[2, 0].set_xticks([59964, 59966])
-    axs[0, 1].set_xticks([])
-    axs[1, 1].set_xticks([])
-    axs[2, 1].set_xticks([60092.9, 60093])
-    axs[-1, 0].tick_params(axis='x', labelrotation=35)
+
+    # And rotate them a bit so that they don't collide
     axs[-1, 1].tick_params(axis='x', labelrotation=35)
+    axs[-1, 0].tick_params(axis='x', labelrotation=35)
 
     # Add colorbar manually
     #from matplotlib.cm import ScalarMappable
