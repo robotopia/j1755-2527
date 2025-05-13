@@ -25,8 +25,24 @@ def main():
         df = dat['BW'] * u.Hz
     nchans = len(f)
 
-    # Yet to finish...
-    # ...
+    f += 0.5*df # A hack because frequencies are labelled as lower edge of channels instead of middle of channels where they should be
+    for pol in "IQUV":
+        S, fmask, tmask = Stokes_ds(dat, pol=pol)
+
+        # Dedispersing requires no nans
+        S[np.isnan(I)] = 0.0
+
+        # Dedisperse
+        f_ref = np.nanmean(f)
+        Sdd = dedisperse_ds(S, src_dm, f, f_ref, dt)
+
+        # Reapply channel flags 
+        if len(fmask) > 0:
+            Idd[:,fmask] = np.nan
+
+
+
+
 
 if __name__ == '__main__':
     main()
