@@ -32,11 +32,6 @@ def main():
     bary_toas_dd = bary_toas - calc_dmdelay(ephem['DM'], freq, np.inf)
     pulses, phases = fold(bary_toas_dd, ephem['period'], ephem['PEPOCH'])
 
-    # Set the 2023 MeerKAT fluences to None --- we don't trust them!
-    mask = (table['telescope'] == 'MeerKAT') & (np.array([d.isocalendar().year for d in toas.to_datetime()]) == 2023)
-    for row_number in np.where(mask)[0]:
-        table[row_number]['fluence'] = np.nan
-
     # Make plots
     nrows = 3
     ncols = 3
