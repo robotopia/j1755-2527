@@ -40,12 +40,12 @@ def main():
     # Make plots
     nrows = 3
     ncols = 3
-    width_ratios = [1, 1, 8]
+    width_ratios = [1, 1, 7, 2]
     fig = plt.figure(figsize=(9,5), constrained_layout=True)
-    gs = GridSpec(nrows, ncols, figure=fig, width_ratios=width_ratios, left=0.075, right=0.75, wspace=0.03, hspace=0)
-    axs = np.empty((3, 3), dtype=object)
-    for i in range(3):
-        for j in range(3):
+    gs = GridSpec(nrows, ncols+1, figure=fig, width_ratios=width_ratios, wspace=0.03, hspace=0)
+    axs = np.empty((nrows, ncols), dtype=object)
+    for i in range(nrows):
+        for j in range(ncols):
             axs[i, j] = fig.add_subplot(gs[i, j],
                                         sharey=axs[i, 0] if j > 0 else None)
     #fig, axs = plt.subplots(nrows=nrows, ncols=ncols, sharex='col', sharey='row',
@@ -88,7 +88,7 @@ def main():
         axs[toa_row, col].axhline(0, ls='--', color='k', alpha=0.2)
 
     custom_lines = [Line2D([0], [0], **v) for v in point_types.values()]
-    fig.legend(handles=custom_lines, loc='center right', bbox_to_anchor=(1.0, 0.22))
+    fig.legend(handles=custom_lines, loc='center right', bbox_to_anchor=(1.0, 0.24))
 
     axs[fluence_row, 0].set_ylabel(f"Fluence ({table['fluence'].unit})")
     axs[width_row, 0].set_ylabel(f"$\\sigma$ ({table['width'].unit})")
@@ -138,10 +138,11 @@ def main():
         axs[i, 0].set_xlim([59964, 59967])
         axs[i, 1].set_xlim([60092.85, 60093.1])
         axs[i, 2].set_xlim([60475, 60610])
-        for j in range(ncols):
-            axs[i, j].set_xticks([])
 
     # Set custom xticks for clarity
+    for i in range(nrows-1):
+        for j in range(ncols):
+            axs[i, j].set_xticks([])
     axs[-1, 0].set_xticks([59964, 59966])
     axs[-1, 1].set_xticks([60092.9, 60093])
     axs[-1, 0].ticklabel_format(useOffset=False, style='plain')
