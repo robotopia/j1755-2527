@@ -11,34 +11,38 @@ def main():
     args = parser.parse_args()
 
     # Hardcode which dynamic spectra we're opening for plotting
-    askap1_dat = np.load('1358297519_askap.pkl', allow_pickle=True)
-    askap2_dat = np.load('1404832334_askap.pkl', allow_pickle=True)
-    meerkat_dat = np.load('1413381294_meerkat.pkl', allow_pickle=True)
+    pkls = ['1358297519_askap.pkl', '1404832334_askap.pkl', '1413381294_meerkat.pkl']
 
-    # Get Stokes I and dedisperse
-    t = Time(dat['TIMES']/86400.0, scale='utc', format='mjd', location=EarthLocation.of_site(dat['TELESCOPE']))
-    dt = t[1] - t[0]
-    f = dat['FREQS'] * u.Hz
-    try:
-        df = f[1] - f[0]
-    except:
-        df = dat['BW'] * u.Hz
-    nchans = len(f)
+    for pkl in pkls:
+        dat = np.load(dat, allow_pickle=True)
 
-    f += 0.5*df # A hack because frequencies are labelled as lower edge of channels instead of middle of channels where they should be
-    for pol in "IQUV":
-        S, fmask, tmask = Stokes_ds(dat, pol=pol)
+        # Get Stokes I and dedisperse
+        t = Time(dat['TIMES']/86400.0, scale='utc', format='mjd', location=EarthLocation.of_site(dat['TELESCOPE']))
+        dt = t[1] - t[0]
+        f = dat['FREQS'] * u.Hz
+        try:
+            df = f[1] - f[0]
+        except:
+            df = dat['BW'] * u.Hz
+        nchans = len(f)
 
-        # Dedispersing requires no nans
-        S[np.isnan(I)] = 0.0
+        f += 0.5*df # A hack because frequencies are labelled as lower edge of channels instead of middle of channels where they should be
+        Ss = {}
+        for pol in "IQUV":
+            S, fmask, tmask = Stokes_ds(dat, pol=pol)
 
-        # Dedisperse
-        f_ref = np.nanmean(f)
-        Sdd = dedisperse_ds(S, src_dm, f, f_ref, dt)
+            # Dedispersing requires no nans
+            S[np.isnan(I)] = 0.0
 
-        # Reapply channel flags 
-        if len(fmask) > 0:
-            Idd[:,fmask] = np.nan
+            # Dedisperse
+            f_ref = np.nanmean(f)
+            Sdd = dedisperse_ds(S, src_dm, f, f_ref, dt)
+
+            # Reapply channel flags 
+            if len(fmask) > 0:
+                Sdd[:,fmask] = np.nan
+
+            Ss[pol] = S
 
 
 
