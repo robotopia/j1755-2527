@@ -110,6 +110,25 @@
 \newcommand{\dd}[2]{\frac{{\rm d^2}{#1}}{{\rm d}{#2}^2}}
 \newcommand{\ToA}[1]{{\rm ToA}_{\rm {#1}}}
 
+%MNRAS style
+\newcommand{\figs}{Figs.}
+\newcommand{\Fig}{Fig.}
+\newcommand{\EFig}{Extended Data Fig.}
+\newcommand{\Figs}{Figs.}
+\newcommand{\sect}{Section}
+\newcommand{\sects}{Sections}
+\newcommand{\Sect}{Section}
+\newcommand{\Sects}{Sections}
+\newcommand{\tab}{Table}
+\newcommand{\tabs}{Tables}
+\newcommand{\Tab}{Table}
+\newcommand{\Tabs}{Tables}
+\newcommand{\eqn}{equation}
+\newcommand{\eqns}{equations}
+\newcommand{\Eqn}{Equation}
+\newcommand{\Eqns}{Equations}
+\newcommand{\etal}{et~al.}
+
 \defcitealias{2024MNRAS.535..909D}{Paper~I}
 
 %% Reintroduced the \received and \accepted commands from AASTeX v5.2
@@ -354,13 +373,65 @@ The main conclusions are summarized in \S\ref{sec:conclusions}.
 
 \section{Observations} \label{sec:observations}
 
-The observations included in this paper were made at the Murchison Widefield Array \citep[MWA;][]{Tingay2013},
-
 \subsection{MWA} \label{sec:mwa}
+
+\src{} was detected blindly with the Murchison Widefield Array \citep[MWA;][]{Tingay2013} in observations taken between June--September 2024 under the ``Galactic Plane Monitor'', project code G0080. The prime objective of the campaign was to search for long-period transients by scanning the Galactic plane over $285^\circ < l < 65^\circ$, $|b|<\pm15^\circ$ on a bi-weekly cadence at 185--215\,MHz (see Methods of \citet{2023Natur.619..487H}); a full description will be released by Hurley-Walker et al., in prep. We also observed over June--September 2022 but made no detections in these data.
+
+We re-imaged the 2024 data at the location of \src{} using \textsc{WSClean}, masking \src{} itself, forming a deep model of the sky. After subtracting this from the visibilities, we phase-rotated to \src{}, and averaged the baseline data to produce a dynamic spectrum.
+% SM to write a 'joining sentence' to explain that the timing analysis was a bit more complicated because of the low frequencies and refer the reader to the relevant section -- SM (memo to self): Not that complicated because DM + tau_sc can be ignored if making ToA predictions solely based on pulses at the target frequency.
+
+% SM: commenting the following out because it's a repeat of above...?
+%The GPM also conducted observations of this region in June--September 2022, but \src{} was not detected, either by a blind search, nor by a re-examination of the data following the methods above.
+
+% NWH to add what went into the followup observations: D0042 (both 185 and 200 MHz). SM
+
+% ** ANGIE **
+% Plz add a short paragraph here with the essential details of the IPS observation included in this paper: G0060, upper half-band only, how the images were made. I'll (SM) add a few sentences about how I selected that observation in the first place.
+An additional MWA observation made as part of the MWA Interplanetary Scintillation (IPS) Survey, project code G0060, has also been included in this present study.
+A full description of how MWA IPS observations are scheduled and processed can be found in Section~2 of \citet{Morgan2022}, whereas here we only provide a brief overview.
+The two adjacent 200-second observations included in this work are a sub-section of a full 10-minute near-Sun observation (30$^{\circ}$ elongation).
+These observations are taken over two equal bands of frequency, centered on approximately 80\,MHz and 160\,MHz. For this study, only the upper band has been processed.
+IPS observations require a short time integration of 0.5\,s, but can allow for a larger frequency resolution of 40\,kHz, which is then averaged to an even higher 160\,kHz during imaging. % SM: TODO: describe various scrunching I did to produce light curve in pulsestack
+The observation was self-calibrated against a sky model based on the GLEAM survey \citep{Hurley-Walker2017} using \textsc{mwa\_hyperdrive}\footnote{\url{https://github.com/MWATelescope/mwa_hyperdrive}}, and then imaged using \textsc{WSClean}.
+
+
+
 
 \subsection{ASKAP} \label{sec:askap}
 
+Paper~1 presented an exhaustive search of the ASKAP data available at the time of writing, comprising 60\,h of data, and yielding only a single detection of \src{} (in Scheduling Block ID 47253). Subsequent to the writing of Paper~1, a further epoch of the VAST survey was performed (SBID 63600) in which \src{} produced a detectable pulsation. We followed a similar procedure as the above to generate dynamic spectra for each of the observations.
+
+
 \subsection{MeerKAT} \label{sec:meerkat}
+
+MeerKAT observations were undertaken on 2024-10-19, under proposal code
+DDT-20241015-NH-01 and capture block 1729341386, using the UHF band spanning 544 -- 1088\,MHz. As well as correlator observations undertaken at 2-s/132.812-kHz resolution, we also employed the Pulsar Timing User Supplied Equipment \citep[PTUSE;][]{2020PASA...37...28B} in search mode, using 37.45-$\mu$s sampling. The observation included typical bandpass, polarisation, and phase calibrators, as well as phase-up and test pulsar observations. \src{} was tracked from 13:54:36 to 14:04:35 UTC.
+
+The correlator data were calibrated using the standard SARAO SDP calibration pipeline, and imaged using \textsc{WSClean}. We formed a deep model of the sources within the primary beam, excepting \src{}, and subtracted this from the visibilities. We then averaged the visibilities, excluding all baselines shorter than 150\,m, to produce a dynamic spectrum of the source, shown in \Fig~\ref{fig:scattering_DM}.
+
+We also re-imaged the original 2023-05-28 L-band MeerKAT observation described in Paper~1, which was taken under project code DDT-20230525-DD-01 under capture block 1685306788. We performed a similar processing of the data, and identified four pulses with TOAs consistent with an ephemeris derived from the other data. The dynamic spectrum of one of the brightest pulses is shown in \Fig~\ref{fig:scattering_DM}.
+
+A summary of all the observations used in this paper is given in \Tab~\ref{tbl:obs}.
+
+\begin{deluxetable*}{lllccc}
+  \tablecaption{Observations summary\label{tbl:obs}}
+  \tablehead{
+    \colhead{Date range} & \colhead{Telescope} & Project & \colhead{$\nu$} & \colhead{$\Delta\nu$} & \colhead{Number of} \\
+    \colhead{(MJD)} & & & \colhead{(MHz)} & \colhead{(MHz)} & \colhead{pulses}
+  }
+  \startdata
+  59965 & ASKAP\tablenotemark{a} & SB47253 & 887.5 & 288 & 1 \\
+  59966 & MWA & G0060 & 161.92 & 15.36 & 1 \\
+  %60084 & MWA & G0057 & 154.24 & 30.72 & $\le$ 1 \\
+  60092 - 60093 & MeerKAT & DDT-20230525-DD-01 & 1284 & 856 & 4 \\
+  60463 - 60563 & MWA & G0080 & 200.32 & 30.72 & 16 \\
+  60503 & ASKAP & SB63600 & 887.5 & 288 & 1 \\
+  60572 & MWA & D0042 & 184.96 & 30.72 & 4 \\
+  60592 - 60602 & MWA & D0042 & 200.32 & 30.72 & 17 \\
+  60602 & MeerKAT & DDT-20241015-NH-01 & 812.8 & 495.3 & 1 \\
+  \enddata
+  \tablenotetext{a}{Original discovery \citepalias{2024MNRAS.535..909D}}
+\end{deluxetable*}
 
 %\begin{deluxetable*}{cccccc}
 %\tablecaption{Pulse detections and non-detections}
@@ -398,26 +469,6 @@ The observations included in this paper were made at the Murchison Widefield Arr
 %\end{deluxetable*}
 
 
-\begin{deluxetable*}{cccccc}
-  \tablecaption{Observations}
-  \tablehead{
-    \colhead{Date range} & \colhead{Telescope} & Project & \colhead{$\nu$} & \colhead{$\Delta\nu$} & \colhead{Number of} \\
-    \colhead{(MJD)} & & & \colhead{(MHz)} & \colhead{(MHz)} & \colhead{pulses}
-  }
-  \startdata
-  59965 & ASKAP\tablenotemark{a} & SB47253 & 887.5 & 288 & 1 \\
-  59966 & MWA & G0060 & 161.92 & 15.36 & 1 \\
-  %60084 & MWA & G0057 & 154.24 & 30.72 & $\le$ 1 \\
-  60092 - 60093 & MeerKAT & & & & 4 \\
-  60463 - 60563 & MWA & G0080 & 200.32 & 30.72 & 18 \\
-  60503 & ASKAP &  & 887.5 & 288 & 1 \\
-  60572 & MWA & D0042 & 184.96 & 30.72 & 4 \\
-  60592 - 60602 & MWA & D0042 & 200.32 & 30.72 & 16 \\
-  60602 & MeerKAT & & 812.8 & 495.3 & 1 \\
-  \enddata
-  \tablenotetext{a}{Original discovery \citepalias{2024MNRAS.535..909D}}
-\end{deluxetable*}
-
 \section{Analysis \& results} \label{sec:analysis}
 
 [Reference for scattering kernels:] \citep{10.1093/mnras/stw1724}.
@@ -439,7 +490,7 @@ To account for the asymmetry, we fit exponentially modified Gaussians to each pu
 \begin{equation}
   \begin{aligned}
         \emg(t) &= A \frac{\sigma}{\tau}\sqrt{\frac{\pi}{2}}
-                   \exp\left(-\frac12 \left( \frac{t - \mu}{\tau} \right)^2 \right) \\
+                   \exp\left(-\frac12 \left( \frac{t - \mu}{\tau} \right)^2 \right) \cdot {} \\
                             &\qquad \erfcx \left(\frac{1}{\sqrt{2}} \left(\frac{\sigma}{\tau}
                              - \frac{t - \mu}{\tau} \right) \right),
   \end{aligned}
@@ -450,7 +501,7 @@ where $A$, $\mu$, and $\sigma$ are the height, location, and scale of an unscatt
       \tau(\nu) = 0.07\, \left(\frac{\nu}{\rm GHz}\right)^{-4} \, {\rm s},
 \end{equation}
 according to each observation's centre frequency.
-A pulse stack containing all observed pulses and their fits is shown in Fig. \ref{fig:pulsestack}.
+A pulse stack containing all observed pulses and the corresponding unscattered pulses derived from the fits is shown in Fig. \ref{fig:pulsestack}.
 
 \begin{figure*}[tp]
       \centering
@@ -479,64 +530,64 @@ The scattering predicted by Galactic electron density models, however, is suffic
 
 We therefore identified the times of arrival (ToAs) with the $\mu$ parameter in the fits given in Eq. \eqref{eqn:emg}, which represents the location of the assumed Gaussian pulse before scattering.
 Because the scattering time scale could not be reliably measured for all individual pulses, we obtained ToAs by assuming a fixed scattering time of $\tau_{\rm sc,1 GHz} = 0.07\,$s.
-The pulse parameters from these fits, including their ToAs are given in Table \ref{tbl:toas}.
 
-\begin{deluxetable*}{ccccc}
-  \tablecaption{Times of arrival and pulse properties\label{tbl:toas}}
-  \tablehead{
-    \colhead{Telescope} & \colhead{$\nu$} & \colhead{ToA} & \colhead{Fluence} & \colhead{$\sigma$} \\
-    & \colhead{(MHz)} & \colhead{(MJD)} & \colhead{($10^3$\,Jy\,s)} & \colhead{(s)}
-  }
-  \startdata
-ASKAP & 1032 & 59965.0425644(45) & 1.03(4) & 29.4(5) \\
-MWA & 170 & 59966.061584(40) & 31.7(7) & 40(7) \\
-MeerKAT & 1284 & 60092.899547(10) & - & 13(1) \\
-MeerKAT & 1284 & 60092.947978(10) & - & 11(1) \\
-MeerKAT & 1284 & 60092.996463(10) & - & 15(1) \\
-MeerKAT & 1284 & 60093.044917(12) & - & 17(1) \\
-MWA & 200 & 60481.637466(65) & 3.0(2) & 24(8) \\
-MWA & 200 & 60485.658977(33) & 1.18(7) & 16(4) \\
-MWA & 200 & 60489.632266(20) & 1.65(6) & 14(2) \\
-MWA & 200 & 60492.588020(24) & 3.12(9) & 14(3) \\
-MWA & 200 & 60496.609639(18) & 2.87(8) & 17(2) \\
-MWA & 200 & 60503.587085(14) & 3.40(8) & 17(2) \\
-ASKAP & 1032 & 60503.634781(17) & 0.13(2) & 15(2) \\
-MWA & 200 & 60506.542809(33) & 1.35(6) & 9(4) \\
-MWA & 200 & 60510.564531(11) & 3.08(7) & 16(1) \\
-MWA & 200 & 60519.528812(29) & 3.1(1) & 14(4) \\
-MWA & 200 & 60522.533028(16) & 3.50(8) & 18(2) \\
-MWA & 200 & 60527.524033(14) & 2.89(7) & 16(2) \\
-MWA & 200 & 60530.528339(16) & 2.90(8) & 17(2) \\
-MWA & 200 & 60537.506042(13) & 3.91(9) & 17(2) \\
-MWA & 200 & 60541.479448(47) & 1.48(9) & 14(5) \\
-MWA & 200 & 60544.483761(15) & 3.91(9) & 20(2) \\
-MWA & 200 & 60551.461625(16) & 3.35(8) & 16(2) \\
-MWA & 185 & 60572.395455(15) & 2.86(7) & 15(2) \\
-MWA & 185 & 60572.443943(21) & 3.01(8) & 16(2) \\
-MWA & 185 & 60572.540824(18) & 2.57(8) & 16(2) \\
-MWA & 185 & 60572.589281(31) & 4.3(2) & 21(4) \\
-MWA & 200 & 60592.456765(27) & 1.63(8) & 19(3) \\
-MWA & 200 & 60592.505159(33) & 1.67(9) & 19(4) \\
-MWA & 200 & 60593.474369(26) & 1.08(6) & 15(3) \\
-MWA & 200 & 60593.522901(46) & 1.3(1) & 19(5) \\
-MWA & 200 & 60594.443484(20) & 1.94(8) & 18(2) \\
-MWA & 200 & 60594.491990(33) & 0.55(5) & 12(4) \\
-MWA & 200 & 60595.461118(29) & 1.53(8) & 19(3) \\
-MWA & 200 & 60595.509617(25) & 0.89(5) & 13(3) \\
-MWA & 200 & 60596.430282(20) & 1.55(7) & 16(2) \\
-MWA & 200 & 60596.478721(23) & 1.65(7) & 17(3) \\
-MWA & 200 & 60597.447846(41) & 0.86(7) & 16(5) \\
-MWA & 200 & 60597.496319(30) & 1.82(9) & 19(3) \\
-MWA & 200 & 60599.434635(17) & 1.28(5) & 13(2) \\
-MWA & 200 & 60599.483121(24) & 1.00(5) & 13(3) \\
-MWA & 200 & 60600.500655(31) & 1.24(7) & 16(4) \\
-MWA & 200 & 60602.438964(32) & 1.9(1) & 21(4) \\
-MWA & 200 & 60602.487394(27) & 1.98(9) & 20(3) \\
-MeerKAT & 813 & 60602.5835731(40) & 0.061(7) & 14.9(4)
-  \enddata
-\end{deluxetable*}
+%\begin{deluxetable*}{ccccc}
+%  \tablecaption{Times of arrival and pulse properties\label{tbl:toas}}
+%  \tablehead{
+%    \colhead{Telescope} & \colhead{$\nu$} & \colhead{ToA} & \colhead{Fluence} & \colhead{$\sigma$} \\
+%    & \colhead{(MHz)} & \colhead{(MJD)} & \colhead{($10^3$\,Jy\,s)} & \colhead{(s)}
+%  }
+%  \startdata
+%ASKAP & 1032 & 59965.0429358(45) & 0.48(2) & 29.1(4) \\
+%MWA & 170 & 59966.061584(40) & 31.7(7) & 40(7) \\
+%MeerKAT & 1284 & 60092.899548(10) & 0.003(3) & 13(1) \\
+%MeerKAT & 1284 & 60092.947966(10) & 0.003(3) & 12(1) \\
+%MeerKAT & 1284 & 60092.996466(11) & 0.005(3) & 16(1) \\
+%MeerKAT & 1284 & 60093.044919(12) & 0.005(4) & 16(1) \\
+%MWA & 200 & 60481.637466(65) & 3.0(2) & 24(8) \\
+%MWA & 200 & 60485.658977(33) & 1.18(7) & 16(4) \\
+%MWA & 200 & 60489.632266(20) & 1.65(6) & 14(2) \\
+%MWA & 200 & 60492.588020(24) & 3.12(9) & 14(3) \\
+%MWA & 200 & 60496.609639(18) & 2.87(8) & 17(2) \\
+%MWA & 200 & 60503.587085(14) & 3.40(8) & 17(2) \\
+%ASKAP & 1032 & 60503.634781(17) & 0.09(1) & 16.6(5) \\
+%MWA & 200 & 60506.542809(33) & 1.35(6) & 9(4) \\
+%MWA & 200 & 60510.564531(11) & 3.08(7) & 16(1) \\
+%MWA & 200 & 60519.528812(29) & 3.1(1) & 14(4) \\
+%MWA & 200 & 60522.533028(16) & 3.50(8) & 18(2) \\
+%MWA & 200 & 60527.524033(14) & 2.89(7) & 16(2) \\
+%MWA & 200 & 60530.528339(16) & 2.90(8) & 17(2) \\
+%MWA & 200 & 60537.506042(13) & 3.91(9) & 17(2) \\
+%MWA & 200 & 60541.479448(47) & 1.48(9) & 14(5) \\
+%MWA & 200 & 60544.483761(15) & 3.91(9) & 20(2) \\
+%MWA & 200 & 60551.461625(16) & 3.35(8) & 16(2) \\
+%MWA & 185 & 60572.395455(15) & 2.86(7) & 15(2) \\
+%MWA & 185 & 60572.443943(21) & 3.01(8) & 16(2) \\
+%MWA & 185 & 60572.540824(18) & 2.57(8) & 16(2) \\
+%MWA & 185 & 60572.589281(31) & 4.3(2) & 21(4) \\
+%MWA & 200 & 60592.456765(27) & 1.63(8) & 19(3) \\
+%MWA & 200 & 60592.505159(33) & 1.67(9) & 19(4) \\
+%MWA & 200 & 60593.474369(26) & 1.08(6) & 15(3) \\
+%MWA & 200 & 60593.522901(46) & 1.3(1) & 19(5) \\
+%MWA & 200 & 60594.443484(20) & 1.94(8) & 18(2) \\
+%MWA & 200 & 60594.491990(33) & 0.55(5) & 12(4) \\
+%MWA & 200 & 60595.461118(29) & 1.53(8) & 19(3) \\
+%MWA & 200 & 60595.509617(25) & 0.89(5) & 13(3) \\
+%MWA & 200 & 60596.430282(20) & 1.55(7) & 16(2) \\
+%MWA & 200 & 60596.478721(23) & 1.65(7) & 17(3) \\
+%MWA & 200 & 60597.447846(41) & 0.86(7) & 16(5) \\
+%MWA & 200 & 60597.496319(30) & 1.82(9) & 19(3) \\
+%MWA & 200 & 60599.434635(17) & 1.28(5) & 13(2) \\
+%MWA & 200 & 60599.483121(24) & 1.00(5) & 13(3) \\
+%MWA & 200 & 60600.500655(31) & 1.24(7) & 16(4) \\
+%MWA & 200 & 60602.438964(32) & 1.9(1) & 21(4) \\
+%MWA & 200 & 60602.487394(27) & 1.98(9) & 20(3) \\
+%MeerKAT & 813 & 60602.5835731(40) & 0.061(7) & 14.9(4)
+  %\enddata
+%\end{deluxetable*}
 
 These ToAs were then barycentred and fit for both period and DM, resulting in the values given in Table \ref{tbl:ephemeris}.
+The residuals are plotted in \ref{fig:pulse_details}, along with the fitted pulse widths and fluences.
 We also tried fitting a timing model that included a spin-down parameter, and found that it was consistent with zero spin-down to within $1\sigma$, and so is not included in the ephemeris.
 
 \begin{table}
@@ -546,16 +597,23 @@ We also tried fitting a timing model that included a spin-down parameter, and fo
     \tableline
     Parameter & Value \\
     \tableline
-    Period (s) & $4186.3288 \pm 0.0003$ \\
-    PEPOCH (MJD) & $59965.03783 \pm 0.00003$ \\
-    DM (pc/cm$^{-3}$) & $771 \pm 27$ \\
+    Period (s) & $4186.3283 \pm 0.0003$ \\
+    PEPOCH (MJD) & $59965.03790 \pm 0.00003$ \\
+    DM (pc/cm$^{-3}$) & $764 \pm 25$ \\
     $\tau_{\rm sc,1 GHz}$ (s) & ${\sim}0.07$\tablenotemark{a} \\
     \tableline
   \end{tabular}
  \tablenotetext{a}{Assumed value, degenerate with DM (see main text).}
 \end{table}
 
-The measured DM of $771 \pm 27\,{\rm pc}\,{\rm cm}^{-3}$ is slightly higher than, but still consistent with, the in-band measurement of $710^{+200}_{-180}\,{\rm pc}\,{\rm cm}^{-3}$ given in \citetalias{2024MNRAS.535..909D}.
+\begin{figure*}[th]
+  \centering
+  \includegraphics[width=0.98\linewidth]{pulse_details.pdf}
+  \caption{Timing residuals (top panel) and other pulse properties derived from the fits of Eq. \eqref{eqn:emg} to the individual light curves (lower two panels). \dots}
+  \label{fig:pulse_details}
+\end{figure*}
+
+The measured DM of $764 \pm 25\,{\rm pc}\,{\rm cm}^{-3}$ is slightly higher than, but still consistent with, the in-band measurement of $710^{+200}_{-180}\,{\rm pc}\,{\rm cm}^{-3}$ given in \citetalias{2024MNRAS.535..909D}.
 Because we have not attempted to simultaneously fit for both DM and scattering timescale, there will remain some small systematic error on this reported DM measurement.
 Breaking the degeneracy is possible in principle with a much higher S/N average profile than what is possible with the current data set.
 
@@ -574,14 +632,14 @@ is the usual dispersion attributed to the interstellar medium, and
     \label{eqn:scattering_delay}
 \end{equation}
 is the amount that the \emph{peak} of the observed pulse is delayed by scattering.
-When calculating this quantity, we recommend using $\sigma = 15\,$s, a typical value for low-frequency pulses (see Table \ref{tbl:ephemeris}).
+When calculating this quantity, we recommend using $\sigma = 15\,$s, a typical value for low-frequency pulses (see Fig. \ref{fig:pulse_details}).
 At frequencies above $300\,$MHz, $\tau(\nu) \ll \sigma$, and the delay due to scattering, which asymptotically behaves like $\Delta t_{\rm sc}(\nu) \sim \tau$, can be safely neglected.
 At frequencies below $150\,$MHz, the asymptotic behaviour
 \begin{equation}
     \Delta t_{\rm sc}(\nu) \sim \sigma \sqrt{\ln \left(\frac{\tau^2}{2\pi \sigma^2}\right)} + \frac{\sigma^2}{\tau}
 \end{equation}
 is accurate to within a few seconds.
-At intermediate frequencies, Eq. \eqref{eqn:scattering_delay} should be used directly.
+At intermediate frequencies ($150\,{\rm MHz} \lesssim \nu \lesssim 300\,{\rm MHz}$), Eq. \eqref{eqn:scattering_delay} should be used directly.
 
 %Following the positive identification of several pulses in the GPM data set, we performed a grid search of periods that would result in an integer number of pulses between two widely spaced pulses.
 %A candidate period of $P = 4186.4 \pm 0.1$ was found for which all detections fell within a narrow window of ${\sim}0.05$ of phase.
