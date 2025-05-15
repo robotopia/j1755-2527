@@ -18,20 +18,20 @@ data = [
         'ds_file': '1358297519_askap.pkl',
         'flip_RM': False,
         'ToA': Time(59965.042934515615, scale='utc', format='mjd'),
-        'xlim': [-200, 200],
+        'xlim': [-150, 150],
     },
     {
         'ds_file': '1404832334_askap.pkl',
         'flip_RM': False,
         'ToA': Time(60503.63475701395, scale='utc', format='mjd'),
-        'xlim': [-200, 200],
+        'xlim': [-150, 150],
     },
     {
         'ds_file': '1413381294_meerkat.pkl',
         'flip_RM': True,
         'baseline': [-0.05087631833089632, -0.010672092754814125],
         'ToA': Time(60602.58357327181, scale='utc', format='mjd'),
-        'xlim': [-265, 135],
+        'xlim': [-200, 100],
     },
 ]
 
@@ -191,6 +191,9 @@ def main():
             try:
                 popt, pcov = fit_RM_to_QU(Qcol, Ucol, f, p0=p0, bounds=bounds)
             except:
+                RMs.append(np.nan)
+                alphas.append(np.nan)
+                alpha_errs.append(np.nan)
                 continue
             errs = np.sqrt(np.diag(pcov))
 
@@ -199,15 +202,15 @@ def main():
             alpha, alpha_err = popt[2], errs[2]
             PA, PA_err = np.divmod(popt[3] + np.pi/2, np.pi)[1] - np.pi/2, errs[3]
 
+            RMs.append(RM)
+            alphas.append(alpha)
+            alpha_errs.append(alpha_err)
             if alpha_err < threshold:
-                RMs.append(RM)
-                alphas.append(alpha)
-                alpha_errs.append(alpha_err)
                 ax_RM.errorbar([t_base[phase_bin].value], [RM], yerr=[RM_err], capsize=2, color='k', fmt='.')
                 ax_al.errorbar([t_base[phase_bin].value], [alpha], yerr=[alpha_err], capsize=2, color='k', fmt='.')
 
         # Choose an RM
-        RM = np.mean(RMs) * u.rad/u.m**2
+        RM = safe_nanmean(RMs) * u.rad/u.m**2
         λ = c/f
         ψ = RM*λ**2
         L = Q + U*1j
@@ -216,12 +219,13 @@ def main():
         Urot = np.imag(Lrot)
 
         ax_RM.axhline(RM.value, c='r', ls='--')
+        print(RM.value)
 
         # Remove baseline from Stokes I, if needed
         I_lc = safe_nanmean(I, axis=-1)
         Q_lc = safe_nanmean(Qrot, axis=-1)
         U_lc = safe_nanmean(Urot, axis=-1)
-        L_lc = np.sqrt(Q**2 + U**2)
+        L_lc = np.sqrt(Q_lc**2 + U_lc**2)
         ψ_lc = 0.5*np.arctan2(U_lc, Q_lc)
         V_lc = safe_nanmean(V, axis=-1)
 
