@@ -98,9 +98,9 @@ def Stokes_ds(dat, pol='I', pb_corr=True):
             for i in range(len(dat['POLS'])):
                 this_pol = dat['POLS'][i]
 
-            if np.all(np.isnan(dat['PB_CORR'][:,i])):
-                print(f"WARNING: PB corrections for {this_pol} are all nans. No correction applied to this pol.")
-                dat['PB_CORR'][:,i] = np.ones(dat['FREQS'].shape)
+                if np.all(np.isnan(dat['PB_CORR'][:,i])):
+                    print(f"WARNING: PB corrections for {this_pol} are all nans. No correction applied to this pol.")
+                    dat['PB_CORR'][:,i] = np.ones(dat['FREQS'].shape)
 
     else:
         # This creates a PB correction field (full of ones) in memory, but doesn't save to disk

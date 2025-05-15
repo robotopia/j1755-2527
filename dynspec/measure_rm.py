@@ -18,20 +18,23 @@ data = [
         'ds_file': '1358297519_askap.pkl',
         'flip_RM': False,
         'ToA': Time(59965.042934515615, scale='utc', format='mjd'),
-        'xlim': [-150, 150],
+        'xlim': [-149, 149],
+        'title': "ASKAP, MJD 59965, 888 MHz",
     },
     {
         'ds_file': '1404832334_askap.pkl',
         'flip_RM': False,
         'ToA': Time(60503.63475701395, scale='utc', format='mjd'),
-        'xlim': [-150, 150],
+        'xlim': [-149, 149],
+        'title': "ASKAP, MJD 60503, 888 MHz",
     },
     {
         'ds_file': '1413381294_meerkat.pkl',
         'flip_RM': True,
         'baseline': [-0.05087631833089632, -0.010672092754814125],
         'ToA': Time(60602.58357327181, scale='utc', format='mjd'),
-        'xlim': [-200, 100],
+        'xlim': [-199, 99],
+        'title': "MeerKAT, MJD 60602, 813 MHz",
     },
 ]
 
@@ -134,10 +137,10 @@ def main():
         print(f'Opening {ds_file}...')
         dat = np.load(ds_file, allow_pickle=True)
 
-        axs_RM.append(fig.add_subplot(gs[0, i],                    sharey=axs_RM[0] if i != 0 else None))
-        axs_al.append(fig.add_subplot(gs[1, i], sharex=axs_RM[-1], sharey=axs_al[0] if i != 0 else None))
-        axs_PA.append(fig.add_subplot(gs[2, i], sharex=axs_RM[-1], sharey=axs_PA[0] if i != 0 else None))
-        axs_lc.append(fig.add_subplot(gs[3:,i], sharex=axs_RM[-1], sharey=axs_lc[0] if i != 0 else None))
+        axs_RM.append(fig.add_subplot(gs[0, i]))
+        axs_al.append(fig.add_subplot(gs[1, i]))
+        axs_PA.append(fig.add_subplot(gs[2, i]))
+        axs_lc.append(fig.add_subplot(gs[3:,i]))
 
         ax_RM = axs_RM[-1]
         ax_PA = axs_PA[-1]
@@ -209,8 +212,12 @@ def main():
                 ax_RM.errorbar([t_base[phase_bin].value], [RM], yerr=[RM_err], capsize=2, color='k', fmt='.')
                 ax_al.errorbar([t_base[phase_bin].value], [alpha], yerr=[alpha_err], capsize=2, color='k', fmt='.')
 
+        # Plot only decent PA points
+        mask = np.array(alpha_errs) < threshold
+
         # Choose an RM
-        RM = safe_nanmean(RMs) * u.rad/u.m**2
+        RM = safe_nanmean(np.array(RMs)[mask]) * u.rad/u.m**2
+        RM_err = np.nanstd(np.array(RMs)[mask]) * u.rad/u.m**2
         λ = c/f
         ψ = RM*λ**2
         L = Q + U*1j
@@ -218,8 +225,8 @@ def main():
         Qrot = np.real(Lrot)
         Urot = np.imag(Lrot)
 
-        ax_RM.axhline(RM.value, c='r', ls='--')
-        print(RM.value)
+        ax_RM.axhline(RM.value, c='r', zorder=-100)
+        #ax_RM.axhspan((RM - RM_err).value, (RM + RM_err).value, color='r', zorder=-1000, alpha=0.2)
 
         # Remove baseline from Stokes I, if needed
         I_lc = safe_nanmean(I, axis=-1)
@@ -234,13 +241,17 @@ def main():
             M, C = data[i]['baseline']
             I_lc -= M*phase + C
 
-        # Plot only decent PA points
-        mask = np.array(alpha_errs) < threshold
-
-        ax_PA.scatter(t_base[mask], np.rad2deg(ψ_lc[mask]), color='k')
+        ax_PA.scatter(t_base[mask], np.rad2deg(ψ_lc[mask]), c='k', s=2)
+        ax_PA.scatter(t_base[mask], np.rad2deg(ψ_lc[mask]) + 180*u.deg, c='k', s=2)
         ax_lc.plot(t_base, I_lc*1e3, color='k')
         ax_lc.plot(t_base, L_lc*1e3, color='r')
         ax_lc.plot(t_base, V_lc*1e3, color='b')
+
+        ax_RM.set_xticks([])
+        ax_PA.set_xticks([])
+        ax_al.set_xticks([])
+
+        ax_RM.set_title(data[i]['title'])
 
         '''
         # Quick inspection of the de-rotated dynamic spectrum
@@ -254,15 +265,26 @@ def main():
         #plot_RM(ax, f, Qcol, Ucol, popt=popt, pcov=pcov, fscrunch_factor=args.fscrunch_factor)
 
         ax_RM.set_ylim([952, 970])
-        ax_PA.set_ylim([-90, 90])
-        ax_al.set_ylim([-5, 0])
+        ax_PA.set_ylim([-90, 270])
+        ax_al.set_ylim([-5, 1])
+        ax_lc.set_ylim([-12, 99])
+        ax_lc.set_xlabel("Time since ToA (s)")
+
+        ax_RM.set_xlim(data[i]['xlim'])
+        ax_PA.set_xlim(data[i]['xlim'])
+        ax_al.set_xlim(data[i]['xlim'])
         ax_lc.set_xlim(data[i]['xlim'])
-        ax_al.set_xlabel("Time since ToA (s)")
 
     axs_RM[0].set_ylabel("RM (rad/m²)")
     axs_PA[0].set_ylabel("PA (deg)")
     axs_lc[0].set_ylabel("Flux density (mJy)")
-    axs_al[0].set_ylabel("Lin. pol. spectral index")
+    axs_al[0].set_ylabel("Lin. pol.\nspectral index")
+
+    axs_PA[0].set_yticks([-90, 0, 90, 180, 270])
+
+    for i in range(1, len(data)):
+        for ax in [axs_RM[i], axs_PA[i], axs_lc[i], axs_al[i]]:
+            ax.set_yticks([])
 
     if args.output_image is not None:
         plt.tight_layout()
