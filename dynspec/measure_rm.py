@@ -13,6 +13,30 @@ from timing import *
 
 import warnings
 
+data = [
+    {
+        'ds_file': '1358297519_askap.pkl',
+        'flip_RM': False,
+        'ToA': Time(59965.042934515615, scale='utc', format='mjd'),
+        'xlim': [-200, 200],
+    },
+    {
+        'ds_file': '1404832334_askap.pkl',
+        'flip_RM': False,
+        'ToA': Time(60503.63475701395, scale='utc', format='mjd'),
+        'xlim': [-200, 200],
+    },
+    {
+        'ds_file': '1413381294_meerkat.pkl',
+        'flip_RM': True,
+        'baseline': [-0.05087631833089632, -0.010672092754814125],
+        'ToA': Time(60602.58357327181, scale='utc', format='mjd'),
+        'xlim': [-265, 135],
+    },
+]
+
+# Hardcoded "baseline", derived from pulsestack_all.py
+
 def safe_nanmean(arr, **kwargs):
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", category=RuntimeWarning)
@@ -40,7 +64,6 @@ def real_L_model(f_MHz, RM, L_1GHz, α, PA_rad):
 def parse_args():
     parser = argparse.ArgumentParser(description="Measure RM")
 
-    parser.add_argument('--ds_files', nargs='*', help="The name of the input .pkl file")
     parser.add_argument('--output_image', help="The filename to use for the average DS image. If not given, will plt.show().")
     parser.add_argument('--fscrunch_factor', type=int, help="Average this many channels together for the output plot")
     parser.add_argument('--bins', type=int, nargs='*', help="Use the specified bins for the RM fit")
@@ -96,16 +119,30 @@ def plot_RM(ax, f, Q, U, popt=None, pcov=None, fscrunch_factor=None):
 
 def main():
     args = parse_args()
-    fig = plt.figure(figsize=(4*len(args.ds_files),5))
-    gs = gridspec.GridSpec(4, len(args.ds_files), figure=fig, hspace=0.0)
+    fig = plt.figure(figsize=(4*len(data),7))
+    gs = gridspec.GridSpec(5, len(data), figure=fig, hspace=0.0, wspace=0.0)
 
-    for i in range(len(args.ds_files)):
-        ds_file = args.ds_files[i]
+    threshold = 1.4 # Alpha measurements with errors less than this are included on plots
+
+    axs_RM = []
+    axs_PA = []
+    axs_lc = []
+    axs_al = []
+
+    for i in range(len(data)):
+        ds_file = data[i]['ds_file']
+        print(f'Opening {ds_file}...')
         dat = np.load(ds_file, allow_pickle=True)
 
-        ax_RM = fig.add_subplot(gs[0, i])
-        ax_PA = fig.add_subplot(gs[1, i], sharex=ax_RM)
-        ax_lc = fig.add_subplot(gs[2:, i], sharex=ax_RM)
+        axs_RM.append(fig.add_subplot(gs[0, i],                    sharey=axs_RM[0] if i != 0 else None))
+        axs_al.append(fig.add_subplot(gs[1, i], sharex=axs_RM[-1], sharey=axs_al[0] if i != 0 else None))
+        axs_PA.append(fig.add_subplot(gs[2, i], sharex=axs_RM[-1], sharey=axs_PA[0] if i != 0 else None))
+        axs_lc.append(fig.add_subplot(gs[3:,i], sharex=axs_RM[-1], sharey=axs_lc[0] if i != 0 else None))
+
+        ax_RM = axs_RM[-1]
+        ax_PA = axs_PA[-1]
+        ax_lc = axs_lc[-1]
+        ax_al = axs_al[-1]
 
         I, fmask, tmask = Stokes_ds(dat, pol='I')
         Q, fmask, tmask = Stokes_ds(dat, pol='Q')
@@ -118,6 +155,7 @@ def main():
 
         t = Time(dat['TIMES']/86400, scale='utc', format='mjd')
         dt = t[1] - t[0]
+        t_base = (t - data[i]['ToA']).to('s')
 
         ephem = get_J1755_ephemeris()
         I[np.isnan(I)] = 0.0
@@ -133,13 +171,21 @@ def main():
         U[:, fmask] = np.nan
         V[:, fmask] = np.nan
 
+        # MeerKAT RM seems to be negative of the others. Compensate by flipping, e.g., Q
+        if data[i]['flip_RM'] == True:
+            Q *= -1
+
+        RMs = []
+        alphas = []
+        alpha_errs = []
+
         for phase_bin in range(len(t)):
             # Get Q and U data from file
             Qcol = Q[phase_bin, :]
             Ucol = U[phase_bin, :]
 
             # Curve fit RM to data
-            p0 = [960, 0.03, -2.4, 0]
+            p0 = [961, 0.03, -2.4, 0]
             bounds = [(-np.inf, 0, -np.inf, -np.inf), (np.inf, np.inf, np.inf, np.inf)]
 
             try:
@@ -153,24 +199,66 @@ def main():
             alpha, alpha_err = popt[2], errs[2]
             PA, PA_err = np.divmod(popt[3] + np.pi/2, np.pi)[1] - np.pi/2, errs[3]
 
-            ax_RM.errorbar([t[phase_bin].mjd], [RM], yerr=[RM_err], capsize=2, color='k', fmt='.')
-            ax_PA.errorbar([t[phase_bin].mjd], [np.rad2deg(PA)], yerr=[PA_err], capsize=2, color='k', fmt='.')
+            if alpha_err < threshold:
+                RMs.append(RM)
+                alphas.append(alpha)
+                alpha_errs.append(alpha_err)
+                ax_RM.errorbar([t_base[phase_bin].value], [RM], yerr=[RM_err], capsize=2, color='k', fmt='.')
+                ax_al.errorbar([t_base[phase_bin].value], [alpha], yerr=[alpha_err], capsize=2, color='k', fmt='.')
 
         # Choose an RM
-        RM = 961 * u.rad/u.m**2
+        RM = np.mean(RMs) * u.rad/u.m**2
         λ = c/f
         ψ = RM*λ**2
         L = Q + U*1j
         Lrot = L*np.exp(-2j*ψ/u.rad)
         Qrot = np.real(Lrot)
         Urot = np.imag(Lrot)
-        ax_lc.plot(t.mjd, np.nanmean(I, axis=-1), color='k')
-        ax_lc.plot(t.mjd, np.sqrt(safe_nanmean(Qrot, axis=-1)**2 + safe_nanmean(Urot)**2), color='r')
+
+        ax_RM.axhline(RM.value, c='r', ls='--')
+
+        # Remove baseline from Stokes I, if needed
+        I_lc = safe_nanmean(I, axis=-1)
+        Q_lc = safe_nanmean(Qrot, axis=-1)
+        U_lc = safe_nanmean(Urot, axis=-1)
+        L_lc = np.sqrt(Q**2 + U**2)
+        ψ_lc = 0.5*np.arctan2(U_lc, Q_lc)
+        V_lc = safe_nanmean(V, axis=-1)
+
+        if 'baseline' in data[i].keys():
+            phase = (t_base / ephem['period']).decompose()
+            M, C = data[i]['baseline']
+            I_lc -= M*phase + C
+
+        # Plot only decent PA points
+        mask = np.array(alpha_errs) < threshold
+
+        ax_PA.scatter(t_base[mask], np.rad2deg(ψ_lc[mask]), color='k')
+        ax_lc.plot(t_base, I_lc*1e3, color='k')
+        ax_lc.plot(t_base, L_lc*1e3, color='r')
+        ax_lc.plot(t_base, V_lc*1e3, color='b')
+
+        '''
+        # Quick inspection of the de-rotated dynamic spectrum
+        fig_ds, axs_ds = plt.subplots(1, 2)
+        axs_ds[0].pcolormesh(Qrot.T)
+        axs_ds[1].pcolormesh(Urot.T)
+        fig_ds.savefig(f'{ds_file}.QU.png')
+        plt.close(fig_ds)
+        '''
 
         #plot_RM(ax, f, Qcol, Ucol, popt=popt, pcov=pcov, fscrunch_factor=args.fscrunch_factor)
 
-        ax_RM.set_ylim([955, 967])
+        ax_RM.set_ylim([952, 970])
         ax_PA.set_ylim([-90, 90])
+        ax_al.set_ylim([-5, 0])
+        ax_lc.set_xlim(data[i]['xlim'])
+        ax_al.set_xlabel("Time since ToA (s)")
+
+    axs_RM[0].set_ylabel("RM (rad/m²)")
+    axs_PA[0].set_ylabel("PA (deg)")
+    axs_lc[0].set_ylabel("Flux density (mJy)")
+    axs_al[0].set_ylabel("Lin. pol. spectral index")
 
     if args.output_image is not None:
         plt.tight_layout()

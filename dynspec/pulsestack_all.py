@@ -90,6 +90,7 @@ def main():
         #p0 = [0, 0, np.max(lightcurve), 0, 10/ephemeris['period'].to('s').value]
         popt, _ = curve_fit(model, phases, lightcurve, p0=p0)
         A, μ, m, c, σ = popt
+        #print(f'{pkl}: {m = }, {c = }')
         lightcurve -= m*phases + c
 
         if len(set(pulses)) != 1:
