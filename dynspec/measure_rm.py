@@ -213,10 +213,14 @@ def main():
                 ax_al.errorbar([t_base[phase_bin].value], [alpha], yerr=[alpha_err], capsize=2, color='k', fmt='.')
 
         # Plot only decent PA points
-        mask = np.array(alpha_errs) < threshold
+        mask = (np.array(alpha_errs) < threshold) & (np.array(alphas) > -10)
+        alphas = np.array(alphas)[mask]
+        print(f'avg(α_L) = {np.nanmean(alphas)} ± {np.nanstd(alphas)}')
 
-        # Choose an RM
-        RM = safe_nanmean(np.array(RMs)[mask]) * u.rad/u.m**2
+        # Choose an RM. Weight the individual RMs by profile
+        weights = safe_nanmean(I, axis=-1)[mask]
+        RM = safe_nanmean(np.array(RMs)[mask] * weights)/np.mean(weights) * u.rad/u.m**2
+        print(f'avg(RM) = {RM} ± {np.nanstd(np.array(RMs)[mask])}')
         RM_err = np.nanstd(np.array(RMs)[mask]) * u.rad/u.m**2
         λ = c/f
         ψ = RM*λ**2
@@ -228,7 +232,6 @@ def main():
         ax_RM.axhline(RM.value, c='r', zorder=-100)
         #ax_RM.axhspan((RM - RM_err).value, (RM + RM_err).value, color='r', zorder=-1000, alpha=0.2)
 
-        # Remove baseline from Stokes I, if needed
         I_lc = safe_nanmean(I, axis=-1)
         Q_lc = safe_nanmean(Qrot, axis=-1)
         U_lc = safe_nanmean(Urot, axis=-1)
@@ -236,6 +239,7 @@ def main():
         ψ_lc = 0.5*np.arctan2(U_lc, Q_lc)
         V_lc = safe_nanmean(V, axis=-1)
 
+        # Remove baseline from Stokes I, if needed
         if 'baseline' in data[i].keys():
             phase = (t_base / ephem['period']).decompose()
             M, C = data[i]['baseline']
@@ -243,9 +247,9 @@ def main():
 
         ax_PA.scatter(t_base[mask], np.rad2deg(ψ_lc[mask]), c='k', s=2)
         ax_PA.scatter(t_base[mask], np.rad2deg(ψ_lc[mask]) + 180*u.deg, c='k', s=2)
-        ax_lc.plot(t_base, I_lc*1e3, color='k')
-        ax_lc.plot(t_base, L_lc*1e3, color='r')
-        ax_lc.plot(t_base, V_lc*1e3, color='b')
+        ax_lc.plot(t_base, I_lc*1e3, color='k', label="Total intensity")
+        ax_lc.plot(t_base, L_lc*1e3, color='r', label="Lin. pol.")
+        ax_lc.plot(t_base, V_lc*1e3, color='b', label="Circ. pol.")
 
         ax_RM.set_xticks([])
         ax_PA.set_xticks([])
@@ -279,6 +283,7 @@ def main():
     axs_PA[0].set_ylabel("PA (deg)")
     axs_lc[0].set_ylabel("Flux density (mJy)")
     axs_al[0].set_ylabel("Lin. pol.\nspectral index")
+    axs_lc[-1].legend()
 
     axs_PA[0].set_yticks([-90, 0, 90, 180, 270])
 
