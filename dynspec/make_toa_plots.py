@@ -15,7 +15,7 @@ from brokenaxes import brokenaxes
 
 def main():
     parser = argparse.ArgumentParser(description="Construct a LaTeX table from ToA data (default=toas.ecsv) and print to stdout")
-    parser.add_argument('--toas_file', default="toas.ecsv", help="Choose a different input file from the default 'toas.ecsv")
+    parser.add_argument('--toas_file', default="toas.ecsv", help="Choose a different input file from the default 'toas.ecsv'")
     parser.add_argument('--output_plot', help="Set output plot filename (default: display using plt.show())")
 
     args = parser.parse_args()
