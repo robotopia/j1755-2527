@@ -131,7 +131,7 @@ def main():
     # Set xlims for each time chunk
     for i in range(nrows):
         axs[i, 0].set_xlim([59964, 59967])
-        axs[i, 1].set_xlim([60092.85, 60093.1])
+        axs[i, 1].set_xlim([60035, 60105])
         axs[i, 2].set_xlim([60475, 60610])
 
     # Set custom xticks for clarity
@@ -139,7 +139,7 @@ def main():
         for j in range(ncols):
             axs[i, j].set_xticks([])
     axs[-1, 0].set_xticks([59964, 59966])
-    axs[-1, 1].set_xticks([60092.9, 60093])
+    axs[-1, 1].set_xticks([60040, 60070, 60100])
     axs[-1, 0].ticklabel_format(useOffset=False, style='plain')
     axs[-1, 1].ticklabel_format(useOffset=False, style='plain')
 
