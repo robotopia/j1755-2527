@@ -365,18 +365,23 @@ We re-imaged the 2024 data at the location of \src{} using \textsc{WSClean}, mas
 % ** ANGIE **
 % Plz add a short paragraph here with the essential details of the IPS observation included in this paper: G0060, upper half-band only, how the images were made. I'll (SM) add a few sentences about how I selected that observation in the first place.
 An additional MWA observation made as part of the MWA Interplanetary Scintillation (IPS) Survey, project code G0060, has also been included in this present study. 
-A full description of how MWA IPS observations are scheduled and processed can be found in Section~2 of \citet{Morgan2022}, whereas here we only provide a brief overview.
+A full description of how MWA IPS observations are scheduled and processed can be found in Section~2 of \citet{Morgan2022}; here, we provide a brief overview.
 The two adjacent 200-second observations included in this work are a sub-section of a full 10-minute near-Sun observation (30$^{\circ}$ elongation).
 These observations are taken over two equal bands of frequency, centered on approximately 80\,MHz and 160\,MHz. For this study, only the upper band has been processed. 
 IPS observations require a short time integration of 0.5\,s, but can allow for a larger frequency resolution of 40\,kHz, which is then averaged to an even higher 160\,kHz during imaging. % SM: TODO: describe various scrunching I did to produce light curve in pulsestack
 The observation was self-calibrated against a sky model based on the GLEAM survey \citep{Hurley-Walker2017} using \textsc{mwa\_hyperdrive}\footnote{\url{https://github.com/MWATelescope/mwa_hyperdrive}}, and then imaged using \textsc{WSClean}.
+% NHW: then phase-rotated and averaged to produce a dynamic spectrum?
 
 
 
 
 \subsection{ASKAP} \label{sec:askap}
 
-Paper~1 presented an exhaustive search of the ASKAP data available at the time of writing, comprising 60\,h of data, and yielding only a single detection of \src{} (in Scheduling Block ID 47253). Subsequent to the writing of Paper~1, a further epoch of the VAST survey was performed (SBID 63600) in which \src{} produced a detectable pulsation. We followed a similar procedure as the above to generate dynamic spectra for each of the observations.
+% NHW to update this in light of new historical discovery of a dim pulse in SB49153.
+
+Paper~1 presented an exhaustive search of the ASKAP data available at the time of writing, comprising 60\,h of data, and yielding only a single detection of \src{} (in Scheduling Block ID 47253). Subsequent to the writing of Paper~1, a further epoch of the VAST survey was performed (SBID 63600) in which \src{} produced a detectable pulsation.
+
+With the re-detection of the source in the MWA data, and the calculation of an ephemeris (\Sect~\ref{sec:analysis}), we re-reduced the data in which we would predict that \src{} would appear. We made one further detection, in SBID~49153, at a relatively low significance ($\sim5\sigma$) compared to the blind detections. We followed a similar procedure as the above to generate dynamic spectra for each of the observations, using a minimum baseline length of 500\,m to suppress uncleaned Galactic diffuse emission.
 
 
 \subsection{MeerKAT} \label{sec:meerkat}
@@ -400,6 +405,7 @@ A summary of all the observations used in this paper is given in \Tab~\ref{tbl:o
   59965 & ASKAP\tablenotemark{a} & SB47253 & 887.5 & 288 & 1 \\
   59966 & MWA & G0060 & 161.92 & 15.36 & 1 \\
   %60084 & MWA & G0057 & 154.24 & 30.72 & $\le$ 1 \\
+  60040  & ASKAP & SB49153 & 887.5 & 288 & 1 \\
   60092 - 60093 & MeerKAT & DDT-20230525-DD-01 & 1284 & 856 & 4 \\
   60463 - 60563 & MWA & G0080 & 200.32 & 30.72 & 16 \\
   60503 & ASKAP & SB63600 & 887.5 & 288 & 1 \\
@@ -515,8 +521,9 @@ Because the scattering time scale could not be reliably measured for all individ
 %    & \colhead{(MHz)} & \colhead{(MJD)} & \colhead{($10^3$\,Jy\,s)} & \colhead{(s)}
 %  } 
 %  \startdata
-%ASKAP & 1032 & 59965.0429358(45) & 0.48(2) & 29.1(4) \\
+%ASKAP & 888 & 59965.0429358(45) & 0.48(2) & 29.1(4) \\
 %MWA & 170 & 59966.061584(40) & 31.7(7) & 40(7) \\
+%ASKAP & 888 & 60040.913447(32) & 0.03(1) & 25(3) \\
 %MeerKAT & 1284 & 60092.899548(10) & 0.003(3) & 13(1) \\
 %MeerKAT & 1284 & 60092.947966(10) & 0.003(3) & 12(1) \\
 %MeerKAT & 1284 & 60092.996466(11) & 0.005(3) & 16(1) \\
@@ -636,7 +643,7 @@ Much more careful analysis would be needed to obtain reliable limits on the pola
 The apparent lack of linear polarisation in the MWA pulses, however, is expected due to the high RM of ${\sim}961\,{\rm rad}/{\rm m}^2$ \citepalias[as reported in][]{2024MNRAS.535..909D}, causing the pulses to be depolarised within individual channels.
 We also report that no significantly circularly polarised emission was seen at MWA frequencies.
 
-The three pulses for which we report significant polarisation are (1) the 2023 ASKAP pulse \citepalias{2024MNRAS.535..909D}, (2) the 2024 ASKAP pulse, and (3) the 2024 MeerKAT pulse.
+The three sufficiently bright pulses for which we report significant polarisation are (1) the original 2023 ASKAP pulse \citepalias{2024MNRAS.535..909D}, (2) the 2024 ASKAP pulse, and (3) the 2024 MeerKAT pulse.
 The high S/N of each time bin allowed us to test whether the rotation measure (RM) was consistent across each pulse.
 We therefore performed a joint fit of the Stokes Q and U spectra of each time bin to
 \begin{equation}
@@ -650,7 +657,7 @@ where
     \mathcal{L}(\nu)
         = L_{\rm 1\,GHz}\left(\frac{\nu}{\rm 1\,GHz}\right)^{\alpha_L} e^{2i({\rm RM}\,\lambda^2 + \psi_0)},
 \end{equation}
-$L_{\rm 1\,GHz}$ is the flux density of the linear polarisation component at 1\,GHz, $\alpha_L$ is the spectral index of the linear component, RM is the rotation measure, $\lambda = c/\nu$ is the wavelength, and $\psi_0$ is the intrinsic polarisation angle.
+$L_{\rm 1\,GHz}$ is the flux density of the linearly polarised component at 1\,GHz, $\alpha_L$ is its spectral index, RM is the rotation measure, $\lambda = c/\nu$ is the wavelength, and $\psi_0$ is the intrinsic polarisation angle.
 The RMs and spectral indices of these fits are shown in the top two rows of panels of Fig. \ref{fig:RM}.
 
 \begin{figure*}[th]
@@ -660,9 +667,15 @@ The RMs and spectral indices of these fits are shown in the top two rows of pane
     \label{fig:RM}
 \end{figure*}
 
-In all cases, the fitted RM was within a few rad/m$^2$ of the value originally derived for the 2023 ASKAP pulse in \citetalias{2024MNRAS.535..909D}.
+We found that the RM derived for the MeerKAT pulse had the opposite sign, but similar magnitude, to the ASKAP pulses, which is most likely due to a different sign convention being used within the two telescopes' pre-processing software.
+The agreement presented in Fig. \ref{fig:RM} was achieved by first negating Stokes Q in the MeerKAT data.
+Any reflection in the Q-U plane (e.g. ${\rm Q} \leftrightarrow -{\rm Q}$, ${\rm U} \leftrightarrow -{\rm U}$, or ${\rm Q} \leftrightarrow {\rm U}$) will achieve a similar correction to the sign of the RM, but different choices will introduce different offsets to the PA.
+Because of this, the MeerKAT PA values should not be directly compared with the ASKAP values.
+The most likely scenario, however, is that the MeerKAT values include an arbitrary offset of $n \times 45^\circ$, for some integer $n$.
+
+In all cases, the magnitude of the fitted RM was within a few rad/m$^2$ of the value originally derived for the 2023 ASKAP pulse in \citetalias{2024MNRAS.535..909D}.
 The RM appears to decrease slightly over the course of the 2023 ASKAP pulse, and \emph{increase} slightly over the course of the two 2024 MeerKAT components; however, all values are consistent with a constant RM across all three pulses.
-The per-pulse weighted averaged values (with weighting proportional to the Stokes I profile) are $962 \pm 1$ (2023 ASKAP), $965 \pm 2$ (2024 ASKAP) and $962 \pm 2$ (2024 MeerKAT).
+The per-pulse weighted averaged values (with weighting proportional to the Stokes I profile) are $962 \pm 1$\,${\rm rad}/{\rm m}^2$ (2023 ASKAP), $965 \pm 2$ (2024 ASKAP) and $962 \pm 2$\,${\rm rad}/{\rm m}^2$ (2024 MeerKAT).
 The spectral index of the linear component, $\alpha_L$, is similarly consistent, with averages value of $-2.1 \pm 0.4$ (2023 ASKAP), $-3.0 \pm 0.6$ (2024 ASKAP) and $-1.9 \pm 0.5$ (2024 MeerKAT).
 
 Each pulse was de-Faraday rotated with the weighted average RM given above, to derive the linear polarisation profile and the PA evolution across the pulses.
@@ -671,10 +684,35 @@ Contrastingly, the PA curve of the 2024 ASKAP pulse is flat (across five 10-seco
 
 \section{Discussion} \label{sec:discussion}
 
-The precursor burst seen with MeerKAT is apparently unique, and is not visible at other telescopes and frequencies, even after averaging them together to make a single profile.
-The only burst of comparable S/N, and at a similar frequency, in which the dimmer precursor component might be expected to be visible is the original 2023-01-21 ASKAP burst \citepalias{2024MNRAS.535..909D}, where again it is absent.
+After accounting for dispersion and scattering effects, the timing analysis of \src{} confirms its status as an LPT, as originally conjectured in \citetalias{2024MNRAS.535..909D}.
+It has the fifth largest period (${\sim}1.16\,$hours) of known published LPTs, after ASKAP J1839$-$0756 \citep[$6.45\,$hours;][]{Lee2025}, GLEAM-X J0704$-$37 \citep[$2.92\,$hours;][]{2024arXiv240815757H, 2025arXiv250103315R}, ILT J1101+5521 \citep[$2.09\,$hours;][]{deRuiter2025}, and GCRT J1745$-$3009 \citep[$1.28\,$hours;][]{2005Natur.434...50H}.
 
-The two pulses observed in January 2023 (the original ASKAP pulse and the MWA (IPS) pulse observed the following day) are significantly wider than all other pulses, suggesting that a morphological change occurred between 
+With the timing solution in hand, we can explore the efficacy of the original follow-up campaign described in \citetalias{2024MNRAS.535..909D}.
+Assuming \src{} remained at a similar brightness (see Fig. \ref{fig:pulse_details}), it should have been detected in two ASKAP observations (2023-04-06 and 2023-10-18) and a few dozen times throughout the MWA's 2022 GPM run (2022-06-02 to 2022-09-08).
+There are also three observations in the earliest part of the 2024 GPM run (one on 2024-06-02 and two on 2024-06-10) in which no pulse was observed.
+However, pulses were detected just ten days later on 2024-06-20 (the first of the MWA 200\,MHz points in Fig. \ref{fig:pulse_details}), and at each epoch thereafter whenever the MWA was observing when a pulse was due to arrive.
+
+We conclude, therefore, that \src{} is intermittent and that the active periods have durations on the order of months.
+Even when the source is ``on'', it can apparently change in brightness by an order of magnitude or more (at a given frequency) in different months.
+This is reminiscent of the behaviour of GLEAM-X J162759.5$-$523504.3, which was observed over a three-month period, but has not been seen again \citep{2022Natur.601..526H}.
+The reappearance of \src{} after so many months suggests the possibility that other known intermittent LPTs (like GLEAM-X J162759.5$-$523504.3 and GCRT J1745$-$3009) may eventually do likewise.
+
+As noted in \citetalias{2024MNRAS.535..909D}, optical follow-up of \src{} is challenging due to its proximity to the Galactic plane ($b = -0.12^\circ$).
+Inferring this nature of the system (white dwarf vs neutron star, isolated vs binary) from the radio pulses alone is challenging, unless either the population of LPTs is better understood as a whole, or if some other property of the radio signal (e.g. intermittency, polarisation) can be linked to the system properties.
+
+\src{} shares several properties similar to ILT J1101+5521 and GLEAM-X J0704$-$37, which are confirmed polars.
+\src{}'s period of ${\sim}1.16\,$hours is marginally shorter than the minimum known orbital period of $1.3\,$hours \citep{schwope2025polarcatcatalogpolarslowaccretion}, making it a good candidate for testing the suggestion put forward by \citet{2025arXiv250103315R} that ``short LPTs'' ($P \lesssim 78\,$mins) and ``long LPTs'' ($P \gtrsim 78\,$mins) represent AM CVns and CVs respectively.
+
+
+\dots
+
+%%%%% Discussion of MeerKAT precursor %%%%%
+%The precursor burst seen with MeerKAT is apparently unique, and is not visible at other telescopes and frequencies, even after averaging them together to make a single profile.
+%The only burst of comparable S/N, and at a similar frequency, in which the dimmer precursor component might be expected to be visible is the original 2023-01-21 ASKAP burst \citepalias{2024MNRAS.535..909D}, where again it is absent.
+%...
+
+%%%%% Discussion of brighter pulses in 2023 %%%%%
+%The two pulses observed in January 2023 (the original ASKAP pulse and the MWA (IPS) pulse observed the following day) are significantly wider than all other pulses, suggesting that a morphological change occurred between ...
 
 \begin{enumerate}
         \item Why does the source appear to not be active all the time at higher frequencies?
@@ -707,8 +745,23 @@ The two pulses observed in January 2023 (the original ASKAP pulse and the MWA (I
 
 \section{Conclusions} \label{sec:conclusions}
 
-\begin{acknowledgments}
+We have shown that \src{} is in fact an LPT, as conjectured in \citetalias{2024MNRAS.535..909D}).
+Its period of ${\sim}1.16\,$hours places it 
+\begin{itemize}
+  \item Predict another spurt of inactivity in 2025
+\end{itemize}
 
+\begin{acknowledgments}
+ N.H.-W. is the recipient of an Australian Research Council Future Fellowship (project number FT190100231).
+ 
+ This scientific work uses data obtained from Inyarrimanha Ilgari Bundara, the CSIRO Murchison Radio-astronomy Observatory. Support for the operation of the MWA is provided by the Australian Government (NCRIS), under a contract to Curtin University administered by Astronomy Australia Limited. ASVO has received funding from the Australian Commonwealth Government through the National eResearch Collaboration Tools and Resources (NeCTAR) Project, the Australian National Data Service (ANDS), and the National Collaborative Research Infrastructure Strategy.
+% Skipped because it is acknowledged below.
+% We acknowledge the Pawsey Supercomputing Centre which is supported by the Western Australian and Australian Governments.
+% ASKAP -- I have fixed this to use the correct name for the observatory
+The Australian SKA Pathfinder is part of the Australia Telescope National Facility which is managed by CSIRO. Operation of ASKAP is funded by the Australian Government with support from the National Collaborative Research Infrastructure Strategy. ASKAP and the MWA use the resources of the Pawsey Supercomputing Centre. Establishment of ASKAP, Inyarrimanha Ilgari Bundara, and the Pawsey Supercomputing Centre are initiatives of the Australian Government, with support from the Government of Western Australia and the Science and Industry Endowment Fund. We acknowledge the Wajarri Yamaji People as the Traditional Owners and Native Title Holders of the observatory site.
+
+% MeerKAT
+The MeerKAT telescope is operated by the South African Radio Astronomy Observatory, which is a facility of the National Research Foundation, an agency of the Department of Science and Innovation.
   % PTUSE (https://skaafrica.atlassian.net/wiki/spaces/ESDKB/pages/1591672833/User+Supplied+Equipment+USE#PTUSE)
   Observations made use of the Pulsar Timing User Supplied Equipment (PTUSE) servers at MeerKAT which were funded by the MeerTime Collaboration members ASTRON, AUT, CSIRO, ICRAR-Curtin, MPIfR, INAF, NRAO, Swinburne University of Technology, the University of Oxford, UBC and the University of Manchester.  The system design and integration was led by Swinburne University of Technology and Auckland University of Technology in collaboration with SARAO and supported by the ARC Centre of Excellence for Gravitational Wave Discovery (OzGrav) under grant CE170100004.
 
