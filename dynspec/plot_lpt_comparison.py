@@ -190,6 +190,21 @@ lpts = [
             'ls': 'none',
         }
     },
+    {
+        'name': 'AR Sco',
+        'type': 'AR Sco-like',
+        'min_width': 0 * u.s, # TODO: Get numbers for this!!
+        'max_width': 0 * u.s,
+        'period': 1.97 * u.min,
+        'text_kwargs': {
+            'ha': 'left',
+            'va': 'center',
+        },
+        'errorbar_kwargs': {
+            'fmt': 'none',
+            'ls': 'none',
+        }
+    },
 ]
 
 period_units = 'min'

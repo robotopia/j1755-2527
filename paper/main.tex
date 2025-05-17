@@ -692,16 +692,24 @@ Assuming \src{} remained at a similar brightness (see Fig. \ref{fig:pulse_detail
 There are also three observations in the earliest part of the 2024 GPM run (one on 2024-06-02 and two on 2024-06-10) in which no pulse was observed.
 However, pulses were detected just ten days later on 2024-06-20 (the first of the MWA 200\,MHz points in Fig. \ref{fig:pulse_details}), and at each epoch thereafter whenever the MWA was observing when a pulse was due to arrive.
 
-We conclude, therefore, that \src{} is intermittent and that the active periods have durations on the order of months.
-Even when the source is ``on'', it can apparently change in brightness by an order of magnitude or more (at a given frequency) in different months.
-This is reminiscent of the behaviour of GLEAM-X J162759.5$-$523504.3, which was observed over a three-month period, but has not been seen again \citep{2022Natur.601..526H}.
+We conclude, therefore, that \src{} is intermittent with active periods lasting on the order of months.
+The given set of observations, spanning from 2023 to 2024, may represent two or three different activity windows.
+This is reminiscent of the behaviour of GLEAM-X J162759.5$-$523504.3, which was ``on'' in January 2020, ``off'' in Feburary, and ``on'' again in March \citep{2022Natur.601..526H}.
 The reappearance of \src{} after so many months suggests the possibility that other known intermittent LPTs (like GLEAM-X J162759.5$-$523504.3 and GCRT J1745$-$3009) may eventually do likewise.
+% TODO: Note activity-window similarities to other GCRTs
 
 As noted in \citetalias{2024MNRAS.535..909D}, optical follow-up of \src{} is challenging due to its proximity to the Galactic plane ($b = -0.12^\circ$).
 Inferring this nature of the system (white dwarf vs neutron star, isolated vs binary) from the radio pulses alone is challenging, unless either the population of LPTs is better understood as a whole, or if some other property of the radio signal (e.g. intermittency, polarisation) can be linked to the system properties.
 
-\src{} shares several properties similar to ILT J1101+5521 and GLEAM-X J0704$-$37, which are confirmed polars.
-\src{}'s period of ${\sim}1.16\,$hours is marginally shorter than the minimum known orbital period of $1.3\,$hours \citep{schwope2025polarcatcatalogpolarslowaccretion}, making it a good candidate for testing the suggestion put forward by \citet{2025arXiv250103315R} that ``short LPTs'' ($P \lesssim 78\,$mins) and ``long LPTs'' ($P \gtrsim 78\,$mins) represent AM CVns and CVs respectively.
+\src{}'s period and duty cycle are not dissimilar to ILT J1101+5521 and GLEAM-X J0704$-$37, which are confirmed polars (Fig. \ref{fig:lpt_comparison}), suggesting the possibility that \src{}, too, is a WD-MD polar system.
+However, its period of ${\sim}1.16\,$hours would make it shorter than the minimum known orbital period of $1.3\,$hours for confirmed polars \citep{schwope2025polarcatcatalogpolarslowaccretion}.
+This makes it a good candidate for testing the suggestion advanced by \citet{2025arXiv250103315R} that ``short LPTs'' ($P \lesssim 78\,$mins) and ``long LPTs'' ($P \gtrsim 78\,$mins) represent different classes of systems (AM CVns and CVs, respectively).
+\begin{figure*}[th]
+    \centering
+    \includegraphics[width=0.98\linewidth]{lpt_comparison.pdf}
+    \caption{Duty cycle vs radio pulse period for various classes of radio emitters. (TODO: add AR Sco and J1912.) The duty cycles are derived from the reported pulse widths for LPTs, which are compared to the range of the fitted, unscattered pulse widths of \src{} at 10\% of the peak.}
+    \label{fig:enter-label}
+\end{figure*}
 
 
 \dots
@@ -713,6 +721,15 @@ Inferring this nature of the system (white dwarf vs neutron star, isolated vs bi
 
 %%%%% Discussion of brighter pulses in 2023 %%%%%
 %The two pulses observed in January 2023 (the original ASKAP pulse and the MWA (IPS) pulse observed the following day) are significantly wider than all other pulses, suggesting that a morphological change occurred between ...
+
+%%%%% Other things to possibly discuss:
+% - Qu & Zhang #2: https://ui.adsabs.harvard.edu/abs/2025ApJ...981...34Q/abstract
+% - Gaia22ayj: https://ui.adsabs.harvard.edu/abs/2025PASP..137b4202R/abstract
+% - Trying to find a number for the radio duty cycle of AR Sco
+%   - This one's about the pair-wise alternation of (optical?) pulse brightnesses, and an interpretation involving precession: https://ui.adsabs.harvard.edu/abs/2023ApJ...958L..22G/abstract
+%   - Fancy AR Sco modelling. Magnetic mirror models are mentioned in the abstract? https://ui.adsabs.harvard.edu/abs/2025arXiv250508567D/abstract
+% - https://ui.adsabs.harvard.edu/abs/2022Ap%26SS.367..108K/abstract
+% - Suggestion that J1627 is a WD pulsar: https://ui.adsabs.harvard.edu/abs/2022Ap%26SS.367..108K/abstract
 
 \begin{enumerate}
         \item Why does the source appear to not be active all the time at higher frequencies?
