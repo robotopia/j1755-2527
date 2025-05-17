@@ -248,7 +248,7 @@ plt.legend(handles=custom_lines, loc='lower right')
 plt.xscale('log')
 plt.yscale('log')
 plt.xlabel(f"Period ({period_units})")
-plt.ylabel("Duty cycle")
+plt.ylabel("Pulse duty cycle")
 
 plt.tight_layout()
 plt.savefig('lpt_comparison.pdf')

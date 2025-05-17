@@ -346,7 +346,7 @@ In \S\ref{sec:observations}, we describe the observations themselves, some of wh
 In \S\ref{sec:analysis} we present a timing analysis of the new detections, as well as revised estimates of the DM and the scattering timescale.
 We also include new polarization detections in which the polarisation angle (PA) behavior differs significantly from the originally detected pulse.
 In \S\ref{sec:discussion} we revisit the question of the nature of \src{}, arguing in favor of a white dwarf interpretation.
-The main conclusions are summarized in \S\ref{sec:conclusions}.
+The main conclusions are summarized in \S\ref{sec:summary}.
 
 \section{Observations} \label{sec:observations}
 
@@ -599,7 +599,7 @@ We also tried fitting a timing model that included a spin-down parameter, and fo
 
 The measured DM of $764 \pm 25\,{\rm pc}\,{\rm cm}^{-3}$ is slightly higher than, but still consistent with, the in-band measurement of $710^{+200}_{-180}\,{\rm pc}\,{\rm cm}^{-3}$ given in \citetalias{2024MNRAS.535..909D}.
 Because we have not attempted to simultaneously fit for both DM and scattering timescale, there will remain some small systematic error on this reported DM measurement.
-Breaking the degeneracy is possible in principle with a much higher S/N average profile than what is possible with the current data set.
+Breaking the degeneracy is possible in principle with a much higher S/N average profile than what is achievable with the current data set.
 
 For planning observations of \src{} at low ($\lesssim 300 MHz$), care should be taken to incorporate scattering into the predicted ToAs.
 The $N$th pulse since PEPOCH is predicted to arrive at the Solar System barycentre at
@@ -690,29 +690,73 @@ It has the fifth largest period (${\sim}1.16\,$hours) of known published LPTs, a
 With the timing solution in hand, we can explore the efficacy of the original follow-up campaign described in \citetalias{2024MNRAS.535..909D}.
 Assuming \src{} remained at a similar brightness (see Fig. \ref{fig:pulse_details}), it should have been detected in two ASKAP observations (2023-04-06 and 2023-10-18) and a few dozen times throughout the MWA's 2022 GPM run (2022-06-02 to 2022-09-08).
 There are also three observations in the earliest part of the 2024 GPM run (one on 2024-06-02 and two on 2024-06-10) in which no pulse was observed.
-However, pulses were detected just ten days later on 2024-06-20 (the first of the MWA 200\,MHz points in Fig. \ref{fig:pulse_details}), and at each epoch thereafter whenever the MWA was observing when a pulse was due to arrive.
+However, pulses were detected just ten days later on 2024-06-20 (the first of the MWA 200\,MHz points in Fig. \ref{fig:pulse_details}), and at each epoch thereafter whenever the MWA was observing in \src{}'s direction when a pulse was due to arrive.
 
-We conclude, therefore, that \src{} is intermittent with active periods lasting on the order of months.
-The given set of observations, spanning from 2023 to 2024, may represent two or three different activity windows.
+We conclude, therefore, that \src{} is intermittent with active periods lasting on the order of months, and that the most recent activity period fortuitously started shortly after the start of the 2024 GPM observation run.
+The entire set of observations presented in this work, spanning from 2023 to 2024, may represent two or three different activity windows.
 This is reminiscent of the behaviour of GLEAM-X J162759.5$-$523504.3, which was ``on'' in January 2020, ``off'' in Feburary, and ``on'' again in March \citep{2022Natur.601..526H}.
-The reappearance of \src{} after so many months suggests the possibility that other known intermittent LPTs (like GLEAM-X J162759.5$-$523504.3 and GCRT J1745$-$3009) may eventually do likewise.
-% TODO: Note activity-window similarities to other GCRTs
+The periodic (or quasi-periodic) reappearance of \src{} suggests the possibility that other known intermittent LPTs (like GLEAM-X J162759.5$-$523504.3 and GCRT J1745$-$3009) may eventually do likewise.
 
 As noted in \citetalias{2024MNRAS.535..909D}, optical follow-up of \src{} is challenging due to its proximity to the Galactic plane ($b = -0.12^\circ$).
 Inferring this nature of the system (white dwarf vs neutron star, isolated vs binary) from the radio pulses alone is challenging, unless either the population of LPTs is better understood as a whole, or if some other property of the radio signal (e.g. intermittency, polarisation) can be linked to the system properties.
 
 \src{}'s period and duty cycle are not dissimilar to ILT J1101+5521 and GLEAM-X J0704$-$37, which are confirmed polars (Fig. \ref{fig:lpt_comparison}), suggesting the possibility that \src{}, too, is a WD-MD polar system.
 However, its period of ${\sim}1.16\,$hours would make it shorter than the minimum known orbital period of $1.3\,$hours for confirmed polars \citep{schwope2025polarcatcatalogpolarslowaccretion}.
-This makes it a good candidate for testing the suggestion advanced by \citet{2025arXiv250103315R} that ``short LPTs'' ($P \lesssim 78\,$mins) and ``long LPTs'' ($P \gtrsim 78\,$mins) represent different classes of systems (AM CVns and CVs, respectively).
+This makes it an interesting testbed for the suggestion advanced by \citet{2025arXiv250103315R} that ``short LPTs'' ($P \lesssim 78\,$mins) and ``long LPTs'' ($P \gtrsim 78\,$mins) represent different classes of systems (AM CVns and CVs, respectively).
 \begin{figure*}[th]
     \centering
     \includegraphics[width=0.98\linewidth]{lpt_comparison.pdf}
-    \caption{Duty cycle vs radio pulse period for various classes of radio emitters. (TODO: add AR Sco and J1912.) The duty cycles are derived from the reported pulse widths for LPTs, which are compared to the range of the fitted, unscattered pulse widths of \src{} at 10\% of the peak.}
-    \label{fig:enter-label}
+    \caption{Duty cycle vs radio pulse period for various classes of radio emitters. The duty cycles are derived from the reported pulse widths for LPTs, which are compared to the range of the fitted, unscattered pulse widths of \src{} at 10\% of the peak. AR\,Sco \citep{2016Natur.537..374M,2018A&A...611A..66S} and other sources without well-defined periods or duty cycles \citep[e.g.][and references therein]{2021ApJ...920...45W} are not included on this plot.
+    \nocite{2024arXiv240707480D,2022Natur.601..526H,2023Natur.619..487H,2024NatAs...8.1159C,2005Natur.434...50H,2024arXiv240811536D,Lee2025}}
+    \label{fig:lpt_comparison}
 \end{figure*}
 
+%\begin{deluxetable*}{lcl}
+%  \tablecaption{Known and candidate LPTs, arranged in ascending order of period\label{tbl:lpts}}
+%  \tablehead{
+%    \colhead{LPT} & \colhead{Period} & \colhead{References} \\ 
+%     & \colhead{(min)} & 
+%   } 
+%   \startdata
+%   %AR Scorpii (J162147.28-225310.3) & 1.97 &  \\
+%   %ASKAP J175154.89-255135.3 & ${\sim}$3.6 &  \\
+%   %J1912-4410 & 5.3 &  \\
+%   CHIME J0630+25             & 7.02 & \citet{2024arXiv240707480D} \\
+%   GLEAM-X J162759.5-523504.3 & 18.2 & \citet{2022Natur.601..526H} \\
+%   GPM J1839-10               & 22.0 & \citet{2023Natur.619..487H} \\
+%   ASKAP J1832-0911           & 44.3 & \todo{Wang} \\
+%   ASKAP J193505.1+214841.0   & 53.8 & \citet{2024NatAs...8.1159C} \\
+%   ASKAP J175534.9-252749.1   & 69.8 & \citetalias{2024MNRAS.535..909D} \\
+%   GCRT J1745-3009            & 77.0 & \citet{2005Natur.434...50H} \\
+%   ILT J1101+5521             & 126  & \citet{2024arXiv240811536D} \\
+%   GLEAM-X J0704-37           & 175  & \citet{2024arXiv240815757H} \\
+%   ASKAP J1839-0756           & 387  & \citet{Lee2025} \\
+%   \enddata
+%\end{deluxetable*}
 
-\dots
+
+Although there is as yet no clear consensus on whether LPTs represent one class or multiple classes of system \citep[e.g.][]{2024ApJ...961..214R}, the recent confirmation of J1912$-$4410 as a pre-evolved white dwarf pulsar \citep{2023NatAs...7..931P} and ILT\,J1101+5521 and GLEAM-X\,J0704$-$37 as polars \citep{2024arXiv240811536D,2025arXiv250103315R} raise the intriguing possibility that other LPTs may also be radio-emitting white dwarf pulsars at various stages of evolution \citep{2021NatAs...5..648S}.
+
+In this view, the intermittency of these systems have several possible explanations.
+The limited orbital phase range in which J1912$-$4410's radio pulses were observed suggests that the geometric configuration is important in the observability of radio pulsations; ``missing'' pulses may simply occur at unfavourable orbital phases.
+This is readily testable with long-term monitoring---this kind of intermittency will have the same periodicity as the orbit itself.
+
+Interestingly, systems with spin-orbital (or beat-orbital) resonances of, e.g., 2:1 or 3:1, coupled with the idea of a limited observable orbital phase window for the radio pulses, would be indistinguishable from systems in 1:1 resonances.
+We therefore advance the possibility that the coincidence of the observed radio periodicities of ILT\,J1101+5521 and GLEAM-X\,J0704$-$37 with their spectroscopically confirmed orbital periods does not necessarily imply that they are 1:1 polars.
+
+Similarly, systems in which the spin-orbit (or beat-orbit) ratios are \emph{close to} small-integer ratios, or, equivalently, systems in which precession of the WD is significant, will exhibit an extra beating effect in which an orbitally-induced intermittency is aliased to a much lower frequency.
+The month-long time scale of the intermittency of \src{}, and possibly even GLEAM-X\,J1627$-$5235, may be of this kind; much longer-term monitoring is needed to confirm or refute this.
+
+Another possibility is that radio emission is only observed when the MD produces dense enough particle outflows, in the form of winds, to activate the emission mechanism in the vicinity of the WD.
+Such outflows can last for months [CITATION??], and would not be strictly periodic.
+If intermittency is of this sort, then the observed activity windows will be similarly aperiodic, or quasiperiodic.
+Again, long-term monitoring can help distinguish between these scenarios.
+
+
+
+% SM: MEMO TO SELF: Add mention of early 2023 pulses being wider (and brighter) than all others. Note also the spectral index roughly staying the same, and state a number of roughly what that is by comparing low- and high- frequency flux densities ratios. All this can probably go in Analysis/Results above rather than discussion.
+
+
 
 %%%%% Discussion of MeerKAT precursor %%%%%
 %The precursor burst seen with MeerKAT is apparently unique, and is not visible at other telescopes and frequencies, even after averaging them together to make a single profile.
@@ -728,45 +772,20 @@ This makes it a good candidate for testing the suggestion advanced by \citet{202
 % - Trying to find a number for the radio duty cycle of AR Sco
 %   - This one's about the pair-wise alternation of (optical?) pulse brightnesses, and an interpretation involving precession: https://ui.adsabs.harvard.edu/abs/2023ApJ...958L..22G/abstract
 %   - Fancy AR Sco modelling. Magnetic mirror models are mentioned in the abstract? https://ui.adsabs.harvard.edu/abs/2025arXiv250508567D/abstract
+%   - Ok, I think this is as good as it gets: Stanway 2018 (reference already imported into biblio.bib.
 % - https://ui.adsabs.harvard.edu/abs/2022Ap%26SS.367..108K/abstract
 % - Suggestion that J1627 is a WD pulsar: https://ui.adsabs.harvard.edu/abs/2022Ap%26SS.367..108K/abstract
 
-\begin{enumerate}
-        \item Why does the source appear to not be active all the time at higher frequencies?
-              \item As per convo with John (see MWA Users Slack, 2025-01-24), point out that (lack of detection of source in) MWA IPS is not very constraining in terms of scattering disk / timescale / screen.
-\end{enumerate}
-
-\begin{deluxetable*}{lcl}
-  \tablecaption{Known and candidate LPTs, arranged in ascending order of period\label{tbl:lpts}}
-  \tablehead{
-    \colhead{LPT} & \colhead{Period} & \colhead{References} \\ 
-     & \colhead{(min)} & 
-   } 
-   \startdata
-   %AR Scorpii (J162147.28-225310.3) & 1.97 &  \\
-   %ASKAP J175154.89-255135.3 & ${\sim}$3.6 &  \\
-   %J1912-4410 & 5.3 &  \\
-   CHIME J0630+25             & 7.02 & \citet{2024arXiv240707480D} \\
-   GLEAM-X J162759.5-523504.3 & 18.2 & \citet{2022Natur.601..526H} \\
-   GPM J1839-10               & 22.0 & \citet{2023Natur.619..487H} \\
-   ASKAP J1832-0911           & 44.3 & \todo{Wang} \\
-   ASKAP J193505.1+214841.0   & 53.8 & \citet{2024NatAs...8.1159C} \\
-   ASKAP J175534.9-252749.1   & 69.8 & \citetalias{2024MNRAS.535..909D} \\
-   GCRT J1745-3009            & 77.0 & \citet{2005Natur.434...50H} \\
-   ILT J1101+5521             & 126  & \citet{2024arXiv240811536D} \\
-   GLEAM-X J0704-37           & 175  & \citet{2024arXiv240815757H} \\
-   ASKAP J1839-0756           & 387  & \citet{Lee2025} \\
-   \enddata
-\end{deluxetable*}
+%\begin{enumerate}
+%        \item Why does the source appear to not be active all the time at higher frequencies?
+%              \item As per convo with John (see MWA Users Slack, 2025-01-24), point out that (lack of detection of source in) MWA IPS is not very constraining in terms of scattering disk / timescale / screen.
+%\end{enumerate}
 
 
-\section{Conclusions} \label{sec:conclusions}
+\section{Summary} \label{sec:summary}
 
 We have shown that \src{} is in fact an LPT, as conjectured in \citetalias{2024MNRAS.535..909D}).
-Its period of ${\sim}1.16\,$hours places it 
-\begin{itemize}
-  \item Predict another spurt of inactivity in 2025
-\end{itemize}
+Its period of ${\sim}1.16\,$hours is slightly shorter than the minimum known orbital\dots
 
 \begin{acknowledgments}
  N.H.-W. is the recipient of an Australian Research Council Future Fellowship (project number FT190100231).
