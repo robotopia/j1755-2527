@@ -8,17 +8,14 @@ point_types = {
     'Polars': {
         'color': 'r',
         'ecolor': 'r',
-        'capsize': 2,
     },
     'Unknown': {
         'color': 'k',
         'ecolor': 'k',
-        'capsize': 2,
     },
     'AR Sco-like': {
         'color': 'b',
         'ecolor': 'b',
-        'capsize': 2,
     },
 }
 
@@ -36,6 +33,7 @@ lpts = [
         'errorbar_kwargs': {
             'fmt': 'none',
             'ls': 'none',
+            'capsize': 2,
         },
     },
     {
@@ -51,6 +49,7 @@ lpts = [
         'errorbar_kwargs': {
             'fmt': 'none',
             'ls': 'none',
+            'capsize': 2,
         }
     },
     {
@@ -66,6 +65,7 @@ lpts = [
         'errorbar_kwargs': {
             'fmt': 'none',
             'ls': 'none',
+            'capsize': 2,
         },
         'voffset': 1,
     },
@@ -82,6 +82,7 @@ lpts = [
         'errorbar_kwargs': {
             'fmt': 'none',
             'ls': 'none',
+            'capsize': 2,
         }
     },
     {
@@ -97,6 +98,7 @@ lpts = [
         'errorbar_kwargs': {
             'fmt': 'none',
             'ls': 'none',
+            'capsize': 2,
         }
     },
     {
@@ -112,6 +114,7 @@ lpts = [
         'errorbar_kwargs': {
             'fmt': 'x',
             'ls': 'none',
+            'capsize': 0,
         }
     },
     {
@@ -127,6 +130,7 @@ lpts = [
         'errorbar_kwargs': {
             'fmt': 'none',
             'ls': 'none',
+            'capsize': 2,
         }
     },
     {
@@ -142,6 +146,7 @@ lpts = [
         'errorbar_kwargs': {
             'fmt': 'none',
             'ls': 'none',
+            'capsize': 2,
         },
         'voffset': 1,
     },
@@ -158,6 +163,7 @@ lpts = [
         'errorbar_kwargs': {
             'fmt': 'none',
             'ls': 'none',
+            'capsize': 2,
         }
     },
     {
@@ -173,6 +179,7 @@ lpts = [
         'errorbar_kwargs': {
             'fmt': 'none',
             'ls': 'none',
+            'capsize': 2,
         }
     },
     {
@@ -188,6 +195,7 @@ lpts = [
         'errorbar_kwargs': {
             'fmt': 'none',
             'ls': 'none',
+            'capsize': 2,
         }
     },
     #{
@@ -203,6 +211,7 @@ lpts = [
     #    'errorbar_kwargs': {
     #        'fmt': 'none',
     #        'ls': 'none',
+    #        'capsize': 2,
     #    }
     #},
 ]
