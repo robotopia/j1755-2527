@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import astropy.units as u
 from astropy.time import Time
-from astropy.coordinates import SkyCoord, EarthLocation
+from astropy.coordinates import SkyCoord, EarthLocation, AltAz
 from astropy.constants import c
 import sys
 import argparse
@@ -20,6 +20,7 @@ data = [
         'ToA': Time(59965.042934515615, scale='utc', format='mjd'),
         'xlim': [-149, 149],
         'title': "ASKAP, MJD 59965, 888 MHz",
+        'do_parallactic_angle_correction': False,
     },
     {
         'ds_file': '1404832334_askap.pkl',
@@ -27,6 +28,7 @@ data = [
         'ToA': Time(60503.63475701395, scale='utc', format='mjd'),
         'xlim': [-149, 149],
         'title': "ASKAP, MJD 60503, 888 MHz",
+        'do_parallactic_angle_correction': False,
     },
     {
         'ds_file': '1413381294_meerkat.pkl',
@@ -35,6 +37,7 @@ data = [
         'ToA': Time(60602.58357327181, scale='utc', format='mjd'),
         'xlim': [-199, 99],
         'title': "MeerKAT, MJD 60602, 813 MHz",
+        'do_parallactic_angle_correction': True,
     },
 ]
 
@@ -178,6 +181,17 @@ def main():
         if data[i]['flip_RM'] == True:
             Q *= -1
 
+        # MeerKAT also needs to have parallactic angle correction applied to it
+        parallactic_angle = 0*u.deg # Default behaviour = assume correction has already been applied
+        if data[i]['do_parallactic_angle_correction'] == True:
+            location = EarthLocation.of_site(dat['TELESCOPE'])
+            lst = t[0].sidereal_time('apparent', longitude=location.lon)
+            H = lst - ephem['coord'].ra
+            φ = location.lat
+            δ = ephem['coord'].dec
+            parallactic_angle = np.arctan2(np.sin(H), np.tan(φ)*np.cos(δ) - np.sin(δ)*np.cos(H))
+            print(f"Applying parallactic angle of {parallactic_angle.to('deg')}")
+
         RMs = []
         alphas = []
         alpha_errs = []
@@ -223,7 +237,7 @@ def main():
         print(f'avg(RM) = {RM} ± {np.nanstd(np.array(RMs)[mask])}')
         RM_err = np.nanstd(np.array(RMs)[mask]) * u.rad/u.m**2
         λ = c/f
-        ψ = RM*λ**2
+        ψ = RM*λ**2 - parallactic_angle # Apply correction here
         L = Q + U*1j
         Lrot = L*np.exp(-2j*ψ/u.rad)
         Qrot = np.real(Lrot)

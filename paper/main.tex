@@ -104,12 +104,13 @@
 % The list of authors, and the short list which is used in the headers.
 % If you need two or more lines of authors, add an extra line using \newauthor
 \author[S. J. McSweeney et al.]{
-Samuel J. McSweeney,$^{1}$
-Natasha Hurley-Walker,$^{1}$
-Dougal Dobie$^{2,3}$
-Csanad Horv\'{a}th$^{1}$
-Angie Waszewski$^{1}$
-John Morgan$^{1}$
+Samuel J. McSweeney$^{1}$,
+Natasha Hurley-Walker$^{1}$,
+Dougal Dobie$^{2,3}$,
+Cs\'{a}nad Horv\'{a}th$^{1}$,
+\newauthor
+Angie Waszewski$^{1}$,
+John Morgan$^{1}$,
 and Ziteng Wang$^{1}$
 \\
 % List of institutions
@@ -289,12 +290,8 @@ This is in broad agreement with the model predictions of NE2001 ($\tau_{\rm sc,1
 
 To account for the asymmetry, we fit exponentially modified Gaussians to each pulse with the form,
 \begin{equation}
-  \begin{aligned}
-        \emg(t) &= A \frac{\sigma}{\tau}\sqrt{\frac{\pi}{2}}
-                   \exp\left(-\frac12 \left( \frac{t - \mu}{\tau} \right)^2 \right) \cdot {} \\
-                            &\qquad \erfcx \left(\frac{1}{\sqrt{2}} \left(\frac{\sigma}{\tau} 
-                             - \frac{t - \mu}{\tau} \right) \right),
-  \end{aligned}
+  \emg(t) = A \frac{\sigma}{\tau}\sqrt{\frac{\pi}{2}}
+    \exp\left(-\frac12 \left( \frac{t - \mu}{\tau} \right)^2 \right)  \erfcx \left(\frac{1}{\sqrt{2}} \left(\frac{\sigma}{\tau} - \frac{t - \mu}{\tau} \right) \right),
   \label{eqn:emg}
 \end{equation}
 where $A$, $\mu$, and $\sigma$ are the height, location, and scale of an unscattered Gaussian pulse, and the scattering time scale was fixed at
@@ -462,6 +459,8 @@ The apparent lack of linear polarisation in the MWA pulses, however, is expected
 We also report that no significantly circularly polarised emission was seen at MWA frequencies.
 
 The three sufficiently bright pulses for which we report significant polarisation are (1) the original 2023 ASKAP pulse \citepalias{2024MNRAS.535..909D}, (2) the 2024 ASKAP pulse, and (3) the 2024 MeerKAT pulse.
+We applied the parallactic angle correction to the MeerKAT data, as this had not already been applied during upstream processing.
+
 The high S/N of each time bin allowed us to test whether the rotation measure (RM) was consistent across each pulse.
 We therefore performed a joint fit of the Stokes Q and U spectra of each time bin to
 \begin{equation}
@@ -515,7 +514,7 @@ The entire set of observations presented in this work, spanning from 2023 to 202
 This is reminiscent of the behaviour of GLEAM-X J162759.5$-$523504.3, which was ``on'' in January 2020, ``off'' in Feburary, and ``on'' again in March \citep{2022Natur.601..526H}.
 The periodic (or quasi-periodic) reappearance of \src{} suggests the possibility that other known intermittent LPTs (like GLEAM-X J162759.5$-$523504.3 and GCRT J1745$-$3009) may eventually do likewise.
 
-As noted in \citetalias{2024MNRAS.535..909D}, optical follow-up of \src{} is challenging due to its proximity to the Galactic plane ($b = -0.12^\circ$).
+As noted in \citetalias{2024MNRAS.535..909D}, optical follow-up of \src{} is hampered by its proximity to the Galactic plane ($b = -0.12^\circ$).
 Inferring this nature of the system (white dwarf vs neutron star, isolated vs binary) from the radio pulses alone is challenging, unless either the population of LPTs is better understood as a whole, or if some other property of the radio signal (e.g. intermittency, polarisation) can be linked to the system properties.
 
 \src{}'s period and duty cycle are not dissimilar to ILT J1101+5521 and GLEAM-X J0704$-$37, which are confirmed polars (\Fig~\ref{fig:lpt_comparison}), suggesting the possibility that \src{}, too, is a WD-MD polar system.
