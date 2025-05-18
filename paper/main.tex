@@ -302,7 +302,7 @@ where $A$, $\mu$, and $\sigma$ are the height, location, and scale of an unscatt
       \tau(\nu) = 0.07\, \left(\frac{\nu}{\rm GHz}\right)^{-4} \, {\rm s},
 \end{equation}
 according to each observation's centre frequency.
-A pulse stack containing all observed pulses and the corresponding unscattered pulses derived from the fits is shown in Fig. \ref{fig:pulsestack}.
+A pulse stack containing all observed pulses and the corresponding unscattered pulses derived from the fits is shown in \Fig~\ref{fig:pulsestack}.
 
 \begin{figure*}[tp]
       \centering
@@ -318,11 +318,11 @@ For the MeerKAT pulse with two components, we fit only the brighter component.
 Because the large scattering time scale at low frequencies significantly distorts the pulse shapes, common methods for defining ToAs can potentially result in systematic errors of up to tens of seconds, as discussed in detail in Appendix \ref{app:scattering_dm}.
 These systematic errors set up a degeneracy between DM and scattering time scales that is not easily disambiguated.
 
-This is demonstrated in Fig. \ref{fig:stacked_spectra}, which shows stacked MWA and MeerKAT spectra.
+This is demonstrated in \Fig~\ref{fig:stacked_spectra}, which shows stacked MWA and MeerKAT spectra.
 The cyan lines show the expected ToAs across the whole observed frequency range if one assumes only a DM measured at higher frequencies, where scattering is negligible.
-The scattering predicted by Galactic electron density models, however, is sufficient to account for the apparent extra delay, as is evidenced by the relatively good agreement with the modelled unscattered pulses with the expected ToAs derived from the ephemeris, illustrated in the pulsestack shown in Fig. \ref{fig:pulsestack}.
+The scattering predicted by Galactic electron density models, however, is sufficient to account for the apparent extra delay, as is evidenced by the relatively good agreement with the modelled unscattered pulses with the expected ToAs derived from the ephemeris, illustrated in the pulsestack shown in \Fig~\ref{fig:pulsestack}.
 
-\begin{figure}[th]
+\begin{figure}{th}
       \centering
           \includegraphics[width=0.95\linewidth]{stacked_spectra.pdf}
               \caption{Stacked (semi-transparent) dynamic spectra, where each rectangle indicates the observing campaign whose spectra were barycentred and folded according to the ephemeris. The spectra have not been dedispersed, but the cyan dashed lines indicate where the two components seen in the MeerKAT (2024) observation would appear due to dispersion. The white curve in the top panel is the dedispersed profile of the MeerKAT (2024) observation, and the white curves in the bottom panel are the same profile subjected to scattering with $\tau_{\rm sc} = \tau_{\rm sc,1\,GHz} (\nu/{\rm 1\,GHz})^{-4}$ at frequencies 175, 195, and 210 MHz, where $\tau_{\rm sc,1\,GHz} = 0.07\,$s.}
@@ -388,7 +388,7 @@ Because the scattering time scale could not be reliably measured for all individ
   %\enddata
 %\end{deluxetable*}
 
-These ToAs were then barycentred and fit for both period and DM, resulting in the values given in Table \ref{tbl:ephemeris}.
+These ToAs were then barycentred and fit for both period and DM, resulting in the values given in \Tab~\ref{tbl:ephemeris}.
 The residuals are plotted in \ref{fig:pulse_details}, along with the fitted pulse widths and fluences.
 We also tried fitting a timing model that included a spin-down parameter, and found that it was consistent with zero spin-down to within $1\sigma$, and so is not included in the ephemeris.
 
@@ -408,7 +408,7 @@ We also tried fitting a timing model that included a spin-down parameter, and fo
   \end{tabular}
 \end{table}
 
-\begin{figure*}[th]
+\begin{figure*}{th}
   \centering
   \includegraphics[width=0.98\linewidth]{pulse_details.pdf}
   \caption{Timing residuals (top panel) and other pulse properties derived from the fits of Eq. \eqref{eqn:emg} to the individual light curves (lower two panels). \dots}
@@ -424,7 +424,7 @@ The $N$th pulse since PEPOCH is predicted to arrive at the Solar System barycent
 \begin{equation}
     {\rm MJD} = {\rm PEPOCH} + NP + \Delta t_{\rm DM}(\nu) + \Delta t_{\rm sc}(\nu),
 \end{equation}
-where PEPOCH and the period, $P$, are given in Table \ref{tbl:ephemeris},
+where PEPOCH and the period, $P$, are given in \Tab~\ref{tbl:ephemeris},
 \begin{equation}
     \Delta t_{\rm DM}(\nu) = 4148\,{\rm s} \, \left(\frac{\rm DM}{{\rm pc\,cm}^{-3}}\right) \left(\frac{\nu}{\rm MHz}\right)^{-2}
 \end{equation}
@@ -434,7 +434,7 @@ is the usual dispersion attributed to the interstellar medium, and
     \label{eqn:scattering_delay}
 \end{equation}
 is the amount that the \emph{peak} of the observed pulse is delayed by scattering.
-When calculating this quantity, we recommend using $\sigma = 15\,$s, a typical value for low-frequency pulses (see Fig. \ref{fig:pulse_details}).
+When calculating this quantity, we recommend using $\sigma = 15\,$s, a typical value for low-frequency pulses (see \Fig~\ref{fig:pulse_details}).
 At frequencies above $300\,$MHz, $\tau(\nu) \ll \sigma$, and the delay due to scattering, which asymptotically behaves like $\Delta t_{\rm sc}(\nu) \sim \tau$, can be safely neglected.
 At frequencies below $150\,$MHz, the asymptotic behaviour
 \begin{equation}
@@ -476,9 +476,9 @@ where
         = L_{\rm 1\,GHz}\left(\frac{\nu}{\rm 1\,GHz}\right)^{\alpha_L} e^{2i({\rm RM}\,\lambda^2 + \psi_0)},
 \end{equation}
 $L_{\rm 1\,GHz}$ is the flux density of the linearly polarised component at 1\,GHz, $\alpha_L$ is its spectral index, RM is the rotation measure, $\lambda = c/\nu$ is the wavelength, and $\psi_0$ is the intrinsic polarisation angle.
-The RMs and spectral indices of these fits are shown in the top two rows of panels of Fig. \ref{fig:RM}.
+The RMs and spectral indices of these fits are shown in the top two rows of panels of \Fig~\ref{fig:RM}.
 
-\begin{figure*}[th]
+\begin{figure*}{th}
     \centering
     \includegraphics[width=0.98\linewidth]{RM.pdf}
     \caption{Polarisation of the 2023 and 2024 ASKAP pulses (left and middle) and the 2024 MeerKAT pulse (right). The top two rows show the RM and $\alpha_{\rm lin}$ parameters fitted to Eq. \eqref{eqn:RM} for each time bin independently. Only bins for which the uncertainty on $\alpha_{\rm lin}$ is less than $1.4$ are shown, a threshold which was found to cleanly eliminate off-pulse bins. The weighted average RMs for each pulse are indicated by the horizontal red lines. The PAs and lightcurves shown in the bottom two rows of panels were produced using only the average RM for the respective pulse.}
@@ -486,7 +486,7 @@ The RMs and spectral indices of these fits are shown in the top two rows of pane
 \end{figure*}
 
 We found that the RM derived for the MeerKAT pulse had the opposite sign, but similar magnitude, to the ASKAP pulses, which is most likely due to a different sign convention being used within the two telescopes' pre-processing software.
-The agreement presented in Fig. \ref{fig:RM} was achieved by first negating Stokes Q in the MeerKAT data.
+The agreement presented in \Fig~\ref{fig:RM} was achieved by first negating Stokes Q in the MeerKAT data.
 Any reflection in the Q-U plane (e.g. ${\rm Q} \leftrightarrow -{\rm Q}$, ${\rm U} \leftrightarrow -{\rm U}$, or ${\rm Q} \leftrightarrow {\rm U}$) will achieve a similar correction to the sign of the RM, but different choices will introduce different offsets to the PA.
 Because of this, the MeerKAT PA values should not be directly compared with the ASKAP values.
 The most likely scenario, however, is that the MeerKAT values include an arbitrary offset of $n \times 45^\circ$, for some integer $n$.
@@ -506,9 +506,9 @@ After accounting for dispersion and scattering effects, the timing analysis of \
 It has the fifth largest period (${\sim}1.16\,$hours) of known published LPTs, after ASKAP J1839$-$0756 \citep[$6.45\,$hours;][]{Lee2025}, GLEAM-X J0704$-$37 \citep[$2.92\,$hours;][]{2024arXiv240815757H, 2025arXiv250103315R}, ILT J1101+5521 \citep[$2.09\,$hours;][]{deRuiter2025}, and GCRT J1745$-$3009 \citep[$1.28\,$hours;][]{2005Natur.434...50H}.
 
 With the timing solution in hand, we can explore the efficacy of the original follow-up campaign described in \citetalias{2024MNRAS.535..909D}.
-Assuming \src{} remained at a similar brightness (see Fig. \ref{fig:pulse_details}), it should have been detected in two ASKAP observations (2023-04-06 and 2023-10-18) and a few dozen times throughout the MWA's 2022 GPM run (2022-06-02 to 2022-09-08).
+Assuming \src{} remained at a similar brightness (see \Fig~\ref{fig:pulse_details}), it should have been detected in two ASKAP observations (2023-04-06 and 2023-10-18) and a few dozen times throughout the MWA's 2022 GPM run (2022-06-02 to 2022-09-08).
 There are also three observations in the earliest part of the 2024 GPM run (one on 2024-06-02 and two on 2024-06-10) in which no pulse was observed.
-However, pulses were detected just ten days later on 2024-06-20 (the first of the MWA 200\,MHz points in Fig. \ref{fig:pulse_details}), and at each epoch thereafter whenever the MWA was observing in \src{}'s direction when a pulse was due to arrive.
+However, pulses were detected just ten days later on 2024-06-20 (the first of the MWA 200\,MHz points in \Fig~\ref{fig:pulse_details}), and at each epoch thereafter whenever the MWA was observing in \src{}'s direction when a pulse was due to arrive.
 
 We conclude, therefore, that \src{} is intermittent with active periods lasting on the order of months, and that the most recent activity period fortuitously started shortly after the start of the 2024 GPM observation run.
 The entire set of observations presented in this work, spanning from 2023 to 2024, may represent two or three different activity windows.
@@ -518,10 +518,10 @@ The periodic (or quasi-periodic) reappearance of \src{} suggests the possibility
 As noted in \citetalias{2024MNRAS.535..909D}, optical follow-up of \src{} is challenging due to its proximity to the Galactic plane ($b = -0.12^\circ$).
 Inferring this nature of the system (white dwarf vs neutron star, isolated vs binary) from the radio pulses alone is challenging, unless either the population of LPTs is better understood as a whole, or if some other property of the radio signal (e.g. intermittency, polarisation) can be linked to the system properties.
 
-\src{}'s period and duty cycle are not dissimilar to ILT J1101+5521 and GLEAM-X J0704$-$37, which are confirmed polars (Fig. \ref{fig:lpt_comparison}), suggesting the possibility that \src{}, too, is a WD-MD polar system.
+\src{}'s period and duty cycle are not dissimilar to ILT J1101+5521 and GLEAM-X J0704$-$37, which are confirmed polars (\Fig~\ref{fig:lpt_comparison}), suggesting the possibility that \src{}, too, is a WD-MD polar system.
 However, its period of ${\sim}1.16\,$hours would make it shorter than the minimum known orbital period of $1.3\,$hours for confirmed polars \citep{schwope2025polarcatcatalogpolarslowaccretion}.
 This makes it an interesting testbed for the suggestion advanced by \citet{2025arXiv250103315R} that ``short LPTs'' ($P \lesssim 78\,$mins) and ``long LPTs'' ($P \gtrsim 78\,$mins) represent different classes of systems (AM CVns and CVs, respectively).
-\begin{figure*}[th]
+\begin{figure*}{th}
     \centering
     \includegraphics[width=0.98\linewidth]{lpt_comparison.pdf}
     \caption{Duty cycle vs radio pulse period for various classes of radio emitters \citep{2024arXiv240707480D,2022Natur.601..526H,2023Natur.619..487H,2024NatAs...8.1159C,2005Natur.434...50H,2024arXiv240811536D,Lee2025}. The duty cycles are derived from the reported pulse widths for LPTs, which are compared to the range of the fitted, unscattered pulse widths of \src{} at 10\% of the peak. AR\,Sco \citep{2016Natur.537..374M,2018A&A...611A..66S} and other sources without well-defined periods or duty cycles \citep[e.g.][and references therein]{2021ApJ...920...45W} are not included on this plot.}
@@ -701,15 +701,15 @@ For LEHM and IPLE, the ToA is measured to be earlier than $\mu$ ($\Delta{\rm ToA
 $\ToA{LEHM}$ and $\ToA{IPLE}$ will perform much better than $\ToA{PEAK}$ and $\ToA{TMPL}$ highly scattered pulses ($\tau \gg \sigma$), whereas the converse is true when scattering is minimal ($\tau \ll \sigma$).
 All methods, however, perform relatively poorly in the intermediate regime when $\tau \approx \sigma$.
 
-\begin{figure}[th]
+\begin{figure*}{th}
     \centering
     \includegraphics[width=0.98\linewidth]{scattering_DM.png}
     \caption{Analysis of DM measurement errors if scattering is not properly taken into account. Panel (a) shows the errors measured for each defined type of ToA, normalised to the scale of the original pulse, $\sigma$. In panel (b), the predicted error in DM is shown if the ToA error (compared to a high-frequency ToA measurement) is erroneously attributed to dispersion. Panel (c) shows the rate of change of the ToA error with frequency, and panel (d) shows the error in DM measured if this rate of change (the ``slope'' of the pulse across the observed dynamic spectrum) is erroneously attributed to dispersion. In panels (c) and (d), the derived DM errors assume a pulse scale of $\sigma = 25\,$s and $\nu_s = 230\,$MHz, as estimated for \src{}. In all panels, the blue curves indicate \emph{negative} ToA errors (i.e. the measured ToAs are earlier than the pulse's unscattered mean, $\mu$), and the red curves indicate positive quantities.}
     \label{fig:scattering_DM}
-\end{figure}
+\end{figure*}
 
 We computed numerically \citep[using SciPy's \texttt{root} function;][]{2020NatMe..17..261V} the errors for the four ToA types defined above, in the regime around $\tau \approx \sigma$.
-These are shown in the panel (a) of Fig. \ref{fig:scattering_DM}, normalised to the scale of the pulse, $\sigma$.
+These are shown in the panel (a) of \Fig~\ref{fig:scattering_DM}, normalised to the scale of the pulse, $\sigma$.
 The axis along the top shows the normalised timescale (inverted, with largest timescales on the left), while the axis along the bottom shows the equivalent frequencies normalised to $\nu_s$, defined as the frequency at which $\tau = \sigma$.
 We have assumed a scattering index of $-4$, such that
 \begin{equation}
@@ -717,7 +717,7 @@ We have assumed a scattering index of $-4$, such that
 \end{equation}
 
 A set of ToAs may be converted to DM measurements in two ways: (1) by comparing the ToAs to those measured at much higher frequencies (e.g. with TMPL) where the scattering is known to be negligible, and (2) by measuring the slope of the pulse in the dynamic spectrum (for example, by measuring the ToAs in subbands across the observed frequency range).
-Panel (c) of Fig. \ref{fig:scattering_DM} shows the expected slope measurements for the ToA errors given in the panel (a).
+Panel (c) of \Fig~\ref{fig:scattering_DM} shows the expected slope measurements for the ToA errors given in the panel (a).
 
 In the first case, the ToA error of a pulse measured at frequency $\nu$, if attributed erroneously to the effect of dispersion, will yield a discrepant DM of
 \begin{equation}
