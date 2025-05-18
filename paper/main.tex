@@ -326,7 +326,7 @@ The scattering predicted by Galactic electron density models, however, is suffic
                   \label{fig:stacked_spectra}
 \end{figure}
 
-We therefore identified the times of arrival (ToAs) with the $\mu$ parameter in the fits given in Eq. \eqref{eqn:emg}, which represents the location of the assumed Gaussian pulse before scattering.
+We therefore identified the times of arrival (ToAs) with the $\mu$ parameter in the fits given in \Eqn~\ref{eqn:emg}, which represents the location of the assumed Gaussian pulse before scattering.
 Because the scattering time scale could not be reliably measured for all individual pulses, we obtained ToAs by assuming a fixed scattering time of $\tau_{\rm sc,1 GHz} = 0.07\,$s.
 
 %\begin{deluxetable*}{ccccc}
@@ -408,7 +408,7 @@ We also tried fitting a timing model that included a spin-down parameter, and fo
 \begin{figure*}{th}
   \centering
   \includegraphics[width=0.98\linewidth]{pulse_details.pdf}
-  \caption{Timing residuals (top panel) and other pulse properties derived from the fits of Eq. \eqref{eqn:emg} to the individual light curves (lower two panels). \dots}
+  \caption{Timing residuals (top panel) and other pulse properties derived from the fits of \Eqn~\ref{eqn:emg} to the individual light curves (lower two panels). \dots}
   \label{fig:pulse_details}
 \end{figure*}
 
@@ -440,7 +440,7 @@ At frequencies below $150\,$MHz, the asymptotic behaviour
     \Delta t_{\rm sc}(\nu) \sim \sigma \sqrt{\ln \left(\frac{\tau^2}{2\pi \sigma^2}\right)} + \frac{\sigma^2}{\tau}
 \end{equation}
 is accurate to within a few seconds.
-At intermediate frequencies ($150\,{\rm MHz} \lesssim \nu \lesssim 300\,{\rm MHz}$), Eq. \eqref{eqn:scattering_delay} should be used directly.
+At intermediate frequencies ($150\,{\rm MHz} \lesssim \nu \lesssim 300\,{\rm MHz}$), \Eqn~\ref{eqn:scattering_delay} should be used directly.
 
 %Following the positive identification of several pulses in the GPM data set, we performed a grid search of periods that would result in an integer number of pulses between two widely spaced pulses.
 %A candidate period of $P = 4186.4 \pm 0.1$ was found for which all detections fell within a narrow window of ${\sim}0.05$ of phase.
@@ -482,7 +482,7 @@ The RMs and spectral indices of these fits are shown in the top two rows of pane
 \begin{figure*}{th}
     \centering
     \includegraphics[width=0.98\linewidth]{RM.pdf}
-    \caption{Polarisation of the 2023 and 2024 ASKAP pulses (left and middle) and the 2024 MeerKAT pulse (right). The top two rows show the RM and $\alpha_{\rm lin}$ parameters fitted to Eq. \eqref{eqn:RM} for each time bin independently. Only bins for which the uncertainty on $\alpha_{\rm lin}$ is less than $1.4$ are shown, a threshold which was found to cleanly eliminate off-pulse bins. The weighted average RMs for each pulse are indicated by the horizontal red lines. The PAs and lightcurves shown in the bottom two rows of panels were produced using only the average RM for the respective pulse.}
+    \caption{Polarisation of the 2023 and 2024 ASKAP pulses (left and middle) and the 2024 MeerKAT pulse (right). The top two rows show the RM and $\alpha_{\rm lin}$ parameters fitted to \Eqn~\ref{eqn:RM} for each time bin independently. Only bins for which the uncertainty on $\alpha_{\rm lin}$ is less than $1.4$ are shown, a threshold which was found to cleanly eliminate off-pulse bins. The weighted average RMs for each pulse are indicated by the horizontal red lines. The PAs and lightcurves shown in the bottom two rows of panels were produced using only the average RM for the respective pulse.}
     \label{fig:RM}
 \end{figure*}
 
@@ -559,10 +559,10 @@ In this view, the intermittency of these systems have several possible explanati
 The limited orbital phase range in which J1912$-$4410's radio pulses were observed suggests that the geometric configuration is important in the observability of radio pulsations; ``missing'' pulses may simply occur at unfavourable orbital phases.
 This is readily testable with long-term monitoring---this kind of intermittency will have the same periodicity as the orbit itself.
 
-Interestingly, systems with spin-orbital (or beat-orbital) resonances of, e.g., 2:1 or 3:1, coupled with the idea of a limited observable orbital phase window for the radio pulses, would be indistinguishable from systems in 1:1 resonances.
-We therefore advance the possibility that the coincidence of the observed radio periodicities of ILT\,J1101+5521 and GLEAM-X\,J0704$-$37 with their spectroscopically confirmed orbital periods does not necessarily imply that they are 1:1 polars.
+Interestingly, systems with spin-orbital (or beat-orbital) resonances of, e.g., 2:1 or 3:1, would be indistinguishable from systems in 1:1 resonances if the only pulses that can be observed occur within a limited orbital phase range.
+We therefore raise the possibility that the coincidence of the observed radio periodicities of ILT\,J1101+5521 and GLEAM-X\,J0704$-$37 with their spectroscopically confirmed orbital periods does not necessarily imply that they are 1:1 polars.
 
-Similarly, systems in which the spin-orbit (or beat-orbit) ratios are \emph{close to} small-integer ratios, or, equivalently, systems in which precession of the WD is significant, will exhibit an extra beating effect in which an orbitally-induced intermittency is aliased to a much lower frequency.
+In a similar vein, systems in which the spin-orbit (or beat-orbit) ratios are \emph{close to} small-integer ratios, or, equivalently, systems in which precession of the WD is significant, will exhibit an extra beating effect in which an orbitally-induced intermittency is aliased to a much lower frequency.
 The month-long time scale of the intermittency of \src{}, and possibly even GLEAM-X\,J1627$-$5235, may be of this kind; much longer-term monitoring is needed to confirm or refute this.
 
 Another possibility is that radio emission is only observed when the MD produces dense enough particle outflows, in the form of winds, to activate the emission mechanism in the vicinity of the WD.
@@ -667,7 +667,7 @@ The MeerKAT telescope is operated by the South African Radio Astronomy Observato
 \label{app:scattering_dm}
 
 It can be shown that pulses scatter-broadened by a thin screen will appear to the observer as the original pulse convolved with a one-sided exponential kernel with an associated timescale $\tau$ [CITATION].
-For intrinsically Gaussian pulses of scale $\sigma$, the result of this convolution is well described by the \textit{exponentially modified Gaussian} (EMG), as given in Eq. \eqref{eqn:emg}.
+For intrinsically Gaussian pulses of scale $\sigma$, the result of this convolution is well described by the \textit{exponentially modified Gaussian} (EMG), as given in \Eqn~\ref{eqn:emg}.
 
 In the regime $\tau \ll \sigma$, the effect of scattering is negligible and the scattered pulse resembles the original pulse.
 ToAs can be obtained in the usual way, i.e., using a matched filter ``template'' constructed from the average pulse profile.
