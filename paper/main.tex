@@ -158,7 +158,7 @@ Unfortunately, optical follow-up is not possible for LPTs and LPT candidates whi
 This is almost certainly the case for \src{}, which is situated very close to the Galactic plane ($b = -0\overset{\circ}{.}12$), and has a dispersion measure (DM) derived distance of ${\sim}4.7\,$kpc \citepalias{2024MNRAS.535..909D}; unsurprisingly, optical follow-up at \src{}'s location did not turn up any source down to ${\sim}23$ AB mag.
 Without more detections in the radio or at other wavelengths, it seemed unlikely that the nature of \src{} could ever be resolved.
 
-In this short paper, we present new radio observations (spanning frequencies from $154\,$MHz to $1.7\,$GHz) in which \src{} was re-detected, confirming that it is indeed an LPT with a period of ${\sim}1.16\,$hours.
+In this paper, we present new radio observations (spanning frequencies from $154\,$MHz to $1.7\,$GHz) in which \src{} was re-detected, confirming that it is indeed an LPT with a period of ${\sim}1.16\,$hours.
 In \S\ref{sec:observations}, we describe the observations themselves, some of which were taken as part of independent surveys, and some of which were taken as dedicated follow-up of \src{} once it became apparent that it was still active.
 In \S\ref{sec:analysis} we present a timing analysis of the new detections, as well as revised estimates of the DM and the scattering timescale.
 We also include new polarization detections in which the polarisation angle (PA) behavior differs significantly from the originally detected pulse.
@@ -414,12 +414,14 @@ We also tried fitting a timing model that included a spin-down parameter, and fo
 
 The measured DM of $764 \pm 25\,{\rm pc}\,{\rm cm}^{-3}$ is slightly higher than, but still consistent with, the in-band measurement of $710^{+200}_{-180}\,{\rm pc}\,{\rm cm}^{-3}$ given in \citetalias{2024MNRAS.535..909D}.
 Because we have not attempted to simultaneously fit for both DM and scattering timescale, there will remain some small systematic error on this reported DM measurement.
-Breaking the degeneracy is possible in principle with a much higher S/N average profile than what is achievable with the current data set.
+Note, in particular, that the YMW16 and NE2001 models predict a slightly longer scattering time scale than the $70\,$ms that we have assumed throughout this work.
+Breaking the degeneracy is possible in principle with a higher S/N average profile than what is achievable with the current data set.
 
 For planning observations of \src{} at low ($\lesssim 300 MHz$), care should be taken to incorporate scattering into the predicted ToAs.
 The $N$th pulse since PEPOCH is predicted to arrive at the Solar System barycentre at
 \begin{equation}
     {\rm MJD} = {\rm PEPOCH} + NP + \Delta t_{\rm DM}(\nu) + \Delta t_{\rm sc}(\nu),
+    \label{eqn:timing}
 \end{equation}
 where PEPOCH and the period, $P$, are given in \Tab~\ref{tbl:ephemeris},
 \begin{equation}
@@ -502,7 +504,7 @@ Contrastingly, the PA curve of the 2024 ASKAP pulse is flat (across five 10-seco
 \section{Discussion} \label{sec:discussion}
 
 After accounting for dispersion and scattering effects, the timing analysis of \src{} confirms its status as an LPT, as originally conjectured in \citetalias{2024MNRAS.535..909D}.
-It has the fifth largest period (${\sim}1.16\,$hours) of known published LPTs, after ASKAP J1839$-$0756 \citep[$6.45\,$hours;][]{Lee2025}, GLEAM-X J0704$-$37 \citep[$2.92\,$hours;][]{2024ApJ...976L..21H,2025A&A...695L...8R}, ILT J1101+5521 \citep[$2.09\,$hours;][]{deRuiter2025}, and GCRT J1745$-$3009 \citep[$1.28\,$hours;][]{2005Natur.434...50H}.
+It has the fifth largest period (${\sim}1.16\,$hours) of published LPTs to date, after ASKAP J1839$-$0756 \citep[$6.45\,$hours;][]{Lee2025}, GLEAM-X J0704$-$37 \citep[$2.92\,$hours;][]{2024ApJ...976L..21H,2025A&A...695L...8R}, ILT J1101+5521 \citep[$2.09\,$hours;][]{deRuiter2025}, and GCRT J1745$-$3009 \citep[$1.28\,$hours;][]{2005Natur.434...50H}.
 
 With the timing solution in hand, we can explore the efficacy of the original follow-up campaign described in \citetalias{2024MNRAS.535..909D}.
 Assuming \src{} remained at a similar brightness (see \Fig~\ref{fig:pulse_details}), it should have been detected in two ASKAP observations (2023-04-06 and 2023-10-18) and a few dozen times throughout the MWA's 2022 GPM run (2022-06-02 to 2022-09-08).
@@ -514,8 +516,8 @@ The entire set of observations presented in this work, spanning from 2023 to 202
 This is reminiscent of the behaviour of GLEAM-X J162759.5$-$523504.3, which was ``on'' in January 2020, ``off'' in Feburary, and ``on'' again in March \citep{2022Natur.601..526H}.
 The periodic (or quasi-periodic) reappearance of \src{} suggests the possibility that other known intermittent LPTs (like GLEAM-X J162759.5$-$523504.3 and GCRT J1745$-$3009) may eventually do likewise.
 
-As noted in \citetalias{2024MNRAS.535..909D}, optical follow-up of \src{} is hampered by its proximity to the Galactic plane ($b = -0.12^\circ$).
-Inferring this nature of the system (white dwarf vs neutron star, isolated vs binary) from the radio pulses alone is challenging, unless either the population of LPTs is better understood as a whole, or if some other property of the radio signal (e.g. intermittency, polarisation) can be linked to the system properties.
+As noted in \citetalias{2024MNRAS.535..909D}, optical follow-up of \src{} is hampered by its proximity to the Galactic plane ($b = -0.12^\circ$) and the associated extinction.
+Inferring this nature of the system (white dwarf vs neutron star, isolated vs binary) from the radio pulses alone is challenging, until either the population of LPTs is better understood as a whole, or some other property of the radio signal (e.g. intermittency, polarisation) can be linked to the system properties.
 
 \src{}'s period and duty cycle are not dissimilar to ILT J1101+5521 and GLEAM-X J0704$-$37, which are confirmed polars (\Fig~\ref{fig:lpt_comparison}), suggesting the possibility that \src{}, too, is a WD-MD polar system.
 However, its period of ${\sim}1.16\,$hours would make it shorter than the minimum known orbital period of $1.3\,$hours for confirmed polars \citep{schwope2025polarcatcatalogpolarslowaccretion}.
@@ -523,7 +525,7 @@ This makes it an interesting testbed for the suggestion advanced by \citet{2025A
 \begin{figure*}{th}
     \centering
     \includegraphics[width=0.98\linewidth]{lpt_comparison.pdf}
-    \caption{Duty cycle vs radio pulse period for various classes of radio emitters \citep{deRuiter2025,2022Natur.601..526H,2023Natur.619..487H,2024NatAs...8.1159C,2005Natur.434...50H,deRuiter2025,Lee2025}. The duty cycles are derived from the reported pulse widths for LPTs, which are compared to the range of the fitted, unscattered pulse widths of \src{} at 10\% of the peak. AR\,Sco \citep{2016Natur.537..374M,2018A&A...611A..66S} and other sources without well-defined periods or duty cycles \citep[e.g.][and references therein]{2021ApJ...920...45W} are not included on this plot.}
+    \caption{Duty cycle vs radio pulse period for various long period radio emitters \citep{deRuiter2025,2022Natur.601..526H,2023Natur.619..487H,2024NatAs...8.1159C,2005Natur.434...50H,deRuiter2025,Lee2025}. The duty cycles are derived from the reported pulse widths for LPTs, which are compared to the range of the fitted, unscattered pulse widths of \src{} at 10\% of the peak. AR\,Sco \citep{2016Natur.537..374M,2018A&A...611A..66S} and other sources without well-defined duty cycles or periods \citep[e.g.][and references therein]{2021ApJ...920...45W} are not included on this plot.}
     \label{fig:lpt_comparison}
 \end{figure*}
 
@@ -565,7 +567,7 @@ The month-long time scale of the intermittency of \src{}, and possibly even GLEA
 
 Another possibility is that radio emission is only observed when the MD produces dense enough particle outflows, in the form of winds, to activate the emission mechanism in the vicinity of the WD.
 Such outflows can last for months [CITATION??], and would not be strictly periodic.
-If intermittency is of this sort, then the observed activity windows will be similarly aperiodic, or quasiperiodic.
+If intermittency is of this kind, then the observed activity windows will be similarly aperiodic, or quasiperiodic.
 Again, long-term monitoring can help distinguish between these scenarios.
 
 
@@ -601,7 +603,18 @@ Again, long-term monitoring can help distinguish between these scenarios.
 \section{Summary} \label{sec:summary}
 
 We have shown that \src{} is in fact an LPT, as conjectured in \citetalias{2024MNRAS.535..909D}).
-Its period of ${\sim}1.16\,$hours is slightly shorter than the minimum known orbital\dots
+Its period of ${\sim}1.16\,$hours is slightly shorter than the minimum known orbital period of optically confirmed polars, marking it as an interesting case study in the context of \citet{2025A&A...695L...8R}'s suggestion that `short'-LPTs and `long'-LPTs may correspond to different classes of cataclysmic variables.
+
+A timing solution has been presented (\Eqn~\ref{eqn:timing}) which includes a term to account for scattering at low frequencies ($\lesssim 300\,$MHz).
+Without it, ToA predictions may be early by up to several tens of seconds, which is a sizeable fraction of the intrinsic pulse width.
+
+The three higher-frequency pulses for which polarimetry was observable exhibited unique single-pulse polarisation behaviours.
+Only the original ASKAP detection exhibited a PA curve that was amenable to being modelled with the rotating vector model; the others show either flat, or slightly concave up PA curves (\Fig~\ref{fig:RM}).
+
+We conjecture that if \src{} is a WD pulsar, its intermittency may be a result of the spin-orbital resonance being near, but not exactly, a small-integer ratio, creating a aliased beating pattern on a time scale of months.
+The same explanation may be applied to other LPTs with activity cycles that last on the order of months.
+An alternative explanation is that the radio emission is drived by particle wind outflows from the main sequence companion.
+Long-term monitoring of LPTs will reveal whether the intermittency is periodic, and thus help discriminate between these two scenarios.
 
 \section*{Acknowledgements}
 
