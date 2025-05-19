@@ -65,6 +65,7 @@
 \newcommand{\srcfull}{ASKAP J175534.9$-$252749.1}
 
 \DeclareMathOperator{\erfcx}{erfcx}
+\DeclareMathOperator{\erfc}{erfc}
 \DeclareMathOperator{\erf}{erf}
 \DeclareMathOperator{\emg}{emg}
 
@@ -149,13 +150,13 @@ radio continuum: transients -- white dwarfs
 \section{Introduction} \label{sec:introduction}
 
 \srcfull{} (hereafter, \src{}) is a transient radio source discovered in the Variables and Slow Transients (VAST) survey \citep[][hereafter \citetalias{2024MNRAS.535..909D}]{2024MNRAS.535..909D}.
-A single, highly polarized pulse was observed, lasting approximately 2 minutes, exhibiting a steep spectrum ($\alpha = -3.1$).
+A single, highly polarized pulse was observed, lasting approximately 2 minutes, exhibiting a steep spectrum ($\alpha = -3.1$, for flux density $S_\nu\propto\nu^\alpha$).
 Extensive follow up in new and archival data at multiple wavelengths turned up no other pulses.
-Despite this, the authors concluded that \src{} was most likely a long period transient (LPT), a newly emerging class of radio source with periods ranging from minutes to hours.
+Despite this, the authors concluded that \src{} was most likely a long period transient (LPT), a newly emerging class of radio source with periods ranging from minutes to hours \citep[see e.g.][]{2022Natur.601..526H,2023Natur.619..487H,2024NatAs...8.1159C}.
 
-Although optical follow-up has confirmed that at least some LPTs are white dwarfs with main sequence companions \citep{deRuiter2025,2025A&A...695L...8R}, it remains unclear if this model can account for all known LPTs \citep[e.g.][]{2022ApJ...940...72R,Lee2025}.
-Unfortunately, optical follow-up is not possible for LPTs and LPT candidates which are obscured by Galactic foregrounds.
-This is almost certainly the case for \src{}, which is situated very close to the Galactic plane ($b = -0\overset{\circ}{.}12$), and has a dispersion measure (DM) derived distance of ${\sim}4.7\,$kpc \citepalias{2024MNRAS.535..909D}; unsurprisingly, optical follow-up at \src{}'s location did not turn up any source down to ${\sim}23$ AB mag.
+Although optical follow-up has confirmed that at least some LPTs are white dwarfs with main sequence companions \citep{deRuiter2025,2024ApJ...976L..21H,2025A&A...695L...8R}, it remains unclear if this model can account for all known LPTs \citep[e.g.][]{2022ApJ...940...72R,Lee2025}.
+Unfortunately, optical follow-up is challenging for LPTs and LPT candidates obscured by Galactic foregrounds.
+This is almost certainly the case for \src{}, which is situated very close to the Galactic plane ($b = -0\overset{\circ}{.}12$), and has a dispersion measure (DM) derived distance of ${\sim}4.7\,$kpc \citepalias{2024MNRAS.535..909D}; unsurprisingly, archival searches at \src{}'s location did not turn up any source down to ${\sim}23$ AB mag.
 Without more detections in the radio or at other wavelengths, it seemed unlikely that the nature of \src{} could ever be resolved.
 
 In this paper, we present new radio observations (spanning frequencies from $154\,$MHz to $1.7\,$GHz) in which \src{} was re-detected, confirming that it is indeed an LPT with a period of ${\sim}1.16\,$hours.
@@ -167,50 +168,9 @@ The main conclusions are summarized in \S\ref{sec:summary}.
 
 \section{Observations} \label{sec:observations}
 
-\subsection{MWA} \label{sec:mwa}
-
-\src{} was detected blindly with the Murchison Widefield Array \citep[MWA;][]{Tingay2013} in observations taken between June--September 2024 under the ``Galactic Plane Monitor'', project code G0080. The prime objective of the campaign was to search for long-period transients by scanning the Galactic plane over $285^\circ < l < 65^\circ$, $|b|<\pm15^\circ$ on a bi-weekly cadence at 185--215\,MHz (see Methods of \citet{2023Natur.619..487H}); a full description will be released by Hurley-Walker et al., in prep. We also observed over June--September 2022 but made no detections in these data.
-
-We re-imaged the 2024 data at the location of \src{} using \textsc{WSClean}, masking \src{} itself, forming a deep model of the sky. After subtracting this from the visibilities, we phase-rotated to \src{}, and averaged the baseline data to produce a dynamic spectrum.
-% SM to write a 'joining sentence' to explain that the timing analysis was a bit more complicated because of the low frequencies and refer the reader to the relevant section -- SM (memo to self): Not that complicated because DM + tau_sc can be ignored if making ToA predictions solely based on pulses at the target frequency.
-
-% SM: commenting the following out because it's a repeat of above...?
-%The GPM also conducted observations of this region in June--September 2022, but \src{} was not detected, either by a blind search, nor by a re-examination of the data following the methods above.
-
-% NWH to add what went into the followup observations: D0042 (both 185 and 200 MHz). SM
-
-% ** ANGIE **
-% Plz add a short paragraph here with the essential details of the IPS observation included in this paper: G0060, upper half-band only, how the images were made. I'll (SM) add a few sentences about how I selected that observation in the first place.
-An additional MWA observation made as part of the MWA Interplanetary Scintillation (IPS) Survey, project code G0060, has also been included in this present study. 
-A full description of how MWA IPS observations are scheduled and processed can be found in Section~2 of \citet{Morgan2022}; here, we provide a brief overview.
-The two adjacent 200-second observations included in this work are a sub-section of a full 10-minute near-Sun observation (30$^{\circ}$ elongation).
-These observations are taken over two equal bands of frequency, centered on approximately 80\,MHz and 160\,MHz. For this study, only the upper band has been processed. 
-IPS observations require a short time integration of 0.5\,s, but can allow for a larger frequency resolution of 40\,kHz, which is then averaged to an even higher 160\,kHz during imaging. % SM: TODO: describe various scrunching I did to produce light curve in pulsestack
-The observation was self-calibrated against a sky model based on the GLEAM survey \citep{Hurley-Walker2017} using \textsc{mwa\_hyperdrive}\footnote{\url{https://github.com/MWATelescope/mwa_hyperdrive}}, and then imaged using \textsc{WSClean}.
-% NHW: then phase-rotated and averaged to produce a dynamic spectrum?
-
-
-
-
-\subsection{ASKAP} \label{sec:askap}
-
-% NHW to update this in light of new historical discovery of a dim pulse in SB49153.
-
-Paper~1 presented an exhaustive search of the ASKAP data available at the time of writing, comprising 60\,h of data, and yielding only a single detection of \src{} (in Scheduling Block ID 47253). Subsequent to the writing of Paper~1, a further epoch of the VAST survey was performed (SBID 63600) in which \src{} produced a detectable pulsation.
-
-With the re-detection of the source in the MWA data, and the calculation of an ephemeris (\Sect~\ref{sec:analysis}), we re-reduced the data in which we would predict that \src{} would appear. We made one further detection, in SBID~49153, at a relatively low significance ($\sim5\sigma$) compared to the blind detections. We followed a similar procedure as the above to generate dynamic spectra for each of the observations, using a minimum baseline length of 500\,m to suppress uncleaned Galactic diffuse emission.
-
-
-\subsection{MeerKAT} \label{sec:meerkat}
-
-MeerKAT observations were undertaken on 2024-10-19, under proposal code 
-DDT-20241015-NH-01 and capture block 1729341386, using the UHF band spanning 544 -- 1088\,MHz. As well as correlator observations undertaken at 2-s/132.812-kHz resolution, we also employed the Pulsar Timing User Supplied Equipment \citep[PTUSE;][]{2020PASA...37...28B} in search mode, using 37.45-$\mu$s sampling. The observation included typical bandpass, polarisation, and phase calibrators, as well as phase-up and test pulsar observations. \src{} was tracked from 13:54:36 to 14:04:35 UTC.
-
-The correlator data were calibrated using the standard SARAO SDP calibration pipeline, and imaged using \textsc{WSClean}. We formed a deep model of the sources within the primary beam, excepting \src{}, and subtracted this from the visibilities. We then averaged the visibilities, excluding all baselines shorter than 150\,m, to produce a dynamic spectrum of the source, shown in \Fig~\ref{fig:scattering_DM}.
-
-We also re-imaged the original 2023-05-28 L-band MeerKAT observation described in Paper~1, which was taken under project code DDT-20230525-DD-01 under capture block 1685306788. We performed a similar processing of the data, and identified four pulses with TOAs consistent with an ephemeris derived from the other data. The dynamic spectrum of one of the brightest pulses is shown in \Fig~\ref{fig:scattering_DM}.
-
-A summary of all the observations used in this paper is given in \Tab~\ref{tbl:obs}.
+The MWA, ASKAP and MeerKAT are all radio interferometers capable of imaging.
+A summary of all the observations included in this work is summarised in \Tab~\ref{tbl:obs}.
+In this section, we describe how each telescope was used to generate dynamic spectra of \src{}.
 
 \begin{table*}
   \centering
@@ -234,6 +194,45 @@ A summary of all the observations used in this paper is given in \Tab~\ref{tbl:o
     \hline
   \end{tabular}
 \end{table*}
+
+\subsection{MWA} \label{sec:mwa}
+
+\src{} was detected blindly with the Murchison Widefield Array \citep[MWA;][]{Tingay2013} in observations taken between June--September 2024 under the ``Galactic Plane Monitor'', project code G0080. The prime objective of the campaign was to search for long-period transients by scanning the Galactic plane over $285^\circ < l < 65^\circ$, $|b|<\pm15^\circ$ on a bi-weekly cadence at 185--215\,MHz \citep[see Methods of][]{2023Natur.619..487H}; a full description will be released by Hurley-Walker et al., in prep. We also observed over June--September 2022 but made no detections in these data, as reported in \citetalias{2024MNRAS.535..909D}.
+Subsequent to its redetection, we commenced a Director's Discretionary Time (DDT) campaign under project code D0042, to obtain further observations, adjusting the frequency from 200.32\,MHz to 184.96\,MHz for some of the observations to attempt to improve measurements of its DM.
+
+We imaged both the 2024 GPM data and the follow-up DDT data at the location of \src{} using \textsc{WSClean}, masking \src{} itself, forming a deep model of the sky for each observation. After subtracting this from the visibilities, we phase-rotated to \src{}, and averaged the baseline data to produce a dynamic spectrum.
+% SM to write a 'joining sentence' to explain that the timing analysis was a bit more complicated because of the low frequencies and refer the reader to the relevant section -- SM (memo to self): Not that complicated because DM + tau_sc can be ignored if making ToA predictions solely based on pulses at the target frequency.
+
+% SM: commenting the following out because it's a repeat of above...?
+%The GPM also conducted observations of this region in June--September 2022, but \src{} was not detected, either by a blind search, nor by a re-examination of the data following the methods above.
+
+% NWH to add what went into the followup observations: D0042 (both 185 and 200 MHz). SM
+
+% ** ANGIE **
+% Plz add a short paragraph here with the essential details of the IPS observation included in this paper: G0060, upper half-band only, how the images were made. I'll (SM) add a few sentences about how I selected that observation in the first place.
+An additional MWA observation made as part of the MWA Interplanetary Scintillation (IPS) Survey, project code G0060, has also been included in this present study. 
+A full description of how MWA IPS observations are scheduled and processed can be found in Section~2 of \citet{Morgan2022}.
+Details of the imaging of IPS observations since the first data release can be found in Waszewski et al. (submitted).
+The two adjacent 200-second observations included in this work are a sub-section of a full 10-minute near-Sun observation (30$^{\circ}$ elongation).
+These observations are taken over two equal bands of frequency, centred on approximately 80\,MHz and 160\,MHz. For this study, only the upper band has been processed. 
+The observation was self-calibrated against a sky model based on the GLEAM survey \citep{Hurley-Walker2017} using \textsc{mwa\_hyperdrive}\footnote{\url{https://github.com/MWATelescope/mwa_hyperdrive}}, and then imaged using \textsc{WSClean}.
+\src{} is clearly visible as a point source in the image, and the lightcurve presented in this work is the result of averaging over the 15.36-MHz subband, using 10-second time bins.
+
+\subsection{ASKAP} \label{sec:askap}
+
+Paper~1 presented an exhaustive search of the ASKAP data available at the time of writing, comprising 60\,h of data, and yielding only a single detection of \src{} (in Scheduling Block ID 47253). Subsequent to the writing of Paper~1, a further epoch of the VAST survey was performed (SBID 63600) in which \src{} produced a detectable pulsation.
+
+With the re-detection of the source in the MWA data, and the calculation of an ephemeris (\Sect~\ref{sec:analysis}), we re-reduced the data in which we would predict that \src{} would appear. We made one further detection, in SBID~49153, at a relatively low significance ($\sim5\sigma$) compared to the blind detections. We followed a similar procedure as the above to generate dynamic spectra for each of the observations, using a minimum baseline length of 500\,m to suppress uncleaned Galactic diffuse emission.
+
+
+\subsection{MeerKAT} \label{sec:meerkat}
+
+MeerKAT observations were undertaken on 2024-10-19, under proposal code 
+DDT-20241015-NH-01 and capture block 1729341386, using the UHF band spanning 544 -- 1088\,MHz. As well as correlator observations undertaken at 2-s/132.812-kHz resolution, we also employed the Pulsar Timing User Supplied Equipment \citep[PTUSE;][]{2020PASA...37...28B} in search mode, using 37.45-$\mu$s sampling. The observation included typical bandpass, polarisation, and phase calibrators, as well as phase-up and test pulsar observations. \src{} was tracked from 13:54:36 to 14:04:35 UTC.
+
+The correlator data were calibrated using the standard SARAO SDP calibration pipeline, and imaged using \textsc{WSClean}. We formed a deep model of the sources within the primary beam, excepting \src{}, and subtracted this from the visibilities. We then averaged the visibilities, excluding all baselines shorter than 150\,m, to produce a dynamic spectrum of the source, shown in \Fig~\ref{fig:scattering_DM}.
+
+We also re-imaged the original 2023-05-28 L-band MeerKAT observation described in Paper~1, which was taken under project code DDT-20230525-DD-01 under capture block 1685306788. We performed a similar processing of the data, and identified four pulses with TOAs consistent with an ephemeris derived from the other data. The dynamic spectrum of one of the brightest pulses is shown in \Fig~\ref{fig:scattering_DM}.
 
 %\begin{deluxetable*}{cccccc}
 %\tablecaption{Pulse detections and non-detections}
@@ -286,7 +285,7 @@ Generally, the low-frequency (MWA) pulses tend
 \end{itemize}
 
 The low-frequency asymmetry is consistent with a scattering time scale of a few tens of seconds at MWA frequencies, which scales to a few tens of milliseconds at 1\,GHz.
-This is in broad agreement with the model predictions of NE2001 ($\tau_{\rm sc,1GHz} = 0.066\,$s) and YMW16 ($\tau_{\rm sc,1 GHz} = 0.075\,$s) at the source's location assuming the DM value of 710\,pc\,cm$^{-3}$ reported in \citepalias{2024MNRAS.535..909D}.
+This is in broad agreement with the model predictions of NE2001 ($\tau_{\rm sc,1GHz} = 66\,$ms) and YMW16 ($\tau_{\rm sc,1 GHz} = 75\,$ms) at the source's location assuming the DM value of 710\,pc\,cm$^{-3}$ reported in \citepalias{2024MNRAS.535..909D}.
 
 To account for the asymmetry, we fit exponentially modified Gaussians to each pulse with the form,
 \begin{equation}
@@ -294,7 +293,7 @@ To account for the asymmetry, we fit exponentially modified Gaussians to each pu
     \exp\left(-\frac12 \left( \frac{t - \mu}{\tau} \right)^2 \right)  \erfcx \left(\frac{1}{\sqrt{2}} \left(\frac{\sigma}{\tau} - \frac{t - \mu}{\tau} \right) \right),
   \label{eqn:emg}
 \end{equation}
-where $A$, $\mu$, and $\sigma$ are the height, location, and scale of an unscattered Gaussian pulse, and the scattering time scale was fixed at
+where $\erfcx(X) = \exp(X^2) \erfc(X)$ is the scaled complimentary error function; $A$, $\mu$, and $\sigma$ are the height, location, and scale of an unscattered Gaussian pulse; and the scattering time scale was fixed at
 \begin{equation}
       \tau(\nu) = 0.07\, \left(\frac{\nu}{\rm GHz}\right)^{-4} \, {\rm s},
 \end{equation}
@@ -312,7 +311,7 @@ For the MeerKAT pulse with two components, we fit only the brighter component.
 
 \subsection{Timing solution} \label{sec:timing}
 
-Because the large scattering time scale at low frequencies significantly distorts the pulse shapes, common methods for defining ToAs can potentially result in systematic errors of up to tens of seconds, as discussed in detail in Appendix \ref{app:scattering_dm}.
+Since the large scattering time scale at low frequencies significantly distorts the pulse shapes, common methods for defining ToAs can potentially result in systematic errors of up to tens of seconds, as discussed in detail in Appendix \ref{app:scattering_dm}.
 These systematic errors set up a degeneracy between DM and scattering time scales that is not easily disambiguated.
 
 This is demonstrated in \Fig~\ref{fig:stacked_spectra}, which shows stacked MWA and MeerKAT spectra.
@@ -322,12 +321,12 @@ The scattering predicted by Galactic electron density models, however, is suffic
 \begin{figure}{th}
       \centering
           \includegraphics[width=0.95\linewidth]{stacked_spectra.pdf}
-              \caption{Stacked (semi-transparent) dynamic spectra, where each rectangle indicates the observing campaign whose spectra were barycentred and folded according to the ephemeris. The spectra have not been dedispersed, but the cyan dashed lines indicate where the two components seen in the MeerKAT (2024) observation would appear due to dispersion. The white curve in the top panel is the dedispersed profile of the MeerKAT (2024) observation, and the white curves in the bottom panel are the same profile subjected to scattering with $\tau_{\rm sc} = \tau_{\rm sc,1\,GHz} (\nu/{\rm 1\,GHz})^{-4}$ at frequencies 175, 195, and 210 MHz, where $\tau_{\rm sc,1\,GHz} = 0.07\,$s.}
+              \caption{Stacked (semi-transparent) dynamic spectra, where each rectangle indicates the observing campaign whose spectra were barycentred and folded according to the ephemeris. The spectra have not been dedispersed, but the cyan dashed lines indicate where the two components seen in the MeerKAT (2024) observation would appear due to dispersion. The white curve in the top panel is the dedispersed profile of the MeerKAT (2024) observation, and the white curves in the bottom panel are the same profile subjected to scattering with $\tau_{\rm sc} = \tau_{\rm sc,1\,GHz} (\nu/{\rm 1\,GHz})^{-4}$ at frequencies 175, 195, and 210 MHz, where $\tau_{\rm sc,1\,GHz} = 70$\,ms.}
                   \label{fig:stacked_spectra}
 \end{figure}
 
 We therefore identified the times of arrival (ToAs) with the $\mu$ parameter in the fits given in \Eqn~\ref{eqn:emg}, which represents the location of the assumed Gaussian pulse before scattering.
-Because the scattering time scale could not be reliably measured for all individual pulses, we obtained ToAs by assuming a fixed scattering time of $\tau_{\rm sc,1 GHz} = 0.07\,$s.
+Because the scattering time scale could not be reliably measured for all individual pulses, we obtained ToAs by assuming a fixed scattering time of $\tau_{\rm sc,1 GHz} = 70$\,ms.
 
 %\begin{deluxetable*}{ccccc}
 %  \tablecaption{Times of arrival and pulse properties\label{tbl:toas}}
@@ -408,7 +407,7 @@ We also tried fitting a timing model that included a spin-down parameter, and fo
 \begin{figure*}{th}
   \centering
   \includegraphics[width=0.98\linewidth]{pulse_details.pdf}
-  \caption{Timing residuals (top panel) and other pulse properties derived from the fits of \Eqn~\ref{eqn:emg} to the individual light curves (lower two panels). \dots}
+  \caption{Timing residuals (top panel) and other pulse properties derived from the fits of \Eqn~\ref{eqn:emg} to the individual light curves (lower two panels). Notable features of interest include the relative high fluence of the early 2023 detections (leftmost two points), and the relative stability of the pulse fluences (and pulse morphology) of the MWA detections in the time range $60480 \le {\rm MJD} \le 60580$.}
   \label{fig:pulse_details}
 \end{figure*}
 
@@ -417,7 +416,7 @@ Because we have not attempted to simultaneously fit for both DM and scattering t
 Note, in particular, that the YMW16 and NE2001 models predict a slightly longer scattering time scale than the $70\,$ms that we have assumed throughout this work.
 Breaking the degeneracy is possible in principle with a higher S/N average profile than what is achievable with the current data set.
 
-For planning observations of \src{} at low ($\lesssim 300 MHz$), care should be taken to incorporate scattering into the predicted ToAs.
+For planning observations of \src{} at low ($\lesssim 300$\,MHz), care should be taken to incorporate scattering into the predicted ToAs.
 The $N$th pulse since PEPOCH is predicted to arrive at the Solar System barycentre at
 \begin{equation}
     {\rm MJD} = {\rm PEPOCH} + NP + \Delta t_{\rm DM}(\nu) + \Delta t_{\rm sc}(\nu),
@@ -454,7 +453,7 @@ At intermediate frequencies ($150\,{\rm MHz} \lesssim \nu \lesssim 300\,{\rm MHz
 \subsection{Polarization} \label{sec:polarization}
 
 No significant polarised emission was detected in the MWA pulses, as well as the 2023 MeerKAT pulses.
-The apparent lack of polarisation in the MeerKAT data set is likely due to low S/N coupled with the source not being not being centred in the beam.
+The apparent lack of polarisation in the 2023 MeerKAT data set is likely due to low S/N coupled with the source not being not being centred in the beam.
 Much more careful imaging analysis would be needed to obtain reliable measurements or limits on the polarised components of those pulses.
 
 The apparent lack of linear polarisation in the MWA pulses, however, is expected due to the high RM of ${\sim}961\,{\rm rad}/{\rm m}^2$ \citepalias[as reported in][]{2024MNRAS.535..909D}, causing the pulses to be depolarised within individual channels.
@@ -508,15 +507,16 @@ It has the fifth largest period (${\sim}1.16\,$hours) of published LPTs to date,
 
 With the timing solution in hand, we can explore the efficacy of the original follow-up campaign described in \citetalias{2024MNRAS.535..909D}.
 Assuming \src{} remained at a similar brightness (see \Fig~\ref{fig:pulse_details}), it should have been detected in two ASKAP observations (2023-04-06 and 2023-10-18) and a few dozen times throughout the MWA's 2022 GPM run (2022-06-02 to 2022-09-08).
+More careful cleaning and imaging of the 2023-04-06 ASKAP observation revealed a low-S/N pulse, at the time predicted by the ephemeris, which is presented in \Figs~\ref{fig:pulsestack} and \ref{fig:pulse_details}.
 There are also three observations in the earliest part of the 2024 GPM run (one on 2024-06-02 and two on 2024-06-10) in which no pulse was observed.
 However, pulses were detected just ten days later on 2024-06-20 (the first of the MWA 200\,MHz points in \Fig~\ref{fig:pulse_details}), and at each epoch thereafter whenever the MWA was observing in \src{}'s direction when a pulse was due to arrive.
 
 We conclude, therefore, that \src{} is intermittent with active periods lasting on the order of months, and that the most recent activity period fortuitously started shortly after the start of the 2024 GPM observation run.
 The entire set of observations presented in this work, spanning from 2023 to 2024, may represent two or three different activity windows.
-This is reminiscent of the behaviour of GLEAM-X J162759.5$-$523504.3, which was ``on'' in January 2020, ``off'' in Feburary, and ``on'' again in March \citep{2022Natur.601..526H}.
-The periodic (or quasi-periodic) reappearance of \src{} suggests the possibility that other known intermittent LPTs (like GLEAM-X J162759.5$-$523504.3 and GCRT J1745$-$3009) may eventually do likewise.
+This is reminiscent of the behaviour of GLEAM-X J162759.5$-$523504.3, which was ``on'' in January 2018, ``off'' in Feburary, and ``on'' again in March \citep{2022Natur.601..526H}.
+The reappearance of \src{} suggests the possibility that other known intermittent LPTs (like GLEAM-X J162759.5$-$523504.3 and GCRT J1745$-$3009) may eventually do likewise.
 
-As noted in \citetalias{2024MNRAS.535..909D}, optical follow-up of \src{} is hampered by its proximity to the Galactic plane ($b = -0.12^\circ$) and the associated extinction.
+As noted in \citetalias{2024MNRAS.535..909D}, optical follow-up of \src{} is hampered by its position within the Galactic plane ($b = -0.12^\circ$) and the associated extinction.
 Inferring this nature of the system (white dwarf vs neutron star, isolated vs binary) from the radio pulses alone is challenging, until either the population of LPTs is better understood as a whole, or some other property of the radio signal (e.g. intermittency, polarisation) can be linked to the system properties.
 
 \src{}'s period and duty cycle are not dissimilar to ILT J1101+5521 and GLEAM-X J0704$-$37, which are confirmed polars (\Fig~\ref{fig:lpt_comparison}), suggesting the possibility that \src{}, too, is a WD-MD polar system.
@@ -525,7 +525,7 @@ This makes it an interesting testbed for the suggestion advanced by \citet{2025A
 \begin{figure*}{th}
     \centering
     \includegraphics[width=0.98\linewidth]{lpt_comparison.pdf}
-    \caption{Duty cycle vs radio pulse period for various long period radio emitters \citep{deRuiter2025,2022Natur.601..526H,2023Natur.619..487H,2024NatAs...8.1159C,2005Natur.434...50H,deRuiter2025,Lee2025}. The duty cycles are derived from the reported pulse widths for LPTs, which are compared to the range of the fitted, unscattered pulse widths of \src{} at 10\% of the peak. AR\,Sco \citep{2016Natur.537..374M,2018A&A...611A..66S} and other sources without well-defined duty cycles or periods \citep[e.g.][and references therein]{2021ApJ...920...45W} are not included on this plot.}
+    \caption{Duty cycle vs radio pulse period for various long period radio emitters \citep{deRuiter2025,2022Natur.601..526H,2023Natur.619..487H,2024NatAs...8.1159C,2005Natur.434...50H,deRuiter2025,Lee2025,2024arXiv241116606W}. The duty cycles are derived from the reported pulse widths for LPTs, which are compared to the range of the fitted, unscattered pulse widths of \src{} at 10\% of the peak. AR\,Sco \citep{2016Natur.537..374M,2018A&A...611A..66S} and other sources without well-defined duty cycles or periods \citep[e.g.][and references therein]{2021ApJ...920...45W} are not included on this plot.}
     \label{fig:lpt_comparison}
 \end{figure*}
 
@@ -559,14 +559,14 @@ In this view, the intermittency of these systems have several possible explanati
 The limited orbital phase range in which J1912$-$4410's radio pulses were observed suggests that the geometric configuration is important in the observability of radio pulsations; ``missing'' pulses may simply occur at unfavourable orbital phases.
 This is readily testable with long-term monitoring---this kind of intermittency will have the same periodicity as the orbit itself.
 
-Interestingly, systems with spin-orbital (or beat-orbital) resonances of, e.g., 2:1 or 3:1, would be indistinguishable from systems in 1:1 resonances if the only pulses that can be observed occur within a limited orbital phase range.
+Interestingly, systems with spin-orbital (or beat-orbital) resonances of, e.g., 2:1 or 3:1, would be indistinguishable from systems in 1:1 resonances if pulses can be observed within a limited orbital phase range.
 We therefore raise the possibility that the coincidence of the observed radio periodicities of ILT\,J1101+5521 and GLEAM-X\,J0704$-$37 with their spectroscopically confirmed orbital periods does not necessarily imply that they are 1:1 polars.
 
-In a similar vein, systems in which the spin-orbit (or beat-orbit) ratios are \emph{close to} small-integer ratios, or, equivalently, systems in which precession of the WD is significant, will exhibit an extra beating effect in which an orbitally-induced intermittency is aliased to a much lower frequency.
+In a similar vein, systems in which the spin-orbit (or beat-orbit) ratios are \emph{close to} small-integer ratios, or, similarly, systems in which precession of the WD is significant, will exhibit an extra beating effect in which an orbitally-induced intermittency is aliased to a much lower frequency.
 The month-long time scale of the intermittency of \src{}, and possibly even GLEAM-X\,J1627$-$5235, may be of this kind; much longer-term monitoring is needed to confirm or refute this.
 
 Another possibility is that radio emission is only observed when the MD produces dense enough particle outflows, in the form of winds, to activate the emission mechanism in the vicinity of the WD.
-Such outflows can last for months [CITATION??], and would not be strictly periodic.
+Such outflows can last for months \citep{2021ApJ...915...37W}, and would not be periodic.
 If intermittency is of this kind, then the observed activity windows will be similarly aperiodic, or quasiperiodic.
 Again, long-term monitoring can help distinguish between these scenarios.
 
