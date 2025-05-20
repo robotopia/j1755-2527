@@ -185,17 +185,17 @@ lpts = [
     {
         'name': 'J1912-4410',
         'type': 'AR Sco-like',
-        'min_width': 10 * u.s, # TODO: Get Csanad to give me better numbers from data
-        'max_width': 20 * u.s,
+        'min_width': 16 * u.s, # TODO: Get Csanad to give me better numbers from data
+        'max_width': 16 * u.s,
         'period': 319.34903 * u.s,
         'text_kwargs': {
             'ha': 'left',
             'va': 'center',
         },
         'errorbar_kwargs': {
-            'fmt': 'none',
+            'fmt': 'x',
             'ls': 'none',
-            'capsize': 2,
+            'capsize': 0,
         }
     },
     #{
