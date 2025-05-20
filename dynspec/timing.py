@@ -90,39 +90,50 @@ def Stokes_ds(dat, pol='I', pb_corr=True):
         raise NotImplementedError(f"Expecting pol to be one of [I, Q, U, V]")
 
     if pb_corr:
-
         if 'PB_CORR' not in dat.keys():
             print("WARNING: no 'PB_CORR' field found in pickle file; no PB correction applied")
             dat['PB_CORR'] = np.ones((len(dat['FREQS']), len(dat['POLS'])))
-        else:
-            for i in range(len(dat['POLS'])):
-                this_pol = dat['POLS'][i]
-
-                if np.all(np.isnan(dat['PB_CORR'][:,i])):
-                    print(f"WARNING: PB corrections for {this_pol} are all nans. No correction applied to this pol.")
-                    dat['PB_CORR'][:,i] = np.ones(dat['FREQS'].shape)
-
     else:
         # This creates a PB correction field (full of ones) in memory, but doesn't save to disk
         dat['PB_CORR'] = np.ones((len(dat['FREQS']), len(dat['POLS'])))
 
+
+    def warn_if_all_nans(dat, pol):
+        pol_idx = dat['POLS'].index(pol)
+
+        if np.all(np.isnan(dat['PB_CORR'][:,pol_idx])):
+            print(f"WARNING: PB corrections for {pol} are all nans. No correction applied to this pol.")
+            dat['PB_CORR'][:,i] = np.ones(dat['FREQS'].shape)
+
     if dat['POLS'] == ['XX', 'XY', 'YX', 'YY']:
         if pol == 'I':
+            warn_if_all_nans(dat, 'XX')
+            warn_if_all_nans(dat, 'YY')
             S = 0.5*np.real(dat['DS'][:,:,0]/dat['PB_CORR'][:,0] + dat['DS'][:,:,3]/dat['PB_CORR'][:,3])
         elif pol == 'Q':
+            warn_if_all_nans(dat, 'XX')
+            warn_if_all_nans(dat, 'YY')
             S = 0.5*np.real(dat['DS'][:,:,0]/dat['PB_CORR'][:,0] - dat['DS'][:,:,3]/dat['PB_CORR'][:,3])
         elif pol == 'U':
+            warn_if_all_nans(dat, 'XY')
+            warn_if_all_nans(dat, 'YX')
             S = 0.5*np.real(dat['DS'][:,:,1]/dat['PB_CORR'][:,1] + dat['DS'][:,:,2]/dat['PB_CORR'][:,2])
         elif pol == 'V':
+            warn_if_all_nans(dat, 'XY')
+            warn_if_all_nans(dat, 'YX')
             S = 0.5*np.imag(dat['DS'][:,:,1]/dat['PB_CORR'][:,1] - dat['DS'][:,:,2]/dat['PB_CORR'][:,2])
     elif dat['POLS'] == ['I', 'Q', 'U', 'V']:
         if pol == 'I':
+            warn_if_all_nans(dat, 'I')
             S = np.real(dat['DS'][:,:,0]/dat['PB_CORR'][:,0])
         elif pol == 'Q':
+            warn_if_all_nans(dat, 'Q')
             S = np.real(dat['DS'][:,:,1]/dat['PB_CORR'][:,1])
         elif pol == 'U':
+            warn_if_all_nans(dat, 'U')
             S = np.real(dat['DS'][:,:,2]/dat['PB_CORR'][:,2])
         elif pol == 'V':
+            warn_if_all_nans(dat, 'V')
             S = np.real(dat['DS'][:,:,3]/dat['PB_CORR'][:,3])
     else:
         raise NotImplementedError(f"I haven't been taught how to deal with POLS = {ds['POLS']} yet")
