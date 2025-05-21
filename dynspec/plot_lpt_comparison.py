@@ -29,6 +29,7 @@ lpts = [
         'text_kwargs': {
             'ha': 'left',
             'va': 'center',
+            'fontweight': 'bold',
         },
         'errorbar_kwargs': {
             'fmt': 'none',
@@ -237,7 +238,9 @@ for lpt in lpts:
     lpt_label = " " + lpt['name'] if lpt['text_kwargs']['ha'] == 'left' else lpt['name'] + " "
     if 'voffset' in lpt.keys():
         lpt_label = '\n'*lpt['voffset'] + lpt_label
-    plt.annotate(lpt_label, (lpt['period'].to(period_units).value, duty_cycle + 0.5*duty_cycle_err), **lpt['text_kwargs'], alpha=0.7)
+    plt.annotate(lpt_label,
+                 (lpt['period'].to(period_units).value, duty_cycle + 0.5*duty_cycle_err),
+                 **lpt['text_kwargs'], alpha=0.7)
 
 # Construct custom legend
 custom_lines = []
