@@ -107,6 +107,7 @@
 \author[S. J. McSweeney et al.]{
 Samuel J. McSweeney$^{1}$,
 Natasha Hurley-Walker$^{1}$,
+Akash Anumarlapudi$^{2,3}$,
 Dougal Dobie$^{2,3}$,
 Cs\'{a}nad Horv\'{a}th$^{1}$,
 \newauthor
@@ -198,7 +199,7 @@ In this section, we describe how each telescope was used to generate dynamic spe
 \subsection{MWA} \label{sec:mwa}
 
 \src{} was detected blindly with the Murchison Widefield Array \citep[MWA;][]{Tingay2013} in observations taken between June--September 2024 under the `Galactic Plane Monitor', project code G0080. The prime objective of the campaign was to search for long-period transients by scanning the Galactic plane over $285^\circ < l < 65^\circ$, $|b|<\pm15^\circ$ on a bi-weekly cadence at 185--215\,MHz \citep[see Methods of][]{2023Natur.619..487H}; a full description will be released by Hurley-Walker et al., in prep. We also observed over June--September 2022 but made no detections in these data, as reported in \citetalias{2024MNRAS.535..909D}.
-Subsequent to its redetection, we commenced a Director's Discretionary Time (DDT) campaign under project code D0042, to obtain further observations, adjusting the frequency from 200.32\,MHz to 184.96\,MHz for some of the observations to attempt to improvehttps://github.com/CIRA-Pulsars-and-Transients-Group/vcsbeam/pull/71 measurements of its DM.
+Subsequent to its redetection, we commenced a Director's Discretionary Time (DDT) campaign under project code D0042, to obtain further observations, adjusting the frequency from 200.32\,MHz to 184.96\,MHz for some of the observations to attempt to improve measurements of its DM.
 Time of arrival (ToA) predictions for the DDT observations were made using a preliminary ephemeris derived from the GPM detections, which, by virtue at being at the same or similar frequencies, absorbed the delays due to dispersion and scattering into the `PEPOCH' term.
 
 We imaged both the 2024 GPM data and the follow-up DDT data at the location of \src{} using \citep[\textsc{WSClean}][]{2014MNRAS.444..606O}, masking \src{} itself, forming a deep model of the sky for each observation. After subtracting this from the visibilities, we phase-rotated to \src{}, and averaged the baseline data to produce a dynamic spectrum.
@@ -294,7 +295,7 @@ where $\erfcx(X) = \exp(X^2) \erfc(X)$ is the scaled complimentary error functio
 according to each observation's centre frequency.
 A pulse stack containing all observed pulses and the corresponding unscattered pulses derived from the fits is shown in \Fig~\ref{fig:pulsestack}.
 
-\begin{figure*}[tp]
+\begin{figure*}
       \centering
           \includegraphics[width=0.95\linewidth]{pulsestack.pdf}
               \caption{Pulsestack of barycentred, dedispersed profiles from the ephemeris. The dashed red vertical line marks zero phase. Baselines have been fitted and subtracted from each lightcurve. The blue dashed lines show (normalised) fitted Gaussians without scattering (see main text for details).}
@@ -312,7 +313,7 @@ This is demonstrated in \Fig~\ref{fig:stacked_spectra}, which shows stacked MWA 
 The cyan lines show the expected ToAs across the whole observed frequency range if one assumes only a DM measured at higher frequencies, where scattering is negligible.
 The scattering predicted by Galactic electron density models, however, is sufficient to account for the apparent extra delay, as is evidenced by the relatively good agreement with the modelled unscattered pulses with the expected ToAs derived from the ephemeris, illustrated in the pulsestack shown in \Fig~\ref{fig:pulsestack}.
 
-\begin{figure}{th}
+\begin{figure}
       \centering
           \includegraphics[width=0.95\linewidth]{stacked_spectra.pdf}
               \caption{Stacked (semi-transparent) dynamic spectra, where each rectangle indicates the observing campaign whose spectra were barycentred and folded according to the ephemeris. The spectra have not been dedispersed, but the cyan dashed lines indicate where the two components seen in the MeerKAT (2024) observation would appear due to dispersion. The white curve in the top panel is the dedispersed profile of the MeerKAT (2024) observation, and the white curves in the bottom panel are the same profile subjected to scattering with $\tau_{\rm sc} = \tau_{\rm sc,1\,GHz} (\nu/{\rm 1\,GHz})^{-4}$ at frequencies 175, 195, and 210 MHz, where $\tau_{\rm sc,1\,GHz} = 70$\,ms.}
@@ -326,55 +327,55 @@ Because the scattering time scale could not be reliably measured for all individ
 %  \tablecaption{Times of arrival and pulse properties\label{tbl:toas}}
 %  \tablehead{
 %    \colhead{Telescope} & \colhead{$\nu$} & \colhead{ToA} & \colhead{Fluence} & \colhead{$\sigma$} \\ 
-%    & \colhead{(MHz)} & \colhead{(MJD)} & \colhead{($10^3$\,Jy\,s)} & \colhead{(s)}
+%    & \colhead{(MHz)} & \colhead{(MJD)} & \colhead{(Jy\,s)} & \colhead{(s)}
 %  } 
 %  \startdata
-%ASKAP & 888 & 59965.0429358(45) & 0.48(2) & 29.1(4) \\
-%MWA & 170 & 59966.061584(40) & 31.7(7) & 40(7) \\
-%ASKAP & 888 & 60040.913447(32) & 0.03(1) & 25(3) \\
-%MeerKAT & 1284 & 60092.899548(10) & 0.003(3) & 13(1) \\
-%MeerKAT & 1284 & 60092.947966(10) & 0.003(3) & 12(1) \\
-%MeerKAT & 1284 & 60092.996466(11) & 0.005(3) & 16(1) \\
-%MeerKAT & 1284 & 60093.044919(12) & 0.005(4) & 16(1) \\
-%MWA & 200 & 60481.637466(65) & 3.0(2) & 24(8) \\
-%MWA & 200 & 60485.658977(33) & 1.18(7) & 16(4) \\
-%MWA & 200 & 60489.632266(20) & 1.65(6) & 14(2) \\
-%MWA & 200 & 60492.588020(24) & 3.12(9) & 14(3) \\
-%MWA & 200 & 60496.609639(18) & 2.87(8) & 17(2) \\
-%MWA & 200 & 60503.587085(14) & 3.40(8) & 17(2) \\
-%ASKAP & 1032 & 60503.634781(17) & 0.09(1) & 16.6(5) \\
-%MWA & 200 & 60506.542809(33) & 1.35(6) & 9(4) \\
-%MWA & 200 & 60510.564531(11) & 3.08(7) & 16(1) \\
-%MWA & 200 & 60519.528812(29) & 3.1(1) & 14(4) \\
-%MWA & 200 & 60522.533028(16) & 3.50(8) & 18(2) \\
-%MWA & 200 & 60527.524033(14) & 2.89(7) & 16(2) \\
-%MWA & 200 & 60530.528339(16) & 2.90(8) & 17(2) \\
-%MWA & 200 & 60537.506042(13) & 3.91(9) & 17(2) \\
-%MWA & 200 & 60541.479448(47) & 1.48(9) & 14(5) \\
-%MWA & 200 & 60544.483761(15) & 3.91(9) & 20(2) \\
-%MWA & 200 & 60551.461625(16) & 3.35(8) & 16(2) \\
-%MWA & 185 & 60572.395455(15) & 2.86(7) & 15(2) \\
-%MWA & 185 & 60572.443943(21) & 3.01(8) & 16(2) \\
-%MWA & 185 & 60572.540824(18) & 2.57(8) & 16(2) \\
-%MWA & 185 & 60572.589281(31) & 4.3(2) & 21(4) \\
-%MWA & 200 & 60592.456765(27) & 1.63(8) & 19(3) \\
-%MWA & 200 & 60592.505159(33) & 1.67(9) & 19(4) \\
-%MWA & 200 & 60593.474369(26) & 1.08(6) & 15(3) \\
-%MWA & 200 & 60593.522901(46) & 1.3(1) & 19(5) \\
-%MWA & 200 & 60594.443484(20) & 1.94(8) & 18(2) \\
-%MWA & 200 & 60594.491990(33) & 0.55(5) & 12(4) \\
-%MWA & 200 & 60595.461118(29) & 1.53(8) & 19(3) \\
-%MWA & 200 & 60595.509617(25) & 0.89(5) & 13(3) \\
-%MWA & 200 & 60596.430282(20) & 1.55(7) & 16(2) \\
-%MWA & 200 & 60596.478721(23) & 1.65(7) & 17(3) \\
-%MWA & 200 & 60597.447846(41) & 0.86(7) & 16(5) \\
-%MWA & 200 & 60597.496319(30) & 1.82(9) & 19(3) \\
-%MWA & 200 & 60599.434635(17) & 1.28(5) & 13(2) \\
-%MWA & 200 & 60599.483121(24) & 1.00(5) & 13(3) \\
-%MWA & 200 & 60600.500655(31) & 1.24(7) & 16(4) \\
-%MWA & 200 & 60602.438964(32) & 1.9(1) & 21(4) \\
-%MWA & 200 & 60602.487394(27) & 1.98(9) & 20(3) \\
-%MeerKAT & 813 & 60602.5835731(40) & 0.061(7) & 14.9(4)
+%ASKAP & 888 & 59965.0429346(42) & 6.7(1) & 29.1(4) \\
+%MWA & 170 & 59966.061584(40) & 358(55) & 40(7) \\
+%ASKAP & 888 & 60040.913447(32) & 0.48(5) & 25(3) \\
+%MeerKAT & 1284 & 60092.8995476(100) & 0.104(7) & 12.8(9) \\
+%MeerKAT & 1284 & 60092.947966(10) & 0.10(1) & 12(1) \\
+%MeerKAT & 1284 & 60092.996466(11) & 0.125(7) & 15.8(9) \\
+%MeerKAT & 1284 & 60093.044919(12) & 0.122(7) & 16(1) \\
+%MWA & 200 & 60481.637466(65) & 50(11) & 24(8) \\
+%MWA & 200 & 60485.658977(33) & 29(3) & 16(4) \\
+%MWA & 200 & 60489.632266(20) & 48(3) & 14(2) \\
+%MWA & 200 & 60492.588020(24) & 87(7) & 14(3) \\
+%MWA & 200 & 60496.609639(18) & 67(4) & 17(2) \\
+%MWA & 200 & 60503.587085(14) & 82(3) & 17(2) \\
+%ASKAP & 888 & 60503.6347610(51) & 3.10(8) & 16.4(5) \\
+%MWA & 200 & 60506.542809(33) & 57(7) & 9(4) \\
+%MWA & 200 & 60510.564531(11) & 79(3) & 16(1) \\
+%MWA & 200 & 60519.528812(29) & 86(10) & 14(4) \\
+%MWA & 200 & 60522.533028(16) & 76(3) & 18(2) \\
+%MWA & 200 & 60527.524033(14) & 73(3) & 16(2) \\
+%MWA & 200 & 60530.528339(16) & 68(4) & 17(2) \\
+%MWA & 200 & 60537.506042(13) & 92(4) & 17(2) \\
+%MWA & 200 & 60541.479448(47) & 41(6) & 14(5) \\
+%MWA & 200 & 60544.483761(15) & 79(3) & 20(2) \\
+%MWA & 200 & 60551.461625(16) & 85(4) & 16(2) \\
+%MWA & 185 & 60572.395455(15) & 74(3) & 15(2) \\
+%MWA & 185 & 60572.443943(21) & 73(4) & 16(2) \\
+%MWA & 185 & 60572.540824(18) & 64(4) & 16(2) \\
+%MWA & 185 & 60572.589281(31) & 82(8) & 21(4) \\
+%MWA & 200 & 60592.456765(27) & 34(3) & 19(3) \\
+%MWA & 200 & 60592.505159(33) & 35(4) & 19(4) \\
+%MWA & 200 & 60593.474369(26) & 29(3) & 15(3) \\
+%MWA & 200 & 60593.522901(46) & 27(4) & 19(5) \\
+%MWA & 200 & 60594.443484(21) & 43(3) & 18(2) \\
+%MWA & 200 & 60594.491990(33) & 19(2) & 12(4) \\
+%MWA & 200 & 60595.461118(29) & 33(3) & 19(3) \\
+%MWA & 200 & 60595.509617(25) & 27(2) & 13(3) \\
+%MWA & 200 & 60596.430283(20) & 39(3) & 16(2) \\
+%MWA & 200 & 60596.478721(23) & 39(3) & 17(3) \\
+%MWA & 200 & 60597.447846(41) & 22(3) & 16(5) \\
+%MWA & 200 & 60597.496319(30) & 38(4) & 19(3) \\
+%MWA & 200 & 60599.434635(17) & 39(2) & 13(2) \\
+%MWA & 200 & 60599.483122(24) & 32(3) & 13(3) \\
+%MWA & 200 & 60600.500655(31) & 30(3) & 16(4) \\
+%MWA & 200 & 60602.438964(32) & 36(4) & 21(4) \\
+%MWA & 200 & 60602.487394(27) & 39(3) & 20(3) \\
+%MeerKAT & 813 & 60602.5835733(40) & 1.64(4) & 14.9(4) \\
   %\enddata
 %\end{deluxetable*}
 
@@ -398,10 +399,10 @@ We also tried fitting a timing model that included a spin-down parameter, and fo
   \end{tabular}
 \end{table}
 
-\begin{figure*}{th}
+\begin{figure*}
   \centering
   \includegraphics[width=0.98\linewidth]{pulse_details.pdf}
-  \caption{Timing residuals (top panel) and other pulse properties derived from the fits of \Eqn~\ref{eqn:emg} to the individual light curves (lower two panels). Notable features of interest include the relative high fluence of the early 2023 detections (leftmost two points), and the relative stability of the pulse fluences (and pulse morphology) of the MWA detections in the time range $60480 \le {\rm MJD} \le 60580$.}
+  \caption{Timing residuals (top panel) and other pulse properties derived from the fits of \Eqn~\ref{eqn:emg} to the individual light curves (lower three panels). Notable features of interest include the relative high fluence of the early 2023 detections (leftmost two points), and the relative stability of the pulse fluences (and pulse morphology) of the MWA detections in the time range $60480 \le {\rm MJD} \le 60580$.}
   \label{fig:pulse_details}
 \end{figure*}
 
@@ -476,7 +477,7 @@ where
 $L_{\rm 1\,GHz}$ is the flux density of the linearly polarised component at 1\,GHz, $\alpha_L$ is its spectral index, RM is the rotation measure, $\lambda = c/\nu$ is the wavelength, and $\psi_0$ is the intrinsic polarisation angle.
 The RMs and spectral indices of these fits are shown in the top two rows of panels of \Fig~\ref{fig:RM}.
 
-\begin{figure*}{th}
+\begin{figure*}
     \centering
     \includegraphics[width=0.98\linewidth]{RM.pdf}
     \caption{Polarisation of the 2023 and 2024 ASKAP pulses (left and middle) and the 2024 MeerKAT pulse (right). The top two rows show the RM and $\alpha_{\rm lin}$ parameters fitted to \Eqn~\ref{eqn:RM} for each time bin independently. Only bins for which the uncertainty on $\alpha_{\rm lin}$ is less than $1.4$ are shown, a threshold which was found to cleanly eliminate off-pulse bins. The weighted average RMs for each pulse are indicated by the horizontal red lines. The PAs and lightcurves shown in the bottom two rows of panels were produced using only the average RM for the respective pulse.}
@@ -517,10 +518,10 @@ The reappearance of \src{} suggests the possibility that other known intermitten
 As noted in \citetalias{2024MNRAS.535..909D}, optical follow-up of \src{} is hampered by its position within the Galactic plane ($b = -0.12^\circ$) and the associated extinction.
 Inferring this nature of the system (white dwarf vs neutron star, isolated vs binary) from the radio pulses alone is challenging, until either the population of LPTs is better understood as a whole, or some other property of the radio signal (e.g. intermittency, polarisation) can be linked to the system properties.
 
-\src{}'s period and duty cycle are not dissimilar to ILT J1101+5521 and GLEAM-X J0704$-$37, which are confirmed polars (\Fig~\ref{fig:lpt_comparison}), suggesting the possibility that \src{}, too, is a WD-MD polar system.
+\src{}'s period and duty cycle are not dissimilar to ILT J1101+5521 and GLEAM-X J0704$-$37, which are confirmed polars (\Fig~\ref{fig:lpt_comparison}), suggesting the possibility that \src{}, too, is a polar.
 However, its period of ${\sim}1.16\,$hours would make it shorter than the minimum known orbital period of $1.3\,$hours for confirmed polars \citep{schwope2025polarcatcatalogpolarslowaccretion}.
 This makes it an interesting test bed for the suggestion advanced by \citet{2025A&A...695L...8R} that `short LPTs' ($P \lesssim 78\,$mins) and `long LPTs' ($P \gtrsim 78\,$mins) represent different classes of systems (AM Canum Venaticorum stars and CVs, respectively).
-\begin{figure*}{th}
+\begin{figure*}
     \centering
     \includegraphics[width=0.98\linewidth]{lpt_comparison.pdf}
     \caption{Duty cycle vs radio pulse period for various long period radio emitters \citep{deRuiter2025,2022Natur.601..526H,2023Natur.619..487H,2024NatAs...8.1159C,2005Natur.434...50H,deRuiter2025,Lee2025,2024arXiv241116606W}. The duty cycles are derived from the reported pulse widths for LPTs, which are compared to the range of the fitted, unscattered pulse widths of \src{} at 10\% of the peak. AR\,Sco \citep{2016Natur.537..374M,2018A&A...611A..66S} and other sources without well-defined duty cycles or periods \citep[e.g.][and references therein]{2021ApJ...920...45W} are not included on this plot.}
@@ -665,7 +666,7 @@ The post-imaged dynamic spectra, analyses, and timing analysis data products (To
 \section{The effect of scattering on timing}
 \label{app:scattering_dm}
 
-It can be shown that pulses scatter-broadened by a thin screen will appear to the observer as the original pulse convolved with a one-sided exponential kernel with an associated timescale $\tau$ \citep{1972MNRAS.157...55W,1973MNRAS.163..345W}.
+It can be shown that pulses scatter-broadened by a thin screen\footnote{Relaxing the assumption of a single, thin, isotropic screen could affect the shape of the scattered pulse in ways that could plausibly affect timing \citep{2009MNRAS.395.1391R}, but quantification of this is beyond the scope of this appendix.} will appear to the observer as the original pulse convolved with a one-sided exponential kernel with an associated timescale $\tau$ \citep{1972MNRAS.157...55W,1973MNRAS.163..345W}.
 For intrinsically Gaussian pulses of scale $\sigma$, the result of this convolution is well described by the \textit{exponentially modified Gaussian} (EMG), as given in \Eqn~\ref{eqn:emg}.
 
 In the regime $\tau \ll \sigma$, the effect of scattering is negligible and the scattered pulse resembles the original pulse.
@@ -712,7 +713,7 @@ For LEHM and IPLE, the ToA is measured to be earlier than $\mu$ ($\Delta{\rm ToA
 $\ToA{LEHM}$ and $\ToA{IPLE}$ will perform much better than $\ToA{PEAK}$ and $\ToA{TMPL}$ highly scattered pulses ($\tau \gg \sigma$), whereas the converse is true when scattering is minimal ($\tau \ll \sigma$).
 All methods, however, perform relatively poorly in the intermediate regime when $\tau \approx \sigma$.
 
-\begin{figure*}{th}
+\begin{figure*}
     \centering
     \includegraphics[width=0.98\linewidth]{scattering_DM.png}
     \caption{Analysis of DM measurement errors if scattering is not properly taken into account. Panel (a) shows the errors measured for each defined type of ToA, normalised to the scale of the original pulse, $\sigma$. In panel (b), the predicted error in DM is shown if the ToA error (compared to a high-frequency ToA measurement) is erroneously attributed to dispersion. Panel (c) shows the rate of change of the ToA error with frequency, and panel (d) shows the error in DM measured if this rate of change (the `slope' of the pulse across the observed dynamic spectrum) is erroneously attributed to dispersion. In panels (c) and (d), the derived DM errors assume a pulse scale of $\sigma = 25\,$s and $\nu_s = 230\,$MHz, as estimated for \src{}. In all panels, the blue curves indicate \emph{negative} ToA errors (i.e. the measured ToAs are earlier than the pulse's unscattered mean, $\mu$), and the red curves indicate positive quantities.}
