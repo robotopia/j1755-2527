@@ -33,10 +33,10 @@ def main():
     pulses, phases = fold(bary_toas_dd, ephem['period'], ephem['PEPOCH'])
 
     # Make plots
-    nrows = 3
+    nrows = 4
     ncols = 3
     width_ratios = [1, 1, 7, 2]
-    fig = plt.figure(figsize=(9,5), constrained_layout=True)
+    fig = plt.figure(figsize=(9,6), constrained_layout=True)
     gs = GridSpec(nrows, ncols+1, figure=fig, width_ratios=width_ratios, wspace=0.03, hspace=0)
     axs = np.empty((nrows, ncols), dtype=object)
     for i in range(nrows):
@@ -47,7 +47,7 @@ def main():
     #                        gridspec_kw={'width_ratios': width_ratios,},# 'wspace': 0.03, 'hspace': 0},
     #                        figsize=(9,5), constrained_layout=True)
     #fig.subplots_adjust(right=0.8)
-    toa_row, fluence_row, width_row = 0, 1, 2
+    toa_row, width_row, peak_flux_row, fluence_row = 0, 1, 2, 3
 
     # Colormap setup
     cmap = plt.cm.rainbow_r
@@ -77,9 +77,30 @@ def main():
                 'ecolor': color,
                 'markerfacecolor': markerfacecolor,
             }
-            axs[fluence_row, col].errorbar(table['ToA'][i], table['fluence'][i], yerr=table['fluence_err'][i], **point_fmt)
-            axs[width_row, col].errorbar(table['ToA'][i], table['width'][i], yerr=table['width_err'][i], **point_fmt)
-            axs[toa_row, col].errorbar(table['ToA'][i], phases[i]*ephem['period'].to('s'), yerr=table['ToA_err'][i].to('s'), **point_fmt)
+            axs[fluence_row, col].errorbar(
+                table['ToA'][i],
+                table['fluence'][i],# / (freq[i]/u.GHz).decompose()**(-3.1),
+                yerr=table['fluence_err'][i],# / (freq[i]/u.GHz).decompose()**(-3.1),
+                **point_fmt
+            )
+            axs[width_row, col].errorbar(
+                table['ToA'][i],
+                table['width'][i],
+                yerr=table['width_err'][i],
+                **point_fmt
+            )
+            axs[peak_flux_row, col].errorbar(
+                table['ToA'][i],
+                table['fitted_peak_flux_density'][i],# / (freq[i]/u.GHz).decompose()**(-3.1),
+                yerr=table['fitted_peak_flux_density_err'][i],# / (freq[i]/u.GHz).decompose()**(-3.1),
+                **point_fmt
+            )
+            axs[toa_row, col].errorbar(
+                table['ToA'][i],
+                phases[i]*ephem['period'].to('s'),
+                yerr=table['ToA_err'][i].to('s'),
+                **point_fmt
+            )
         axs[toa_row, col].axhline(0, ls='--', color='k', alpha=0.2)
 
     custom_lines = [Line2D([0], [0], **v) for v in point_types.values()]
@@ -87,8 +108,10 @@ def main():
 
     axs[fluence_row, 0].set_ylabel(f"Fluence ({table['fluence'].unit})")
     axs[width_row, 0].set_ylabel(f"$\\sigma$ ({table['width'].unit})")
+    axs[peak_flux_row, 0].set_ylabel(f"Fitted peak\nflux density ({table['fitted_peak_flux_density'].unit})")
     axs[toa_row, 0].set_ylabel(f"Timing residual (s)")
     axs[fluence_row, 0].set_yscale('log')
+    axs[peak_flux_row, 0].set_yscale('log')
 
     # Add diagonal "break marks" between subplots
     # Hide inner spines and ticks, and draw break marks
@@ -140,8 +163,8 @@ def main():
             axs[i, j].set_xticks([])
     axs[-1, 0].set_xticks([59964, 59966])
     axs[-1, 1].set_xticks([60040, 60070, 60100])
-    axs[-1, 0].ticklabel_format(useOffset=False, style='plain')
-    axs[-1, 1].ticklabel_format(useOffset=False, style='plain')
+    axs[-1, 0].ticklabel_format(axis='x', useOffset=False, style='plain')
+    axs[-1, 1].ticklabel_format(axis='x', useOffset=False, style='plain')
 
     # And rotate them a bit so that they don't collide
     axs[-1, 1].tick_params(axis='x', labelrotation=35)

@@ -89,15 +89,11 @@ def fit_toa(dat, fit_scattering=False, output_plot=None, obsid=None):
     popt, pcov = curve_fit(model, t_base.to('s').value, lightcurve, p0=p0, sigma=noise if noise != 0.0 else None, bounds=bounds)
     A, μ, m, c, σ = popt
     A_err, μ_err, m_err, c_err, σ_err = np.sqrt(np.diag(pcov))
+    Aσ_err = pcov[0,4] # Needed for peak flux error calculation
 
     # Pull out the ToA
     toa = t[0] + μ*u.s
     toa_err = (μ_err*u.s).to('d')
-
-    # Estimate peak S/N by getting std of lightcurve with fitted pulse subtracted
-    noise = np.std(lightcurve - model(t_base.to('s').value, *popt)) * u.Jy
-    peak_signal = A * u.Jy
-    peak_snr = (peak_signal / noise).decompose().value
 
     # For plotting, do a bit of frequency scrunching
     fscrunch_factor = 1
@@ -108,9 +104,17 @@ def fit_toa(dat, fit_scattering=False, output_plot=None, obsid=None):
     t_fine_base = np.arange(t_base[0].to('s').value, t_base[-1].to('s').value, dt.to('s').value/100) * u.s
     t_fine = t[0] + t_fine_base
 
-    # Calculate pulse fluence from model
-    fluence = pulse_fluence(*popt) * u.Jy * u.s
-    fluence_err = fluence*np.sqrt(A_err)/A
+    # The A parameter *is* the pulse fluence
+    fluence = A * u.Jy * u.s
+    fluence_err = A_err * u.Jy * u.s
+
+    # Estimate peak S/N by getting std of lightcurve with fitted pulse subtracted
+    noise = np.std(lightcurve - model(t_base.to('s').value, *popt)) * u.Jy
+    peak_signal = A/σ/np.sqrt(2*np.pi) * u.Jy
+    peak_signal_err = peak_signal * np.sqrt((A_err/A)**2 + (σ_err/σ)**2 + 2*Aσ_err/(A*σ))
+    peak_snr = (peak_signal / noise).decompose().value
+    #print(f'{peak_signal = }')
+    #print(f'cf. = {A/σ/np.sqrt(2*np.pi)}')
 
     if output_plot is not None:
 
@@ -132,8 +136,8 @@ def fit_toa(dat, fit_scattering=False, output_plot=None, obsid=None):
                     model(t_fine_base.value, A, μ, m=0, c=0, σ_s=σ),
                     'r', alpha=0.4, label='model')
         if fit_scattering:
-            axs[0].plot((t_fine - t[0]).to('s'),
-                        pulse_model(t_fine_base.value, A, μ, m=0, c=0, σ_s=σ),
+            modelled_pulse = pulse_model(t_fine_base.value, A, μ, m=0, c=0, σ_s=σ)
+            axs[0].plot((t_fine - t[0]).to('s'), modelled_pulse,
                         'g--', alpha=0.4, label='model (no scattering)')
 
         axs[1].pcolormesh((t - t[0]).to('s').value, fscr.to('MHz').value, Iddscr.T)
@@ -150,7 +154,7 @@ def fit_toa(dat, fit_scattering=False, output_plot=None, obsid=None):
         plt.savefig(output_plot)
         plt.close(fig)
 
-    return f_ref, toa, toa_err, fluence, fluence_err, peak_signal, peak_snr, σ*u.s, σ_err*u.s
+    return f_ref, toa, toa_err, fluence, fluence_err, peak_signal, peak_signal_err, peak_snr, σ*u.s, σ_err*u.s
 
 
 def main():
@@ -163,9 +167,11 @@ def main():
     args = parser.parse_args()
 
     # Summarise everything into a table
-    table = QTable(names=['ObsID', 'freq', 'ToA', 'ToA_err', 'telescope', 'fluence', 'fluence_err', 'fitted_peak_flux_density', 'peak_snr', 'width', 'width_err'],
-                   dtype=[str, float, float, float, str, float, float, float, float, float, float],
-                   units=[None, u.MHz, None, u.d, None, u.Jy*u.s, u.Jy*u.s, u.Jy, None, u.s, u.s])
+    table = QTable(names=['ObsID', 'freq', 'ToA', 'ToA_err', 'telescope',
+                          'fluence', 'fluence_err', 'fitted_peak_flux_density', 'fitted_peak_flux_density_err',
+                          'peak_snr', 'width', 'width_err'],
+                   dtype=[str, float, float, float, str, float, float, float, float, float, float, float],
+                   units=[None, u.MHz, None, u.d, None, u.Jy*u.s, u.Jy*u.s, u.Jy, u.Jy, None, u.s, u.s])
 
     for pkl in args.ds_files:
         print(f"{pkl}...")
@@ -176,7 +182,7 @@ def main():
 
         output_plot = f"{pkl[:-4]}_toa.png"
 
-        f_ref, toa, toa_err, fluence, fluence_err, peak_signal, peak_snr, σ, σ_err = fit_toa(dat, fit_scattering=args.fit_scattering, output_plot=output_plot, obsid=obsid)
+        f_ref, toa, toa_err, fluence, fluence_err, peak_signal, peak_signal_err, peak_snr, σ, σ_err = fit_toa(dat, fit_scattering=args.fit_scattering, output_plot=output_plot, obsid=obsid)
 
         table.add_row([
             obsid,
@@ -187,6 +193,7 @@ def main():
             fluence,
             fluence_err,
             peak_signal,
+            peak_signal_err,
             peak_snr,
             σ,
             σ_err,
