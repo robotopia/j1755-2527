@@ -107,12 +107,13 @@
 \author[S. J. McSweeney et al.]{
 Samuel J. McSweeney$^{1}$,
 Natasha Hurley-Walker$^{1}$,
-Akash Anumarlapudi$^{2,3}$,
-Dougal Dobie$^{2,3}$,
 Cs\'{a}nad Horv\'{a}th$^{1}$,
+Akash Anumarlapudi$^{2,3}$,
 \newauthor
 Angie Waszewski$^{1}$,
+Dougal Dobie$^{2,3}$,
 John Morgan$^{1}$,
+David Kaplan$^{?}$,
 and Ziteng Wang$^{1}$
 \\
 % List of institutions
@@ -231,41 +232,6 @@ The correlator data were calibrated using the standard SARAO SDP calibration pip
 
 We also re-imaged the original 2023-05-28 L-band MeerKAT observation described in \citetalias{2024MNRAS.535..909D}, which was taken under project code DDT-20230525-DD-01 under capture block 1685306788. We performed a similar processing of the data, and identified four pulses with ToAs consistent with an ephemeris derived from the other data. The folded and stacked dynamic spectra are shown in \Fig~\ref{fig:scattering_DM}.
 
-%\begin{deluxetable*}{cccccc}
-%\tablecaption{Pulse detections and non-detections}
-%\tablehead{
-%\colhead{Obs start} & \colhead{Duration} & \colhead{Telescope} & \colhead{$\nu$} & %\colhead{$\Delta\nu$} & \colhead{Detected?} \\ 
-%\colhead{time (UTC)} & \colhead{(s)} & & \colhead{(MHz)} & \colhead{(MHz)} &
-%} 
-%\startdata
-%2024-09-19 09:25:02 & 592\tablenotemark{a} & MWA & 184.96 & 30.72 & Y \\ % 1410773120 and 1410773416
-%2024-09-19 10:34:06 & 592\tablenotemark{a} & MWA & 184.96 & 30.72 & Y \\ % 1410777264 and 1410777560
-%2024-09-19 12:57:10 & 296 & MWA & 184.96 & 30.72 & Y \\ % 1410785848
-%2024-09-19 14:06:14 & 296 & MWA & 184.96 & 30.72 & Y \\ % 1410789992
-%2024-10-09 10:55:50 & 296 & MWA & 200.32 & 30.72 & Y \\ % 1412506568
-%2024-10-09 12:05:34 & 296 & MWA & 200.32 & 30.72 & Y \\ % 1412510752
-%2024-10-10 11:21:10 & 296 & MWA & 200.32 & 30.72 & Y \\ % 1412594488
-%2024-10-10 12:30:54 & 296 & MWA\tablenotemark{b} & 200.32 & 30.72 & Y \\ % 1412598672
-%2024-10-11 10:36:46 & 296 & MWA & 200.32 & 30.72 & Y \\ % 1412678224
-%2024-10-11 11:46:30 & 296 & MWA & 200.32 & 30.72 & Y \\ % 1412682408
-%2024-10-12 11:02:06 & 296 & MWA & 200.32 & 30.72 & Y \\ % 1412766144
-%2024-10-12 12:11:50 & 296 & MWA & 200.32 & 30.72 & Y \\ % 1412770328
-%2024-10-13 10:17:42 & 296 & MWA & 200.32 & 30.72 & Y \\ % 1412849880
-%2024-10-13 11:27:26 & 296 & MWA & 200.32 & 30.72 & Y \\ % 1412854064
-%2024-10-14 10:43:02 & 296 & MWA & 200.32 & 30.72 & Y \\ % 1412937800
-%2024-10-14 11:52:46 & 296 & MWA & 200.32 & 30.72 & Y \\ % 1412941984
-%2024-10-16 10:23:58 & 296 & MWA & 200.32 & 30.72 & Y \\ % 1413109456
-%2024-10-16 11:33:42 & 296 & MWA & 200.32 & 30.72 & Y \\ % 1413113640
-%2024-10-17 11:59:02 & 296 & MWA & 200.32 & 30.72 & Y \\ % 1413201560
-%2024-10-19 10:30:14 & 296 & MWA & 200.32 & 30.72 & Y \\ % 1413369032
-%2024-10-19 11:39:58 & 296 & MWA & 200.32 & 30.72 & Y \\ % 1413373216
-%2024-10-19 13:54:36 & 601 & MeerKAT\tablenotemark{c} & 812.8 & 247.6 & Y \\ % 1413381294
-%\enddata
-%\tablenotetext{a}{Two contiguous 296-second MWA observations were combined}
-%\tablenotetext{b}{Too much RFI to use in downstream analysis}
-%\tablenotetext{c}{Two components in pulse}
-%\end{deluxetable*}
-
 
 \section{Analysis \& results} \label{sec:analysis}
 
@@ -330,9 +296,9 @@ Because the scattering time scale could not be reliably measured for all individ
 %    & \colhead{(MHz)} & \colhead{(MJD)} & \colhead{(Jy\,s)} & \colhead{(s)}
 %  } 
 %  \startdata
-%ASKAP & 888 & 59965.0429346(42) & 6.7(1) & 29.1(4) \\
+%ASKAP & 888 & 59965.0429346(42) & 13.4(2) & 29.1(4) \\
 %MWA & 170 & 59966.061584(40) & 358(55) & 40(7) \\
-%ASKAP & 888 & 60040.913447(32) & 0.48(5) & 25(3) \\
+%ASKAP & 888 & 60040.913447(32) & 1.0(1) & 25(3) \\
 %MeerKAT & 1284 & 60092.8995476(100) & 0.104(7) & 12.8(9) \\
 %MeerKAT & 1284 & 60092.947966(10) & 0.10(1) & 12(1) \\
 %MeerKAT & 1284 & 60092.996466(11) & 0.125(7) & 15.8(9) \\
@@ -343,7 +309,7 @@ Because the scattering time scale could not be reliably measured for all individ
 %MWA & 200 & 60492.588020(24) & 87(7) & 14(3) \\
 %MWA & 200 & 60496.609639(18) & 67(4) & 17(2) \\
 %MWA & 200 & 60503.587085(14) & 82(3) & 17(2) \\
-%ASKAP & 888 & 60503.6347610(51) & 3.10(8) & 16.4(5) \\
+%ASKAP & 888 & 60503.6347610(51) & 6.2(2) & 16.4(5) \\
 %MWA & 200 & 60506.542809(33) & 57(7) & 9(4) \\
 %MWA & 200 & 60510.564531(11) & 79(3) & 16(1) \\
 %MWA & 200 & 60519.528812(29) & 86(10) & 14(4) \\
@@ -392,8 +358,8 @@ We also tried fitting a timing model that included a spin-down parameter, and fo
     Parameter & Value \\
     \hline
     Period (s) & $4186.3283 \pm 0.0003$ \\
-    PEPOCH (MJD) & $59965.03790 \pm 0.00003$ \\
-    DM (pc/cm$^{-3}$) & $764 \pm 25$ \\
+    PEPOCH (MJD) & $59965.03791 \pm 0.00003$ \\
+    DM (pc/cm$^{-3}$) & $763 \pm 25$ \\
     $\tau_{\rm sc,1 GHz}$ (s) & ${\sim}0.07$ \\
     \hline
   \end{tabular}
@@ -402,15 +368,16 @@ We also tried fitting a timing model that included a spin-down parameter, and fo
 \begin{figure*}
   \centering
   \includegraphics[width=0.98\linewidth]{pulse_details.pdf}
-  \caption{Timing residuals (top panel) and other pulse properties derived from the fits of \Eqn~\ref{eqn:emg} to the individual light curves (lower three panels). Notable features of interest include the relative high fluence of the early 2023 detections (leftmost two points), and the relative stability of the pulse fluences (and pulse morphology) of the MWA detections in the time range $60480 \le {\rm MJD} \le 60580$.}
+  \caption{Timing residuals (top panel) and other pulse properties derived from the fits of \Eqn~\ref{eqn:emg} to the individual light curves (second and third panels). The peak flux, $S_{\rm peak}$, equivalent to the $A$ parameter in \eqn~\ref{eqn:emg}, is the peak flux of the modelled unscattered pulse. The bottom panel displays $S_{\rm peak,1 GHz} = S_{\rm peak} (\nu/{\rm GHz})^{-\alpha}$, where $\alpha = -2$ has been assumed. Notable features of interest include the relative brightness of the early 2023 detections (leftmost two points), and the relative stability of the pulse fluences (and pulse morphology) of the MWA detections in the time range $60480 \le {\rm MJD} \le 60580$.}
   \label{fig:pulse_details}
 \end{figure*}
 
 The variability of the pulse brightness, coupled with the fact that none of our detections were simultaneous at multiple telescopes, prohibit a direct spectral index measurement.
-We note, however, that the fitted peak flux densities of the ASKAP and MeerKAT pulses are broadly consistent with the MWA flux densities if an approximate spectral index of $-2.0$ is assumed.
-The in-band spectral index measurement of $-3.1$ reported for the 2023 ASKAP pulse \citepalias{2024MNRAS.535..909D}, if consistent across the span of our observations, implies a turnover or spectral curvature at intermediate frequencies \citep[perhaps comparable with GPM\,1839$-$10][]{2023Natur.619..487H}.
+We note, however, that the fitted peak flux densities of the ASKAP and MeerKAT pulses are broadly consistent with the MWA flux densities at nearby epochs if an approximate spectral index of $\alpha = -2.0$ is assumed.
+The bottom panel of \Fig~\ref{fig:pulse_details} shows the peak flux densities scaled to 1\,GHz under this assumption, revealing a relatively slow change of the pulses' brightness, not unlike GLEAM-X\,J1627$-$5235 \citep{2022Natur.601..526H}.
+The in-band spectral index measurement of $-3.1$ reported for the 2023 ASKAP pulse \citepalias{2024MNRAS.535..909D}, if consistent across the timespan of our observations, implies a turnover or spectral curvature at intermediate frequencies \citep[perhaps comparable with GPM\,1839$-$10][]{2023Natur.619..487H}.
 
-The measured DM of $764 \pm 25\,{\rm pc}\,{\rm cm}^{-3}$ is slightly higher than, but still consistent with, the in-band measurement of $710^{+200}_{-180}\,{\rm pc}\,{\rm cm}^{-3}$ given in \citetalias{2024MNRAS.535..909D}.
+The measured DM of $763 \pm 25\,{\rm pc}\,{\rm cm}^{-3}$ is slightly higher than, but still consistent with, the in-band measurement of $710^{+200}_{-180}\,{\rm pc}\,{\rm cm}^{-3}$ given in \citetalias{2024MNRAS.535..909D}.
 Because we have not attempted to simultaneously fit for both DM and scattering timescale, there will remain some small systematic error on this reported DM measurement.
 Note, in particular, that the YMW16 and NE2001 models predict a slightly longer scattering time scale than the $70\,$ms that we have assumed throughout this work.
 Breaking the degeneracy is possible in principle with a higher S/N average profile than what is achievable with the current data set.
@@ -452,7 +419,7 @@ At intermediate frequencies ($150\,{\rm MHz} \lesssim \nu \lesssim 300\,{\rm MHz
 \subsection{Polarisation} \label{sec:polarisation}
 
 No significant polarised emission was detected in the MWA pulses, as well as the 2023 MeerKAT pulses.
-The apparent lack of polarisation in the 2023 MeerKAT data set is likely due to low S/N coupled with the source not being not being centred in the beam.
+The apparent lack of polarisation in the 2023 MeerKAT data set is likely due to low S/N coupled with the source not being centred in the beam.
 Much more careful imaging analysis would be needed to obtain reliable measurements or limits on the polarised components of those pulses.
 
 The apparent lack of linear polarisation in the MWA pulses, however, is expected due to the high RM of ${\sim}961\,{\rm rad}/{\rm m}^2$ \citepalias[as reported in][]{2024MNRAS.535..909D}, causing the pulses to be depolarised within individual channels.
@@ -629,6 +596,8 @@ The Australian SKA Pathfinder is part of the Australia Telescope National Facili
 The MeerKAT telescope is operated by the South African Radio Astronomy Observatory, which is a facility of the National Research Foundation, an agency of the Department of Science and Innovation.
   % PTUSE (https://skaafrica.atlassian.net/wiki/spaces/ESDKB/pages/1591672833/User+Supplied+Equipment+USE#PTUSE)
   Observations made use of the Pulsar Timing User Supplied Equipment (PTUSE) servers at MeerKAT which were funded by the MeerTime Collaboration members ASTRON, AUT, CSIRO, ICRAR-Curtin, MPIfR, INAF, NRAO, Swinburne University of Technology, the University of Oxford, UBC and the University of Manchester.  The system design and integration was led by Swinburne University of Technology and Auckland University of Technology in collaboration with SARAO and supported by the ARC Centre of Excellence for Gravitational Wave Discovery (OzGrav) under grant CE170100004.
+
+S.M. would like to thank J. Pritchard and E. Lenc for technical discussions regarding the ASKAP data sets included in this paper.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{Data Availability}
