@@ -47,7 +47,7 @@ def main():
     #                        gridspec_kw={'width_ratios': width_ratios,},# 'wspace': 0.03, 'hspace': 0},
     #                        figsize=(9,5), constrained_layout=True)
     #fig.subplots_adjust(right=0.8)
-    toa_row, width_row, peak_flux_row, fluence_row = 0, 1, 2, 3
+    toa_row, width_row, peak_flux_row, scaled_peak_flux_row = 0, 1, 2, 3
 
     # Colormap setup
     cmap = plt.cm.rainbow_r
@@ -77,10 +77,16 @@ def main():
                 'ecolor': color,
                 'markerfacecolor': markerfacecolor,
             }
-            axs[fluence_row, col].errorbar(
+            #axs[fluence_row, col].errorbar(
+            #    table['ToA'][i],
+            #    table['fluence'][i],# / (freq[i]/u.GHz).decompose()**(-3.1),
+            #    yerr=table['fluence_err'][i],# / (freq[i]/u.GHz).decompose()**(-3.1),
+            #    **point_fmt
+            #)
+            axs[scaled_peak_flux_row, col].errorbar(
                 table['ToA'][i],
-                table['fluence'][i],# / (freq[i]/u.GHz).decompose()**(-3.1),
-                yerr=table['fluence_err'][i],# / (freq[i]/u.GHz).decompose()**(-3.1),
+                table['fitted_peak_flux_density'][i] / (freq[i]/u.GHz).decompose()**(-2.0),
+                yerr=table['fitted_peak_flux_density_err'][i] / (freq[i]/u.GHz).decompose()**(-2.0),
                 **point_fmt
             )
             axs[width_row, col].errorbar(
@@ -104,13 +110,15 @@ def main():
         axs[toa_row, col].axhline(0, ls='--', color='k', alpha=0.2)
 
     custom_lines = [Line2D([0], [0], **v) for v in point_types.values()]
-    fig.legend(handles=custom_lines, loc='center right', bbox_to_anchor=(1.0, 0.24))
+    fig.legend(handles=custom_lines, loc='center right', bbox_to_anchor=(1.0, 0.19))
 
-    axs[fluence_row, 0].set_ylabel(f"Fluence ({table['fluence'].unit})")
+    #axs[fluence_row, 0].set_ylabel(f"Fluence ({table['fluence'].unit})")
+    axs[scaled_peak_flux_row, 0].set_ylabel(f"$S_{{\\rm peak,1 GHz}}$ ({table['fitted_peak_flux_density'].unit})")
     axs[width_row, 0].set_ylabel(f"$\\sigma$ ({table['width'].unit})")
-    axs[peak_flux_row, 0].set_ylabel(f"Fitted peak\nflux density ({table['fitted_peak_flux_density'].unit})")
+    axs[peak_flux_row, 0].set_ylabel(f"$S_{{\\rm peak}}$ ({table['fitted_peak_flux_density'].unit})")
     axs[toa_row, 0].set_ylabel(f"Timing residual (s)")
-    axs[fluence_row, 0].set_yscale('log')
+    #axs[fluence_row, 0].set_yscale('log')
+    axs[scaled_peak_flux_row, 0].set_yscale('log')
     axs[peak_flux_row, 0].set_yscale('log')
 
     # Add diagonal "break marks" between subplots
