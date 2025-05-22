@@ -285,7 +285,7 @@ def main():
         ax_RM.set_ylim([952, 970])
         ax_PA.set_ylim([-90, 270])
         ax_al.set_ylim([-5, 1])
-        ax_lc.set_ylim([-12, 99])
+        ax_lc.set_ylim([-12, 199])
         ax_lc.set_xlabel("Time since ToA (s)")
 
         ax_RM.set_xlim(data[i]['xlim'])
