@@ -10,8 +10,8 @@ def main():
 
     table = QTable.read(args.toas_file)
 
-    print("Telescope & Freq & ToA & Fluence & $\\sigma$ \\\\")
-    print(" & (MHz) & (MJD) & (Jy\\,s) & (s) \\\\")
+    print("Telescope & Freq & ToA & $S_{\\rm peak}$ & $\\sigma$ & Fluence \\\\")
+    print(" & (MHz) & (MJD) & (Jy) & (s) & (Jy\\,s) \\\\")
     for row in table:
         toa_err = row['ToA_err']
         toa_precision = int(np.floor(-np.log10(toa_err.to('d').value))) + 1
@@ -28,7 +28,12 @@ def main():
         width_precision = int(np.floor(-np.log10(width_err.to('s').value))) + 1
         width_str = f"{width.to('s').value:.{width_precision}f}({int(np.round(width_err.to('s').value*10**(width_precision))):.0f})"
 
-        print(f"{row['telescope']} & {row['freq'].to('MHz').value:.0f} & {toa_str} & {fluence_str} & {width_str} \\\\")
+        peak_flux = row['fitted_peak_flux_density']
+        peak_flux_err = row['fitted_peak_flux_density_err']
+        peak_flux_precision = int(np.floor(-np.log10(peak_flux_err.to('Jy').value))) + 1
+        peak_flux_str = f"{peak_flux.to('Jy').value:.{peak_flux_precision}f}({int(np.round(peak_flux_err.to('Jy').value*10**(peak_flux_precision))):.0f})"
+
+        print(f"{row['telescope']} & {row['freq'].to('MHz').value:.0f} & {toa_str} & {peak_flux_str} & {width_str} & {fluence_str} \\\\")
 
 if __name__ == '__main__':
     main()
