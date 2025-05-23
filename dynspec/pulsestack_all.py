@@ -109,7 +109,7 @@ def main():
         ynorm = y / np.nanmax(y)
         y1norm = y1 / np.nanmax(y1)
 
-        axs[0][col].plot(phases*ephemeris['period'], 0.9*lightcurve/np.max(y1) + ys[col], 'k', lw=0.5, alpha=0.5)
+        axs[0][col].plot(phases*ephemeris['period'], 0.9*lightcurve/np.max(y1) + ys[col], 'k', lw=0.5, alpha=0.7)
         #axs[0][col].plot(phases*ephemeris['period'], 0.9*lightcurve/np.max(lightcurve) + ys[col], 'k', lw=0.5, alpha=0.5)
         axs[0][col].plot(ph_fine*ephemeris['period'], 0.9*ynorm + ys[col], 'b', alpha=0.3)
         axs[0][col].plot(ph_fine*ephemeris['period'], 0.9*y1norm + ys[col], 'r', alpha=0.3)
