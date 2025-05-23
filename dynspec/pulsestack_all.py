@@ -81,10 +81,11 @@ def main():
         lightcurve = np.nanmean(Idd, axis=1)
 
         # Fit a scattered pulse
+        τ = (ephemeris['tau_sc']/ephemeris['period'] * (f_ref/u.GHz)**(-4)).decompose()
         def model(ph, A, μ, m, c, σ):
-            τ = (ephemeris['tau_sc']/ephemeris['period'] * (f_ref/u.GHz)**(-4)).decompose()
             return scattered_pulse_model(ph, A, μ, m, c, σ, τ)
-        p0 = [np.max(lightcurve), 0, 0, 0, 10/ephemeris['period'].to('s').value]
+        peak_idx = np.nanargmax(lightcurve)
+        p0 = [lightcurve[peak_idx], phases[peak_idx], 0, 0, 20/ephemeris['period'].to('s').value]
         #def model(ph, m, c, A, mu, sigma):
         #    return m*ph + c + A*np.exp(-0.5*(ph-mu)**2/sigma**2)
         #p0 = [0, 0, np.max(lightcurve), 0, 10/ephemeris['period'].to('s').value]
@@ -100,11 +101,19 @@ def main():
             phases = phases[mask]
             lightcurve = lightcurve[mask]
 
-        axs[0][col].plot(phases*ephemeris['period'], 0.9*lightcurve/np.nanmax(lightcurve) + ys[col], 'k', lw=0.5, alpha=0.5)
         ph_fine = np.linspace(phases[0], phases[-1], 1000)
+
         y = pulse_model(ph_fine, A, μ, 0, 0, σ)
+        y1 = scattered_pulse_model(ph_fine, A, μ, 0, 0, σ, τ)
+
         ynorm = y / np.nanmax(y)
-        axs[0][col].plot(ph_fine*ephemeris['period'], 0.9*ynorm + ys[col], 'b--')
+        y1norm = y1 / np.nanmax(y1)
+
+        axs[0][col].plot(phases*ephemeris['period'], 0.9*lightcurve/np.max(y1) + ys[col], 'k', lw=0.5, alpha=0.5)
+        #axs[0][col].plot(phases*ephemeris['period'], 0.9*lightcurve/np.max(lightcurve) + ys[col], 'k', lw=0.5, alpha=0.5)
+        axs[0][col].plot(ph_fine*ephemeris['period'], 0.9*ynorm + ys[col], 'b', alpha=0.3)
+        axs[0][col].plot(ph_fine*ephemeris['period'], 0.9*y1norm + ys[col], 'r', alpha=0.3)
+
         yticks[col].append(ys[col])
         ylabels[col].append(f"{times[0].iso[:16]}\n{dat['TELESCOPE']}")#\n(Pulse #{int(np.round(np.median(pulses)))})")
         ys[col] += 1
@@ -116,7 +125,7 @@ def main():
         if args.xlim:
             axs[0][col].set_xlim(args.xlim)
         axs[0][col].set_ylim([-0.5, ys[col]+0.5])
-        axs[0][col].axvline(0, ls='--', alpha=0.5, c='r', zorder=-100)
+        axs[0][col].axvline(0, ls='--', alpha=0.5, c='g', zorder=-100)
     axs[0][0].set_ylabel("Observation start time (UTC)")
 
     if args.grid:

@@ -36,9 +36,6 @@ print(f'  PEPOCH (MJD) = {popt[1]:.6f} ± {errs[1]:.6f}')
 print()
 
 def period_and_pdot_model(toas_mjd, period_d, pepoch_mjd, fdot):
-    print(pepoch_mjd)
-    print(freqs)
-    print(calc_dmdelay(ephemeris['DM'], freqs, np.inf*u.MHz).to('d').value)
     t = toas_mjd - pepoch_mjd - calc_dmdelay(ephemeris['DM'], freqs, np.inf*u.MHz).to('d').value
     _, phases = np.divmod(fdot*t**2 + t/period_d + 0.5, 1)
     return phases - 0.5
