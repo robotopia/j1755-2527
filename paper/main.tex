@@ -137,7 +137,7 @@ $^{3}$ARC Centre of Excellence for Gravitational Wave Discovery (OzGrav), Hawtho
 
 % Abstract of the paper
 \begin{abstract}
-We report the discovery of several new pulses from the source \srcfull{} (\src{}), confirming it as a long period transient (LPT) with a period of ${\sim}1.16\,$hours. The pulses are significantly scattered, consistent with Galactic electron density models. Two of the new pulses also had measurable polarisation, but unlike the originally detected pulse, the polarisation angle does not behave as expected from the rotating vector model. We interpret historical non-detections of \src{} as an intrinsic intermittency that occurs on month-long timescales, and discuss possible causes. We conjecture that, like other LPTs with periods $\gtrsim 1\,$hour, \src{} is a white-dwarf binary pulsar, but note that its period is marginally shorter than the minimum known orbital period for the class of cataclysmic variables known as polars.
+We report the discovery of several new pulses from the source \srcfull{} (\src{}), originally identified from a single 2-min log pulse, confirming it as a long period transient (LPT) with a period of ${\sim}1.16\,$hours. The pulses are significantly scattered, consistent with Galactic electron density models. Two of the new pulses also had measurable polarisation, but unlike the originally detected pulse, the polarisation angle does not behave as expected from the rotating vector model. We interpret historical non-detections of \src{} as an intrinsic intermittency that occurs on month-long timescales, and discuss possible causes. We conjecture that, like other LPTs with periods $\gtrsim 1\,$hour, \src{} is a white-dwarf binary pulsar, but note that its period is marginally shorter than the minimum known orbital period for the class of cataclysmic variables known as polars.
 \end{abstract}
 
 % Select between one and six entries from the list of approved keywords.
@@ -152,12 +152,12 @@ radio continuum: transients -- white dwarfs
 
 \section{Introduction} \label{sec:introduction}
 
-\srcfull{} (hereafter, \src{}) is a transient radio source discovered in the Variables and Slow Transients (VAST) survey \citep[][hereafter \citetalias{2024MNRAS.535..909D}]{2024MNRAS.535..909D}.
+\srcfull{} (hereafter, \src{}) is a transient radio source discovered \citep[][hereafter \citetalias{2024MNRAS.535..909D}]{2024MNRAS.535..909D} in the Variables and Slow Transients (VAST) survey \citep{2013PASA...30....6M}.
 A single, highly polarised pulse was observed, lasting approximately 2 minutes, exhibiting a steep spectrum ($\alpha = -3.1$, for flux density $S_\nu\propto\nu^\alpha$).
 Extensive follow up in new and archival data at multiple wavelengths turned up no other pulses.
 Despite this, the authors concluded that \src{} was most likely a long period transient (LPT), a newly emerging class of radio source with periods ranging from minutes to hours \citep[see e.g.][]{2022Natur.601..526H,2023Natur.619..487H,2024NatAs...8.1159C}.
 
-Although optical follow-up has confirmed that at least some LPTs are a type of strongly magnetic cataclysmic variable (CV) known as polars \citep{deRuiter2025,2024ApJ...976L..21H,2025A&A...695L...8R}, it remains unclear if this model can account for all known LPTs \citep[e.g.][]{2022ApJ...940...72R,Lee2025}.
+Although optical observations have provided compelling evidence that at least some LPTs are detached, possibly strongly magnetic, white dwarf (WD) binaries \citep{deRuiter2025,2024ApJ...976L..21H,2025A&A...695L...8R}, it remains unclear if this model can account for all known LPTs \citep[e.g.][]{2022ApJ...940...72R,Lee2025}.
 Optical follow-up is challenging for \src{}, which is situated very close to the Galactic plane ($b = -0\overset{\circ}{.}12$), at a distance of ${\sim}4.7\,$kpc \citepalias{2024MNRAS.535..909D}.
 Unsurprisingly, archival searches at \src{}'s location did not turn up any source down to ${\sim}23$ AB mag.
 Without more detections in the radio or at other wavelengths, it seemed unlikely that the nature of \src{} could ever be resolved.
@@ -171,7 +171,7 @@ The main conclusions are summarised in \S\ref{sec:summary}.
 
 \section{Observations} \label{sec:observations}
 
-The MWA, ASKAP and MeerKAT are all radio interferometers capable of imaging.
+Pulses from \src{} were detected with the Murchison Widefield Array \citep[MWA;][]{Tingay2013}, the Australian SKA Pathfinder \citep[ASKAP;][]{2021PASA...38....9H} and MeerKAT \citep{2016mks..confE...1J}, are all radio interferometers capable of imaging.
 A summary of all the observations included in this work is summarised in \Tab~\ref{tbl:obs}.
 In this section, we describe how each telescope was used to generate dynamic spectra of \src{}.
 
@@ -179,21 +179,21 @@ In this section, we describe how each telescope was used to generate dynamic spe
   \centering
   \caption{Observations summary}
   \label{tbl:obs}
-  \begin{tabular}{lllccc}
+  \begin{tabular}{lllcccc}
     \hline
-    Date range & Telescope & Project & $\nu$ & $\Delta\nu$ & Number of \\ 
-    (MJD) & & & (MHz) & (MHz) & pulses \\
+    Date range & Telescope & Project & $\nu$ & $\Delta\nu$ & Obs. length & Number of \\ 
+    (MJD) & & & (MHz) & (MHz) & (min) & pulses \\
     \hline 
-    59965 & ASKAP & SB47253 (original discovery) & 887.5 & 288 & 1 \\
-    59966 & MWA & G0060 & 161.92 & 15.36 & 1 \\
-    %60084 & MWA & G0057 & 154.24 & 30.72 & $\le$ 1 \\
-    60040  & ASKAP & SB49153 & 887.5 & 288 & 1 \\
-    60092 - 60093 & MeerKAT & DDT-20230525-DD-01 & 1284 & 856 & 4 \\
-    60463 - 60563 & MWA & G0080 & 200.32 & 30.72 & 16 \\
-    60503 & ASKAP & SB63600 & 887.5 & 288 & 1 \\
-    60572 & MWA & D0042 & 184.96 & 30.72 & 4 \\
-    60592 - 60602 & MWA & D0042 & 200.32 & 30.72 & 17 \\
-    60602 & MeerKAT & DDT-20241015-NH-01 & 812.8 & 495.3 & 1 \\
+    59965 & ASKAP & SB47253 (original discovery) & 887.5 & 288 & 12.1 & 1 \\
+    59966 & MWA & G0060 & 161.92 & 15.36 & 6.7 & 1 \\
+    %60084 & MWA & G0057 & 154.24 & 30.72 & N/A & $\le$ 1 \\
+    60040  & ASKAP & SB49153 & 887.5 & 288 & 12.1 & 1 \\
+    60092 - 60093 & MeerKAT & DDT-20230525-DD-01 & 1284 & 856 & 307 & 4 \\
+    60463 - 60563 & MWA & G0080 & 200.32 & 30.72 & (Each obs.) 4.9 & 16 \\
+    60503 & ASKAP & SB63600 & 887.5 & 288 & 12.3 & 1 \\
+    60572 & MWA & D0042 & 184.96 & 30.72 & (Each obs.) 4.9 & 4 \\
+    60592 - 60602 & MWA & D0042 & 200.32 & 30.72 & (Each obs.) 4.9 & 17 \\
+    60602 & MeerKAT & DDT-20241015-NH-01 & 812.8 & 495.3 & 10 & 1 \\
     \hline
   \end{tabular}
 \end{table*}
@@ -219,7 +219,7 @@ The observation was self-calibrated against a sky model based on the GLEAM surve
 
 \subsection{ASKAP} \label{sec:askap}
 
-\citetalias{2024MNRAS.535..909D} presented an exhaustive search of the ASKAP data available at the time of writing, comprising 60\,h of data, and yielding only a single detection of \src{} (in Scheduling Block ID 47253). Subsequent to the writing of \citetalias{2024MNRAS.535..909D}, a further epoch of the VAST survey was performed (SBID 63600) in which \src{} produced a detectable pulsation.
+\citetalias{2024MNRAS.535..909D} presented an exhaustive search of the ASKAP data available at the time of writing, comprising 60\,h of data, and yielding only a single detection of \src{} (in Scheduling Block ID 47253). Subsequent to the writing of \citetalias{2024MNRAS.535..909D}, a further search for transient signals in ASKAP data was performed (SBID 63600) in which \src{} produced a detectable pulsation.
 
 With the re-detection of the source in the MWA data, and the calculation of an ephemeris (\Sect~\ref{sec:analysis}), we re-reduced the data in which we would predict that \src{} would appear. We made one further detection, in SBID~49153, at a relatively low significance ($\sim5\sigma$) compared to the blind detections. We followed a similar procedure as the above to generate dynamic spectra for each of the observations, using a minimum baseline length of 500\,m to suppress uncleaned Galactic diffuse emission.
 
@@ -363,14 +363,16 @@ At intermediate frequencies ($150\,{\rm MHz} \lesssim \nu \lesssim 300\,{\rm MHz
 
 \subsection{Polarisation} \label{sec:polarisation}
 
-No significant polarised emission was detected in the MWA pulses, as well as the 2023 MeerKAT pulses.
-The apparent lack of polarisation in the 2023 MeerKAT data set is likely due to low S/N coupled with the source not being centred in the beam.
+No significant linear or circular polarised emission was detected in the 2023 MeerKAT pulses.
+This is likely due to low S/N coupled with the source not being centred in the beam.
 Much more careful imaging analysis would be needed to obtain reliable measurements or limits on the polarised components of those pulses.
 
-The apparent lack of linear polarisation in the MWA pulses, however, is expected due to the high rotation measure (RM) of ${\sim}961\,{\rm rad}/{\rm m}^2$ \citepalias[as reported in][]{2024MNRAS.535..909D}, causing the pulses to be depolarised within individual channels.
-We also report that no significantly circularly polarised emission was seen at MWA frequencies.
+Given \src{}'s rotation measure (RM) of ${\sim}961\,{\rm rad}/{\rm m}^2$ \citepalias[as reported in][]{2024MNRAS.535..909D}, linearly polarised emission would undergo several tens of degrees of rotation per 40\,kHz channel of the GPM observations, and therefore be somewhat depolarised.
+To offer the best chance of detecting polarised emission, the MWA DDT observations between MJD 60592 and 60602 (see \Tab~\ref{tbl:obs}) were taken with a frequency resolution of 10\,kHz, which would result in only $12^\circ$ or rotation per channel at 200\,MHz.
+We report no significant linearly polarised emission after de-Faraday rotating\footnote{On account of the possible sign ambiguity of the reported RM, we also tried de-Faraday rotating the MWA observations at $961\,{\rm rad}/{\rm m}^2$.} these observations at $-961\,{\rm rad}/{\rm m}^2$.
+We also report that no significantly circularly polarised emission was seen in any MWA observation.
 
-The three sufficiently bright pulses for which we report significant polarisation are (1) the original 2023 ASKAP pulse \citepalias{2024MNRAS.535..909D}, (2) the 2024 ASKAP pulse, and (3) the 2024 MeerKAT pulse.
+The three sufficiently bright pulses for which we report significant polarisation are (1) the original 2023 ASKAP pulse, whose polarisation has already been discussed at length in \citetalias{2024MNRAS.535..909D}, (2) the 2024 ASKAP pulse, and (3) the 2024 MeerKAT pulse.
 We applied the parallactic angle correction to the MeerKAT data, as this had not already been applied during upstream processing.
 
 The high S/N of each time bin allowed us to test whether the RM was consistent across each pulse.
@@ -430,9 +432,9 @@ The reappearance of \src{} suggests the possibility that other known intermitten
 As noted in \citetalias{2024MNRAS.535..909D}, optical follow-up of \src{} is hampered by its position within the Galactic plane ($b = -0.12^\circ$) and the associated extinction.
 Inferring this nature of the system (white dwarf vs neutron star, isolated vs binary) from the radio pulses alone is challenging, until either the population of LPTs is better understood as a whole, or some other property of the radio signal (e.g. intermittency, polarisation) can be linked to the system properties.
 
-\src{}'s period and duty cycle are not dissimilar to ILT J1101+5521 and GLEAM-X J0704$-$37, which are confirmed polars (\Fig~\ref{fig:lpt_comparison}), suggesting the possibility that \src{}, too, is a polar.
-However, its period of ${\sim}1.16\,$hours would make it shorter than the minimum known orbital period of $1.3\,$hours for confirmed polars \citep{schwope2025polarcatcatalogpolarslowaccretion}.
-This makes it an interesting test bed for the suggestion advanced by \citet{2025A&A...695L...8R} that `short LPTs' ($P \lesssim 78\,$mins) and `long LPTs' ($P \gtrsim 78\,$mins) represent different classes of systems (AM Canum Venaticorum stars and CVs, respectively).
+\src{}'s period and duty cycle are not dissimilar to ILT J1101+5521 and GLEAM-X J0704$-$37, which are conjectured to be on the evolutionary path towards becoming polars (\Fig~\ref{fig:lpt_comparison}), suggesting the possibility that \src{}, too, is such a system.
+Notably, its period of ${\sim}1.16\,$hours would make it shorter than the minimum known orbital period of $1.3\,$hours for confirmed polars \citep{schwope2025polarcatcatalogpolarslowaccretion}.
+This makes it an interesting test bed for the possibility that LPTs with different periods represent different stages of WD binary evolution, as they progress towards becoming polars.
 \begin{figure*}
     \centering
     \includegraphics[width=0.98\linewidth]{lpt_comparison.pdf}
@@ -464,7 +466,7 @@ This makes it an interesting test bed for the suggestion advanced by \citet{2025
 %\end{deluxetable*}
 
 
-Although there is as yet no clear consensus on whether LPTs represent one class or multiple classes of system \citep[e.g.][]{2024ApJ...961..214R}, the recent confirmation of J1912$-$4410 as a pre-evolved white dwarf pulsar \citep{2023NatAs...7..931P} and ILT\,J1101+5521 and GLEAM-X\,J0704$-$37 as polars \citep{deRuiter2025,2025A&A...695L...8R} raise the intriguing possibility that other LPTs may also be radio-emitting white dwarf pulsars at various stages of evolution (\citealt{2021NatAs...5..648S}, Horv\'{a}th et al. in prep).
+Although there is as yet no clear consensus on whether LPTs represent one class or multiple classes of system \citep[e.g.][]{2024ApJ...961..214R}, the recent confirmation of J1912$-$4410 as a pre-evolved white dwarf pulsar \citep{2023NatAs...7..931P} and ILT\,J1101+5521 and GLEAM-X\,J0704$-$37 as likely candidates for polars or polar-like systems \citep{deRuiter2025,2025A&A...695L...8R} raise the intriguing possibility that other LPTs may also be radio-emitting white dwarf pulsars at various stages of evolution (\citealt{2021NatAs...5..648S}, Horv\'{a}th et al. in prep).
 
 In this view, the intermittency of these systems have several possible explanations.
 The limited orbital phase range in which J1912$-$4410's radio pulses were observed suggests that the geometric configuration is important in the observability of radio pulsations; `missing' pulses may simply occur at unfavourable orbital phases.
