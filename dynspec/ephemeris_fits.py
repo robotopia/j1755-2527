@@ -16,7 +16,8 @@ def period_model(toas_mjd, period_d, pepoch_mjd):
 toas_mjd = []
 for row in table:
 
-    location = EarthLocation.of_site(row['telescope'])
+    telescope = row['telescope'] if row['telescope'] != 'ATCA' else 'Siding Spring Observatory'
+    location = EarthLocation.of_site(telescope)
     freq = row['freq']
     toa = Time(row['ToA'], scale='utc', format='mjd', location=location)
     toa_bary_dd = barycentre(toa, ephemeris['coord']) - calc_dmdelay(ephemeris['DM'], freq, np.inf*u.MHz)

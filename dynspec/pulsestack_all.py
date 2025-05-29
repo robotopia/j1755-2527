@@ -115,7 +115,8 @@ def main():
         axs[0][col].plot(ph_fine*ephemeris['period'], 0.9*y1norm + ys[col], 'r', alpha=0.3)
 
         yticks[col].append(ys[col])
-        ylabels[col].append(f"{times[0].iso[:16]}\n{dat['TELESCOPE']}")#\n(Pulse #{int(np.round(np.median(pulses)))})")
+        telescope = dat['TELESCOPE'] if dat['TELESCOPE'] != "Siding Spring Observatory" else "ATCA"
+        ylabels[col].append(f"{times[0].iso[:16]}\n{telescope}")#\n(Pulse #{int(np.round(np.median(pulses)))})")
         ys[col] += 1
 
     for col in range(args.ncols):

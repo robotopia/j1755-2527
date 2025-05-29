@@ -112,15 +112,16 @@ Akash Anumarlapudi$^{2}$,
 \newauthor
 Angie Waszewski$^{1}$,
 Dougal Dobie$^{3,4}$,
-John Morgan$^{1}$,
 David L.~Kaplan$^{2}$,
+John Morgan$^{5}$,
 and Ziteng Wang$^{1}$
 \\
 % List of institutions
 $^{1}$International Centre for Radio Astronomy Research, Curtin University, Bentley, WA 6102, Australia\\
-$^{4}$Department of Physics, University of Wisconsin-Milwaukee, P.O. Box 413, Milwaukee, WI 53201, USA\\
 $^{2}$Sydney Institute for Astronomy, School of Physics, The University of Sydney, NSW 2006, Australia\\
-$^{3}$ARC Centre of Excellence for Gravitational Wave Discovery (OzGrav), Hawthorn, VIC 3122, Australia
+$^{3}$ARC Centre of Excellence for Gravitational Wave Discovery (OzGrav), Hawthorn, VIC 3122, Australia\\
+$^{4}$Department of Physics, University of Wisconsin-Milwaukee, P.O. Box 413, Milwaukee, WI 53201, USA\\
+$^{5}$CSIRO Space and Astronomy, P.O. Box 1130, Bentley, WA 6102, Australia\\
 }
 
 % These dates will be filled out by the publisher
@@ -171,8 +172,8 @@ The main conclusions are summarised in \S\ref{sec:summary}.
 
 \section{Observations} \label{sec:observations}
 
-Pulses from \src{} were detected with the Murchison Widefield Array \citep[MWA;][]{Tingay2013}, the Australian SKA Pathfinder \citep[ASKAP;][]{2021PASA...38....9H} and MeerKAT \citep{2016mks..confE...1J}, are all radio interferometers capable of imaging.
-A summary of all the observations included in this work is summarised in \Tab~\ref{tbl:obs}.
+Pulses from \src{} were detected with the Murchison Widefield Array \citep[MWA;][]{Tingay2013}, the Australian SKA Pathfinder \citep[ASKAP;][]{2021PASA...38....9H}, MeerKAT \citep{2016mks..confE...1J}, and the Australia Telescope Compact Array (ATCA, \todo{CITATION??}), all radio interferometers capable of imaging.
+A summary of all the observations containing pulse detections included in this work is summarised in \Tab~\ref{tbl:obs}.
 In this section, we describe how each telescope was used to generate dynamic spectra of \src{}.
 
 \begin{table*}
@@ -181,18 +182,19 @@ In this section, we describe how each telescope was used to generate dynamic spe
   \label{tbl:obs}
   \begin{tabular}{lllcccc}
     \hline
-    Date range & Telescope & Project & $\nu$ & $\Delta\nu$ & Obs. length & Number of \\ 
-    (MJD) & & & (MHz) & (MHz) & (min) & pulses \\
+    Date range & Telescope & Project & $\nu$ & $\Delta\nu$ & Obs. (num. $\times$) & Number of \\ 
+    (MJD) & & & (MHz) & (MHz) & length (min) & pulses \\
     \hline 
     59965 & ASKAP & SB47253 (original discovery) & 887.5 & 288 & 12.1 & 1 \\
     59966 & MWA & G0060 & 161.92 & 15.36 & 6.7 & 1 \\
     %60084 & MWA & G0057 & 154.24 & 30.72 & N/A & $\le$ 1 \\
     60040  & ASKAP & SB49153 & 887.5 & 288 & 12.1 & 1 \\
     60092 - 60093 & MeerKAT & DDT-20230525-DD-01 & 1284 & 856 & 307 & 4 \\
-    60463 - 60563 & MWA & G0080 & 200.32 & 30.72 & (Each obs.) 4.9 & 16 \\
+    60463 - 60563 & MWA & G0080 & 200.32 & 30.72 & $16 \times 4.9$ & 16 \\
     60503 & ASKAP & SB63600 & 887.5 & 288 & 12.3 & 1 \\
-    60572 & MWA & D0042 & 184.96 & 30.72 & (Each obs.) 4.9 & 4 \\
-    60592 - 60602 & MWA & D0042 & 200.32 & 30.72 & (Each obs.) 4.9 & 17 \\
+    60572 & MWA & D0042 & 184.96 & 30.72 & $4 \times 4.9$ & 4 \\
+    60587 & ATCA & \todo{?????} & 2100 & 2048 & 93.2 & 2 \\
+    60592 - 60602 & MWA & D0042 & 200.32 & 30.72 & $17 \times 4.9$ & 17 \\
     60602 & MeerKAT & DDT-20241015-NH-01 & 812.8 & 495.3 & 10 & 1 \\
     \hline
   \end{tabular}
@@ -206,16 +208,14 @@ Time of arrival (ToA) predictions for the DDT observations were made using a pre
 
 We imaged both the 2024 GPM data and the follow-up DDT data at the location of \src{} using \textsc{WSClean} \citep{2014MNRAS.444..606O}, masking \src{} itself, forming a deep model of the sky for each observation. After subtracting this from the visibilities, we phase-rotated to \src{}, and averaged the baseline data to produce a dynamic spectrum.
 
-
-% ** ANGIE **
-% Plz add a short paragraph here with the essential details of the IPS observation included in this paper: G0060, upper half-band only, how the images were made. I'll (SM) add a few sentences about how I selected that observation in the first place.
-An additional MWA observation made as part of the MWA Interplanetary Scintillation (IPS) Survey, project code G0060, has also been included in this present study. 
-A full description of how MWA IPS observations are scheduled and processed can be found in Section~2 of \citet{Morgan2022}.
-Details of the imaging of IPS observations since the first data release can be found in Waszewski et al. (submitted).
-The two adjacent 200-second observations included in this work are a sub-section of a full 10-minute near-Sun observation (30$^{\circ}$ elongation).
-These observations are taken over two equal bands of frequency, centred on approximately 80\,MHz and 160\,MHz. For this study, only the upper band has been processed. 
-The observation was self-calibrated against a sky model based on the GLEAM survey \citep{Hurley-Walker2017} using \textsc{mwa\_hyperdrive}\footnote{\url{https://github.com/MWATelescope/mwa_hyperdrive}}, and then imaged using \textsc{WSClean}.
-\src{} is clearly visible as a point source in the image, and the lightcurve presented in this work is the result of averaging over the 15.36-MHz subband, using 10-second time bins.
+An additional MWA observation made as part of the MWA Interplanetary Scintillation (IPS) Survey, project code G0060, taken just one day after the original ASKAP pulse, was found to have \src{} in the field of view.
+The pulse was detected as a point source in the image formed from the third of three adjacent 200-second, near-Sun observations (30$^{\circ}$ elongation).
+In this paper we present both the second and third observations (6.7 minutes total), in order to make the contrast between detection and non-detection more visible in the lightcurve formed by averaging over the 15.36-MHz subband, using 10-second time bins.
+A full description of how MWA IPS observations are scheduled and processed can be found in Section~2 of \citet{Morgan2022}, but the essential details are summarised here.
+The observations are taken over two equal bands of frequency, centred on approximately 80\,MHz and 160\,MHz.
+For this study, only the upper band has been processed. 
+The observations were self-calibrated against a sky model based on the GLEAM survey \citep{Hurley-Walker2017} using \textsc{mwa\_hyperdrive}\footnote{\url{https://github.com/MWATelescope/mwa_hyperdrive}}, and then imaged using \textsc{WSClean}.
+Further details of the imaging of IPS observations since the first data release can be found in Waszewski et al. (submitted).
 
 \subsection{ASKAP} \label{sec:askap}
 
@@ -233,6 +233,13 @@ The correlator data were calibrated using the standard SARAO SDP calibration pip
 
 We also re-imaged the original 2023-05-28 L-band MeerKAT observation described in \citetalias{2024MNRAS.535..909D}, which was taken under project code DDT-20230525-DD-01 under capture block 1685306788. We performed a similar processing of the data, and identified four pulses with ToAs consistent with an ephemeris derived from the other data. The folded and stacked dynamic spectra are shown in \Fig~\ref{fig:stacked_spectra}\footnote{The signal-to-noise of the MeerKAT detections was insufficient to improve on the localisation derived in \citetalias{2024MNRAS.535..909D}.}.
 
+\subsection{ATCA}
+
+\todo{Akash to add some paragraphs here with details of processing ATCA data:}
+\begin{itemize}
+    \item Describe both Oct 4 and Oct 12 observations
+    \item Mention that the Oct 12 observations did not yield any detections (even though there were four chances for it to do so!).
+\end{itemize}
 
 \section{Analysis \& results} \label{sec:analysis}
 
@@ -302,9 +309,9 @@ We also tried fitting a timing model that included a spin-down parameter, and fo
     \hline
     Parameter & Value \\
     \hline
-    Period (s) & $4186.3283 \pm 0.0003$ \\
-    PEPOCH (MJD) & $59965.03791 \pm 0.00003$ \\
-    DM (pc/cm$^{-3}$) & $763 \pm 25$ \\
+    Period (s) & $4186.3285 \pm 0.0002$ \\
+    PEPOCH (MJD) & $59965.03792 \pm 0.00003$ \\
+    DM (pc/cm$^{-3}$) & $733 \pm 22$ \\
     $\tau_{\rm sc,1 GHz}$ (s) & ${\sim}0.07$ \\
     \hline
   \end{tabular}
@@ -322,7 +329,7 @@ We note, however, that the fitted peak flux densities of the ASKAP and MeerKAT p
 The bottom panel of \Fig~\ref{fig:pulse_details} shows the peak flux densities scaled to 1\,GHz under this assumption, revealing a relatively slow change of the pulses' brightness, not unlike GLEAM-X\,J1627$-$5235 \citep{2022Natur.601..526H}.
 The in-band spectral index measurement of $-3.1$ reported for the 2023 ASKAP pulse \citepalias{2024MNRAS.535..909D}, if consistent across the timespan of our observations, implies a turnover or spectral curvature at intermediate frequencies \citep[perhaps comparable with GPM\,1839$-$10][]{2023Natur.619..487H}.
 
-The measured DM of $763 \pm 25\,{\rm pc}\,{\rm cm}^{-3}$ is slightly higher than, but still consistent with, the in-band measurement of $710^{+200}_{-180}\,{\rm pc}\,{\rm cm}^{-3}$ given in \citetalias{2024MNRAS.535..909D}.
+The measured DM of $733 \pm 22\,{\rm pc}\,{\rm cm}^{-3}$ is slightly higher than, but still consistent with, the in-band measurement of $710^{+200}_{-180}\,{\rm pc}\,{\rm cm}^{-3}$ given in \citetalias{2024MNRAS.535..909D}.
 Because we have not attempted to simultaneously fit for both DM and scattering timescale, there will remain some small systematic error on this reported DM measurement.
 Note, in particular, that the YMW16 and NE2001 models predict a slightly longer scattering time scale than the $70\,$ms that we have assumed throughout this work.
 Breaking the degeneracy is possible in principle with a higher S/N average profile than what is achievable with the current data set.
@@ -366,6 +373,7 @@ At intermediate frequencies ($150\,{\rm MHz} \lesssim \nu \lesssim 300\,{\rm MHz
 No significant linear or circular polarised emission was detected in the 2023 MeerKAT pulses.
 This is likely due to low S/N coupled with the source not being centred in the beam.
 Much more careful imaging analysis would be needed to obtain reliable measurements or limits on the polarised components of those pulses.
+We also find no significant polarised emission from the ATCA pulses. \todo{[Akash: Can you please verify this?]}
 
 Given \src{}'s rotation measure (RM) of ${\sim}961\,{\rm rad}/{\rm m}^2$ \citepalias[as reported in][]{2024MNRAS.535..909D}, linearly polarised emission would undergo several tens of degrees of rotation per 40\,kHz channel of the GPM observations, and therefore be somewhat depolarised.
 To offer the best chance of detecting polarised emission, the MWA DDT observations between MJD 60592 and 60602 (see \Tab~\ref{tbl:obs}) were taken with a frequency resolution of 10\,kHz, which would result in only $12^\circ$ or rotation per channel at 200\,MHz.
@@ -423,6 +431,10 @@ Assuming \src{} remained at a similar brightness (see \Fig~\ref{fig:pulse_detail
 More careful cleaning and imaging of the 2023-04-06 ASKAP observation revealed a low-S/N pulse, at the time predicted by the ephemeris, which is presented in \Figs~\ref{fig:pulsestack} and \ref{fig:pulse_details}.
 There are also three observations in the earliest part of the 2024 GPM run (one on 2024-06-02 and two on 2024-06-10) in which no pulse was observed.
 However, pulses were detected just ten days later on 2024-06-20 (the first of the MWA 200\,MHz points in \Fig~\ref{fig:pulse_details}), and at each epoch thereafter whenever the MWA was observing in \src{}'s direction when a pulse was due to arrive.
+
+In contrast, the ATCA observation taken on 2025-10-12 did not yield any detections (out of four possible predicted ToAs that occurred during that observation).
+This is despite the fact that pulses were detected with ATCA just eight days prior with a similar noise level, as well as the fact that pulses were detected at the MWA within 24 hours of the ATCA observation (none of the MWA observations were coincident with the ATCA observation).
+However, there is enough pulse-to-pulse variability to allow for the possibility that the pulses during the 2025-10-12 were present, but fell below the detection threshold of ATCA.
 
 We conclude, therefore, that \src{} is intermittent with active periods lasting on the order of months, and that the most recent activity period fortuitously started shortly after the start of the 2024 GPM observation run.
 The entire set of observations presented in this work, spanning from 2023 to 2024, may represent two or three different activity windows.
@@ -537,12 +549,12 @@ N.H.-W. is the recipient of an Australian Research Council Future Fellowship (pr
 % Skipped because it is acknowledged below.
 % We acknowledge the Pawsey Supercomputing Centre which is supported by the Western Australian and Australian Governments.
 % ASKAP -- I have fixed this to use the correct name for the observatory
-The Australian SKA Pathfinder is part of the Australia Telescope National Facility which is managed by CSIRO. Operation of ASKAP is funded by the Australian Government with support from the National Collaborative Research Infrastructure Strategy. ASKAP and the MWA use the resources of the Pawsey Supercomputing Centre. Establishment of ASKAP, Inyarrimanha Ilgari Bundara, and the Pawsey Supercomputing Centre are initiatives of the Australian Government, with support from the Government of Western Australia and the Science and Industry Endowment Fund. We acknowledge the Wajarri Yamaji People as the Traditional Owners and Native Title Holders of the observatory site.
+The Australian SKA Pathfinder is part of the Australia Telescope National Facility which is managed by CSIRO (https://ror.org/05qajvd42). Operation of ASKAP is funded by the Australian Government with support from the National Collaborative Research Infrastructure Strategy. ASKAP and the MWA use the resources of the Pawsey Supercomputing Centre. Establishment of ASKAP, Inyarrimanha Ilgari Bundara, and the Pawsey Supercomputing Centre are initiatives of the Australian Government, with support from the Government of Western Australia and the Science and Industry Endowment Fund. We acknowledge the Wajarri Yamaji People as the Traditional Owners and Native Title Holders of the observatory site.
 
 % MeerKAT
 The MeerKAT telescope is operated by the South African Radio Astronomy Observatory, which is a facility of the National Research Foundation, an agency of the Department of Science and Innovation.
-  % PTUSE (https://skaafrica.atlassian.net/wiki/spaces/ESDKB/pages/1591672833/User+Supplied+Equipment+USE#PTUSE)
-  Observations made use of the Pulsar Timing User Supplied Equipment (PTUSE) servers at MeerKAT which were funded by the MeerTime Collaboration members ASTRON, AUT, CSIRO, ICRAR-Curtin, MPIfR, INAF, NRAO, Swinburne University of Technology, the University of Oxford, UBC and the University of Manchester.  The system design and integration was led by Swinburne University of Technology and Auckland University of Technology in collaboration with SARAO and supported by the ARC Centre of Excellence for Gravitational Wave Discovery (OzGrav) under grant CE170100004.
+% PTUSE (https://skaafrica.atlassian.net/wiki/spaces/ESDKB/pages/1591672833/User+Supplied+Equipment+USE#PTUSE)
+Observations made use of the Pulsar Timing User Supplied Equipment (PTUSE) servers at MeerKAT which were funded by the MeerTime Collaboration members ASTRON, AUT, CSIRO, ICRAR-Curtin, MPIfR, INAF, NRAO, Swinburne University of Technology, the University of Oxford, UBC and the University of Manchester.  The system design and integration was led by Swinburne University of Technology and Auckland University of Technology in collaboration with SARAO and supported by the ARC Centre of Excellence for Gravitational Wave Discovery (OzGrav) under grant CE170100004.
 
 S.M. would like to thank J. Pritchard and E. Lenc for technical discussions regarding the ASKAP data sets included in this paper.
 
@@ -582,7 +594,7 @@ The post-imaged dynamic spectra, analyses, and timing analysis data products (To
 \section{The effect of scattering on timing}
 \label{app:scattering_dm}
 
-It can be shown that pulses scatter-broadened by a thin screen\footnote{Relaxing the assumption of a single, thin, isotropic screen could affect the shape of the scattered pulse in ways that could plausibly affect timing \citep{2009MNRAS.395.1391R}, but quantification of this is beyond the scope of this appendix.} will appear to the observer as the original pulse convolved with a one-sided exponential kernel with an associated timescale $\tau$ \citep{1972MNRAS.157...55W,1973MNRAS.163..345W}.
+It can be shown that pulses scatter-broadened by a thin screen\footnote{Relaxing the assumption of a single, thin, isotropic screen affects the shape of the scattered pulse in ways that could plausibly affect timing \citep{2009MNRAS.395.1391R}, but quantification of this is beyond the scope of this appendix.} will appear to the observer as the original pulse convolved with a one-sided exponential kernel with an associated timescale $\tau$ \citep{1972MNRAS.157...55W,1973MNRAS.163..345W}.
 For intrinsically Gaussian pulses of scale $\sigma$, the result of this convolution is well described by the \textit{exponentially modified Gaussian} (EMG), as given in \Eqn~\ref{eqn:emg}.
 
 In the regime $\tau \ll \sigma$, the effect of scattering is negligible and the scattered pulse resembles the original pulse.
@@ -707,6 +719,8 @@ MWA & 185 & 60572.395455(15) & 1.9(3) & 15(2) & 74(3) \\
 MWA & 185 & 60572.443943(21) & 1.8(3) & 16(2) & 73(4) \\
 MWA & 185 & 60572.540824(18) & 1.6(3) & 16(2) & 64(4) \\
 MWA & 185 & 60572.589281(31) & 1.6(4) & 21(4) & 82(8) \\
+ATCA & 2100 & 60587.270973(26) & 0.003(1) & 12(2) & 0.10(2) \\
+ATCA & 2100 & 60587.319527(28) & 0.003(1) & 10(3) & 0.09(2) \\
 MWA & 200 & 60592.456765(27) & 0.7(2) & 19(3) & 34(3) \\
 MWA & 200 & 60592.505159(33) & 0.7(2) & 19(4) & 35(4) \\
 MWA & 200 & 60593.474369(26) & 0.8(2) & 15(3) & 29(3) \\

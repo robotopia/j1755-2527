@@ -26,7 +26,7 @@ def main():
     # Calculate timing residuals
     ephem = get_J1755_ephemeris()
     freq = table['freq']
-    locations = [EarthLocation.of_site(table['telescope'][i]) for i in range(len(table['ToA']))]
+    locations = [EarthLocation.of_site(table['telescope'][i] if table['telescope'][i] != 'ATCA' else 'Siding Spring Observatory') for i in range(len(table['ToA']))]
     toas = Time([Time(table['ToA'][i], scale='utc', format='mjd', location=locations[i]) for i in range(len(table['ToA']))])
     bary_toas = barycentre(toas, ephem['coord'])
     bary_toas_dd = bary_toas - calc_dmdelay(ephem['DM'], freq, np.inf)
@@ -57,8 +57,9 @@ def main():
         185:  {'label': 'MWA (185 MHz)',      'color': '#009E73', 'marker': '.'},
         200:  {'label': 'MWA (200 MHz)',      'color': '#0072B2', 'marker': '.'},
         813:  {'label': 'MeerKAT (813 MHz)',  'color': '#CC79A7', 'marker': 'x'},
-        888:  {'label': 'ASKAP (888 MHz)',    'color': '#D55E00', 'marker': 'o', 'markerfacecolor': 'none'},
+        888:  {'label': 'ASKAP (888 MHz)',    'color': '#D55E00', 'marker': '+'},
         1284: {'label': 'MeerKAT (1284 MHz)', 'color': '#000000', 'marker': 'x'},
+        2100: {'label': 'ATCA (2100 MHz)',    'color': '#0000FF', 'marker': 'o', 'markerfacecolor': 'none'},
     }
 
     for col in range(ncols):

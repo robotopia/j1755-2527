@@ -189,7 +189,7 @@ def main():
             f_ref,
             toa.mjd,
             toa_err,
-            dat['TELESCOPE'],
+            dat['TELESCOPE'] if dat['TELESCOPE'] != "Siding Spring Observatory" else "ATCA",
             fluence,
             fluence_err,
             peak_signal,
