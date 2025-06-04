@@ -172,7 +172,7 @@ The main conclusions are summarised in \S\ref{sec:summary}.
 
 \section{Observations} \label{sec:observations}
 
-Pulses from \src{} were detected with the Murchison Widefield Array \citep[MWA;][]{Tingay2013}, the Australian SKA Pathfinder \citep[ASKAP;][]{2021PASA...38....9H}, MeerKAT \citep{2016mks..confE...1J}, and the Australia Telescope Compact Array (ATCA, \todo{CITATION??}), all radio interferometers capable of imaging.
+Pulses from \src{} were detected with the Murchison Widefield Array \citep[MWA;][]{Tingay2013}, the Australian SKA Pathfinder \citep[ASKAP;][]{2021PASA...38....9H}, MeerKAT \citep{2016mks..confE...1J}, and the Australia Telescope Compact Array \citep[ATCA;][]{cabb}, all radio interferometers capable of imaging.
 A summary of all the observations containing pulse detections included in this work is summarised in \Tab~\ref{tbl:obs}.
 In this section, we describe how each telescope was used to generate dynamic spectra of \src{}.
 
@@ -193,7 +193,7 @@ In this section, we describe how each telescope was used to generate dynamic spe
     60463 - 60563 & MWA & G0080 & 200.32 & 30.72 & $16 \times 4.9$ & 16 \\
     60503 & ASKAP & SB63600 & 887.5 & 288 & 12.3 & 1 \\
     60572 & MWA & D0042 & 184.96 & 30.72 & $4 \times 4.9$ & 4 \\
-    60587 & ATCA & \todo{?????} & 2100 & 2048 & 93.2 & 2 \\
+    60587 & ATCA & C3363 & 2100 & 2048 & 93.2 & 2 \\
     60592 - 60602 & MWA & D0042 & 200.32 & 30.72 & $17 \times 4.9$ & 17 \\
     60602 & MeerKAT & DDT-20241015-NH-01 & 812.8 & 495.3 & 10 & 1 \\
     \hline
@@ -235,11 +235,9 @@ We also re-imaged the original 2023-05-28 L-band MeerKAT observation described i
 
 \subsection{ATCA}
 
-\todo{Akash to add some paragraphs here with details of processing ATCA data:}
-\begin{itemize}
-    \item Describe both Oct 4 and Oct 12 observations
-    \item Mention that the Oct 12 observations did not yield any detections (even though there were four chances for it to do so!).
-\end{itemize}
+Following its re-detection in the ASKAP data, follow-up observations were conducted at L/S band with the ATCA telescope under the project code C3363 (P.I: Tara Murphy). \src\ was observed once on October 4, 2024, for a total of 1.5\,hrs, and again on October 12, 2024, for a total of 2.4\,hrs. At the beginning of each observation, 1934$-$638 was used to calibrate the bandpass, and during the observations, 1748$-$253 was used as a phase calibrator. Data were flagged, calibrated, and imaged using standard recipes from the Common Astronomy Software Applications package \citep[CASA;][]{casa}. The resulting sky model was subtracted from the visibilities (excluding the source of interest). These model-subtracted visibilities were phase-centered on the \src{} and averaged over the baselines to produce the dynamic spectra. 
+
+We identified two faint pulses (4--5 $\sigma$; see Table~\ref{tbl:toas}) in the observation taken on October 4. However, observations taken on October 12 did not yield any pulses (at 3-$\sigma$ level). We inspected the data around the expected time of arrival (using Equation~\ref{eqn:timing}) but did not find any pulses. The instantaneous noise level around the expected time of arrivals is close to 1\,mJy. If pulse-to-pulse flux density variations, similar to ones observed in MWA data (Table~\ref{tbl:toas}), also occur at L/S band, then even a factor 1.5--2 can be sufficient to explain the detection of pulse on October 4 and the absence of pulses on October 12, given that the source is faint at higher frequencies. 
 
 \section{Analysis \& results} \label{sec:analysis}
 
@@ -262,7 +260,7 @@ To account for the asymmetry, we fit exponentially modified Gaussians to each pu
     \exp\left(-\frac12 \left( \frac{t - \mu}{\sigma} \right)^2 \right)  \erfcx \left(\frac{1}{\sqrt{2}} \left(\frac{\sigma}{\tau} - \frac{t - \mu}{\sigma} \right) \right),
   \label{eqn:emg}
 \end{equation}
-where $\erfcx(X) = \exp(X^2) \erfc(X)$ is the scaled complimentary error function; $A$, $\mu$, and $\sigma$ are the height, location, and scale of an unscattered Gaussian pulse; and the scattering time scale was fixed at
+where $\erfcx(X) = \exp(X^2) \erfc(X)$ is the scaled complementary error function; $A$, $\mu$, and $\sigma$ are the height, location, and scale of an unscattered Gaussian pulse; and the scattering time scale was fixed at
 \begin{equation}
       \tau(\nu) = 0.07\, \left(\frac{\nu}{\rm GHz}\right)^{-4} \, {\rm s},
 \end{equation}
@@ -373,7 +371,7 @@ At intermediate frequencies ($150\,{\rm MHz} \lesssim \nu \lesssim 300\,{\rm MHz
 No significant linear or circular polarised emission was detected in the 2023 MeerKAT pulses.
 This is likely due to low S/N coupled with the source not being centred in the beam.
 Much more careful imaging analysis would be needed to obtain reliable measurements or limits on the polarised components of those pulses.
-We also find no significant polarised emission from the ATCA pulses. \todo{[Akash: Can you please verify this?]}
+We also find no significant polarised emission from the ATCA pulses.
 
 Given \src{}'s rotation measure (RM) of ${\sim}961\,{\rm rad}/{\rm m}^2$ \citepalias[as reported in][]{2024MNRAS.535..909D}, linearly polarised emission would undergo several tens of degrees of rotation per 40\,kHz channel of the GPM observations, and therefore be somewhat depolarised.
 To offer the best chance of detecting polarised emission, the MWA DDT observations between MJD 60592 and 60602 (see \Tab~\ref{tbl:obs}) were taken with a frequency resolution of 10\,kHz, which would result in only $12^\circ$ or rotation per channel at 200\,MHz.
@@ -433,8 +431,8 @@ There are also three observations in the earliest part of the 2024 GPM run (one 
 However, pulses were detected just ten days later on 2024-06-20 (the first of the MWA 200\,MHz points in \Fig~\ref{fig:pulse_details}), and at each epoch thereafter whenever the MWA was observing in \src{}'s direction when a pulse was due to arrive.
 
 In contrast, the ATCA observation taken on 2025-10-12 did not yield any detections (out of four possible predicted ToAs that occurred during that observation).
-This is despite the fact that pulses were detected with ATCA just eight days prior with a similar noise level, as well as the fact that pulses were detected at the MWA within 24 hours of the ATCA observation (none of the MWA observations were coincident with the ATCA observation).
-However, there is enough pulse-to-pulse variability to allow for the possibility that the pulses during the 2025-10-12 were present, but fell below the detection threshold of ATCA.
+This is despite the fact that pulses were detected with ATCA just eight days prior with a similar instantaneous noise level (${\sim}1\,$mJy), as well as the fact that pulses were detected at the MWA within 24 hours of the ATCA observation (none of the MWA observations were coincident with the ATCA observation).
+However, even a modest amount of pulse-to-pulse variability would allow for the possibility that the pulses during the 2025-10-12 were present, but fell below the detection threshold of ATCA.
 
 We conclude, therefore, that \src{} is intermittent with active periods lasting on the order of months, and that the most recent activity period fortuitously started shortly after the start of the 2024 GPM observation run.
 The entire set of observations presented in this work, spanning from 2023 to 2024, may represent two or three different activity windows.
@@ -561,7 +559,8 @@ S.M. would like to thank J. Pritchard and E. Lenc for technical discussions rega
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{Data Availability}
 
-The raw visibilities for the MWA, ASKAP, and MeerKAT data sets are available via the respective telescopes' data portals. 
+The raw visibilities for the MWA, ASKAP, and MeerKAT data sets are available via the respective telescopes' data portals.
+The ATCA data is available on reasonable request to the authors, and will become publicly available from the relevant data portal by November, 2025.
 The post-imaged dynamic spectra, analyses, and timing analysis data products (ToAs, pulse properties) are publicly available on GitHub\footnote{TODO: Make this available upon publication.}.
  
 %The inclusion of a Data Availability Statement is a requirement for articles published in MNRAS. Data Availability Statements provide a standardised format for readers to understand the availability of data underlying the research results described in the article. The statement may refer to original data generated in the course of the study or to third-party data analysed in the article. The statement should describe and provide means of access, where possible, by linking to the data or providing the required accession numbers for the relevant databases or DOIs.
