@@ -110,10 +110,11 @@ Natasha Hurley-Walker$^{1}$,
 Csan\'{a}d Horv\'{a}th$^{1}$,
 Akash Anumarlapudi$^{2}$,
 \newauthor
-Angie Waszewski$^{1}$,
+Angie Waszewski$^{1,5}$,
 Dougal Dobie$^{3,4}$,
 David L.~Kaplan$^{2}$,
 John Morgan$^{5}$,
+Kovi Rose$^{3,6}$,
 and Ziteng Wang$^{1}$
 \\
 % List of institutions
@@ -122,6 +123,7 @@ $^{2}$Department of Physics, University of Wisconsin-Milwaukee, P.O. Box 413, Mi
 $^{3}$Sydney Institute for Astronomy, School of Physics, The University of Sydney, NSW 2006, Australia\\
 $^{4}$ARC Centre of Excellence for Gravitational Wave Discovery (OzGrav), Hawthorn, VIC 3122, Australia\\
 $^{5}$CSIRO Space and Astronomy, P.O. Box 1130, Bentley, WA 6102, Australia\\
+$^{6}$Australian Telescope National Facility CSIRO, P.O. Box 76, Epping, NSW 1710, Australia\\
 }
 
 % These dates will be filled out by the publisher
@@ -138,7 +140,7 @@ $^{5}$CSIRO Space and Astronomy, P.O. Box 1130, Bentley, WA 6102, Australia\\
 
 % Abstract of the paper
 \begin{abstract}
-We report the discovery of several new pulses from the source \srcfull{} (\src{}), originally identified from a single 2-min log pulse, confirming it as a long period transient (LPT) with a period of ${\sim}1.16\,$hours. The pulses are significantly scattered, consistent with Galactic electron density models. Two of the new pulses also had measurable polarisation, but unlike the originally detected pulse, the polarisation angle does not behave as expected from the rotating vector model. We interpret historical non-detections of \src{} as an intrinsic intermittency that occurs on month-long timescales, and discuss possible causes. We conjecture that, like other LPTs with periods $\gtrsim 1\,$hour, \src{} is a white-dwarf binary pulsar, but note that its period is marginally shorter than the minimum known orbital period for the class of cataclysmic variables known as polars.
+We report the discovery of several new pulses from the source \srcfull{} (\src{}), originally identified from a single 2-min long pulse, confirming it as a long period transient (LPT) with a period of ${\sim}1.16\,$hours. The pulses are significantly scattered, consistent with Galactic electron density models. Two of the new pulses also had measurable polarisation, but unlike the originally detected pulse, the polarisation angle does not behave as expected from the rotating vector model. We interpret historical non-detections of \src{} as an intrinsic intermittency that occurs on month-long timescales, and discuss possible causes. We conjecture that, like other LPTs with periods $\gtrsim 1\,$hour, \src{} is a white-dwarf binary pulsar, but note that its period is marginally shorter than the minimum known orbital period for the class of cataclysmic variables known as polars.
 \end{abstract}
 
 % Select between one and six entries from the list of approved keywords.
@@ -163,7 +165,7 @@ Optical follow-up is challenging for \src{}, which is situated very close to the
 Unsurprisingly, archival searches at \src{}'s location did not turn up any source down to ${\sim}23$ AB mag.
 Without more detections in the radio or at other wavelengths, it seemed unlikely that the nature of \src{} could ever be resolved.
 
-In this paper, we present new radio observations (spanning frequencies from $154\,$MHz to $1.7\,$GHz) in which \src{} was re-detected, confirming that it is indeed an LPT with a period of ${\sim}1.16\,$hours.
+In this paper, we present new radio observations (spanning frequencies from $154\,$MHz to $3.1\,$GHz) in which \src{} was re-detected, confirming that it is indeed an LPT with a period of ${\sim}1.16\,$hours.
 In \S\ref{sec:observations}, we describe the observations themselves, some of which were taken as part of independent surveys, and some of which were taken as dedicated follow-up of \src{} once it became apparent that it was still active.
 In \S\ref{sec:analysis} we present a timing analysis of the new detections, as well as revised estimates of the dispersion measure (DM) and the scattering timescale.
 We also include new polarisation detections in which the polarisation angle (PA) behaviour differs significantly from the originally detected pulse.
@@ -235,20 +237,20 @@ We also re-imaged the original 2023-05-28 L-band MeerKAT observation described i
 
 \subsection{ATCA}
 
-Following its re-detection in the ASKAP data, follow-up observations were conducted at L/S band with the ATCA telescope under the project code C3363 (P.I: Tara Murphy). \src\ was observed once on October 4, 2024, for a total of 1.5\,hrs, and again on October 12, 2024, for a total of 2.4\,hrs. At the beginning of each observation, 1934$-$638 was used to calibrate the bandpass, and during the observations, 1748$-$253 was used as a phase calibrator. Data were flagged, calibrated, and imaged using standard recipes from the Common Astronomy Software Applications package \citep[CASA;][]{casa}. The resulting sky model was subtracted from the visibilities (excluding the source of interest). These model-subtracted visibilities were phase-centered on the \src{} and averaged over the baselines to produce the dynamic spectra. 
+Following its re-detection in the ASKAP data, follow-up observations were conducted at L/S band with the ATCA telescope under the project code C3363 (P.I: Tara Murphy). \src\ was observed once on 2024-10-04, for a total of 1.5\,hrs, and again on 2024-10-12, for a total of 2.4\,hrs. At the beginning of each observation, 1934$-$638 was used to calibrate the bandpass, and during the observations, 1748$-$253 was used as a phase calibrator. Data were flagged, calibrated, and imaged using standard recipes from the Common Astronomy Software Applications package \citep[CASA;][]{casa}. The resulting sky model was subtracted from the visibilities (excluding the source of interest). These model-subtracted visibilities were phase-centered on the \src{} and averaged over the baselines to produce the dynamic spectra. 
 
-We identified two faint pulses (4--5 $\sigma$; see Table~\ref{tbl:toas}) in the observation taken on October 4. However, observations taken on October 12 did not yield any pulses (at 3-$\sigma$ level). We inspected the data around the expected time of arrival (using Equation~\ref{eqn:timing}) but did not find any pulses. The instantaneous noise level around the expected time of arrivals is close to 1\,mJy. If pulse-to-pulse flux density variations, similar to ones observed in MWA data (Table~\ref{tbl:toas}), also occur at L/S band, then even a factor 1.5--2 can be sufficient to explain the detection of pulse on October 4 and the absence of pulses on October 12, given that the source is faint at higher frequencies. 
+We identified two faint pulses (4--5 $\sigma$; see Table~\ref{tbl:toas}) in the observation taken on 2024-10-04. However, observations taken on 2024-10-12 did not yield any pulses (at 3-$\sigma$ level). We inspected the data around the expected time of arrival (using Equation~\ref{eqn:timing}) but did not find any pulses. The instantaneous noise level around the expected time of arrivals is close to 1\,mJy. If pulse-to-pulse flux density variations, similar to ones observed in MWA data (Table~\ref{tbl:toas}), also occur at L/S band, then even a factor 1.5--2 can be sufficient to explain the detection of pulse on 2024-10-04 and the absence of pulses on 2024-10-12, given that the source is faint at higher frequencies. 
 
 \section{Analysis \& results} \label{sec:analysis}
 
 \subsection{Pulse morphology}
 
 All observed pulses consist of a single burst, approximately Gaussian in shape, with the sole exception of the MeerKAT pulse observed on 2024-10-19, for which two bursts were observed separated by ${\sim}125\,$s.
-Generally, the low-frequency (MWA) pulses tend
+Generally, the low-frequency (MWA) pulses tend to
 \begin{itemize}
-    \item to be wider than their higher frequency counterparts,
-    \item to exhibit an asymmetry resembling a scatter-broadened tail, and
-    \item to have minimal pulse-to-pulse morphological variation.
+    \item be wider than their higher frequency counterparts,
+    \item exhibit an asymmetry resembling a scatter-broadened tail, and
+    \item have minimal pulse-to-pulse morphological variation.
 \end{itemize}
 
 The low-frequency asymmetry is consistent with a scattering time scale of a few tens of seconds at MWA frequencies, which scales to a few tens of milliseconds at 1\,GHz.
@@ -309,7 +311,7 @@ We also tried fitting a timing model that included a spin-down parameter, and fo
     \hline
     Period (s) & $4186.3285 \pm 0.0002$ \\
     PEPOCH (MJD) & $59965.03792 \pm 0.00003$ \\
-    DM (pc/cm$^{-3}$) & $733 \pm 22$ \\
+    DM (pc cm$^{-3}$) & $733 \pm 22$ \\
     $\tau_{\rm sc,1 GHz}$ (s) & ${\sim}0.07$ \\
     \hline
   \end{tabular}
@@ -325,7 +327,7 @@ We also tried fitting a timing model that included a spin-down parameter, and fo
 The variability of the pulse brightness, coupled with the fact that none of our detections were simultaneous at multiple telescopes, prohibit a direct spectral index measurement.
 We note, however, that the fitted peak flux densities of the ASKAP and MeerKAT pulses are broadly consistent with the MWA flux densities at nearby epochs if an approximate spectral index of $\alpha = -2.0$ is assumed.
 The bottom panel of \Fig~\ref{fig:pulse_details} shows the peak flux densities scaled to 1\,GHz under this assumption, revealing a relatively slow change of the pulses' brightness, not unlike GLEAM-X\,J1627$-$5235 \citep{2022Natur.601..526H}.
-The in-band spectral index measurement of $-3.1$ reported for the 2023 ASKAP pulse \citepalias{2024MNRAS.535..909D}, if consistent across the timespan of our observations, implies a turnover or spectral curvature at intermediate frequencies \citep[perhaps comparable with GPM\,1839$-$10][]{2023Natur.619..487H}.
+The in-band spectral index measurement of $\alpha=-3.1$ reported for the 2023 ASKAP pulse \citepalias{2024MNRAS.535..909D}, if consistent across the timespan of our observations, implies a turnover or spectral curvature at intermediate frequencies \citep[perhaps comparable with GPM\,1839$-$10][]{2023Natur.619..487H}.
 
 The measured DM of $733 \pm 22\,{\rm pc}\,{\rm cm}^{-3}$ is slightly higher than, but still consistent with, the in-band measurement of $710^{+200}_{-180}\,{\rm pc}\,{\rm cm}^{-3}$ given in \citetalias{2024MNRAS.535..909D}.
 Because we have not attempted to simultaneously fit for both DM and scattering timescale, there will remain some small systematic error on this reported DM measurement.
@@ -416,7 +418,7 @@ The per-pulse weighted averaged values (with weighting proportional to the Stoke
 The spectral index of the linear component, $\alpha_L$, is similarly consistent, with averages value of $-2.1 \pm 0.4$ (2023 ASKAP), $-3.0 \pm 0.6$ (2024 ASKAP) and $-1.9 \pm 0.5$ (2024 MeerKAT).
 
 Each pulse was de-Faraday rotated with the weighted average RM given above, to derive the linear polarisation profile and the PA evolution across the pulses.
-For the 2023 ASKAP pulse, we recover the `S'-shaped PA curve discussed at length in \citetalias{2024MNRAS.535..909D} in the context of the RVM.
+For the 2023 ASKAP pulse, we recover the `S'-shaped PA curve discussed at length in \citetalias{2024MNRAS.535..909D} in the context of the rotating vector model (RVM).
 Contrastingly, the PA curve of the 2024 ASKAP pulse is flat (across five 10-second bins), and that of the 2024 MeerKAT pulse is curved, but not in an RVM-like way.
 
 \section{Discussion} \label{sec:discussion}
@@ -430,9 +432,9 @@ More careful cleaning and imaging of the 2023-04-06 ASKAP observation revealed a
 There are also three observations in the earliest part of the 2024 GPM run (one on 2024-06-02 and two on 2024-06-10) in which no pulse was observed.
 However, pulses were detected just ten days later on 2024-06-20 (the first of the MWA 200\,MHz points in \Fig~\ref{fig:pulse_details}), and at each epoch thereafter whenever the MWA was observing in \src{}'s direction when a pulse was due to arrive.
 
-In contrast, the ATCA observation taken on 2025-10-12 did not yield any detections (out of four possible predicted ToAs that occurred during that observation).
+In contrast, the ATCA observation taken on 2024-10-12 did not yield any detections (out of four possible predicted ToAs that occurred during that observation).
 This is despite the fact that pulses were detected with ATCA just eight days prior with a similar instantaneous noise level (${\sim}1\,$mJy), as well as the fact that pulses were detected at the MWA within 24 hours of the ATCA observation (none of the MWA observations were coincident with the ATCA observation).
-However, even a modest amount of pulse-to-pulse variability would allow for the possibility that the pulses during the 2025-10-12 were present, but fell below the detection threshold of ATCA.
+However, even a modest amount of pulse-to-pulse variability would allow for the possibility that the pulses during the 2024-10-12 were present, but fell below the detection threshold of ATCA.
 
 We conclude, therefore, that \src{} is intermittent with active periods lasting on the order of months, and that the most recent activity period fortuitously started shortly after the start of the 2024 GPM observation run.
 The entire set of observations presented in this work, spanning from 2023 to 2024, may represent two or three different activity windows.
@@ -488,8 +490,9 @@ We therefore raise the possibility that the coincidence of the observed radio pe
 In a similar vein, systems in which the spin-orbit (or beat-orbit) ratios are \emph{close to} small-integer ratios, or, similarly, systems in which precession of the WD is significant, will exhibit an extra beating effect in which an orbitally-induced intermittency is aliased to a much lower frequency.
 The month-long time scale of the intermittency of \src{}, and possibly even GLEAM-X\,J1627$-$5235, may be of this kind; much longer-term monitoring is needed to confirm or refute this.
 
-Another possibility is that radio emission is only observed when the MD produces dense enough particle outflows, in the form of winds, to activate the emission mechanism in the vicinity of the WD.
+Another possibility is that radio emission is only observed when the companion produces dense enough particle outflows, in the form of winds, to activate the emission mechanism in the vicinity of the WD.
 Such outflows can last for months \citep{2021ApJ...915...37W}, and would not be periodic.
+We also note that the intermittency and varying polarisation properties of \src{} (and other LPTs) may be explained by changes in the local plasma environment (Rose et al., in prep).
 If intermittency is of this kind, then the observed activity windows will be similarly aperiodic, or quasiperiodic.
 Again, long-term monitoring can help distinguish between these scenarios.
 
@@ -532,7 +535,7 @@ A timing solution has been presented (\Eqn~\ref{eqn:timing}) which includes a te
 Without it, ToA predictions may be early by up to several tens of seconds, which is a sizeable fraction of the intrinsic pulse width.
 
 The three higher-frequency pulses for which polarimetry was observable exhibited unique single-pulse polarisation behaviours.
-Only the original ASKAP detection exhibited a PA curve that was amenable to being modelled with the rotating vector model; the others show either flat, or slightly concave up PA curves (\Fig~\ref{fig:RM}).
+Only the original ASKAP detection exhibited a PA curve that was amenable to being modelled with the RVM; the others show either flat, or slightly concave up PA curves (\Fig~\ref{fig:RM}).
 
 We conjecture that if \src{} is a WD pulsar, its intermittency may be a result of the spin-orbital resonance being near, but not exactly, a small-integer ratio, creating a aliased beating pattern on a time scale of months.
 The same explanation may be applied to other LPTs with activity cycles that last on the order of months.
@@ -556,6 +559,7 @@ Observations made use of the Pulsar Timing User Supplied Equipment (PTUSE) serve
 
 S.M. would like to thank J. Pritchard and E. Lenc for technical discussions regarding the ASKAP data sets included in this paper.
 
+K.R. thanks the LSST-DA Data Science Fellowship Program, which is funded by LSST-DA, the Brinson Foundation, and the Moore Foundation; Their participation in the program has benefited this work.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{Data Availability}
 
