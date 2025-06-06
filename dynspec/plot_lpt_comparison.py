@@ -8,14 +8,20 @@ point_types = {
     'Polars': {
         'color': 'r',
         'ecolor': 'r',
+        'fmt': 's',
+        'fillstyle': 'none',
     },
     'Unknown': {
         'color': 'k',
         'ecolor': 'k',
+        'fmt': 'x',
+        'fillstyle': 'none',
     },
     'AR Sco-like': {
         'color': 'b',
         'ecolor': 'b',
+        'fmt': 'o',
+        'fillstyle': 'full',
     },
 }
 
@@ -32,7 +38,6 @@ lpts = [
             'fontweight': 'bold',
         },
         'errorbar_kwargs': {
-            'fmt': 'none',
             'ls': 'none',
             'capsize': 2,
         },
@@ -48,7 +53,6 @@ lpts = [
             'va': 'center',
         },
         'errorbar_kwargs': {
-            'fmt': 'none',
             'ls': 'none',
             'capsize': 2,
         }
@@ -64,7 +68,6 @@ lpts = [
             'va': 'center',
         },
         'errorbar_kwargs': {
-            'fmt': 'none',
             'ls': 'none',
             'capsize': 2,
         },
@@ -81,7 +84,6 @@ lpts = [
             'va': 'center',
         },
         'errorbar_kwargs': {
-            'fmt': 'none',
             'ls': 'none',
             'capsize': 2,
         }
@@ -97,7 +99,6 @@ lpts = [
             'va': 'center',
         },
         'errorbar_kwargs': {
-            'fmt': 'none',
             'ls': 'none',
             'capsize': 2,
         }
@@ -113,7 +114,6 @@ lpts = [
             'va': 'center',
         },
         'errorbar_kwargs': {
-            'fmt': 'x',
             'ls': 'none',
             'capsize': 0,
         }
@@ -129,7 +129,6 @@ lpts = [
             'va': 'center',
         },
         'errorbar_kwargs': {
-            'fmt': 'none',
             'ls': 'none',
             'capsize': 2,
         }
@@ -145,7 +144,6 @@ lpts = [
             'va': 'center',
         },
         'errorbar_kwargs': {
-            'fmt': 'none',
             'ls': 'none',
             'capsize': 2,
         },
@@ -162,7 +160,6 @@ lpts = [
             'va': 'center',
         },
         'errorbar_kwargs': {
-            'fmt': 'none',
             'ls': 'none',
             'capsize': 2,
         }
@@ -178,7 +175,6 @@ lpts = [
             'va': 'center',
         },
         'errorbar_kwargs': {
-            'fmt': 'none',
             'ls': 'none',
             'capsize': 2,
         }
@@ -194,7 +190,6 @@ lpts = [
             'va': 'center',
         },
         'errorbar_kwargs': {
-            'fmt': 'x',
             'ls': 'none',
             'capsize': 0,
         }
@@ -210,7 +205,6 @@ lpts = [
     #        'va': 'center',
     #    },
     #    'errorbar_kwargs': {
-    #        'fmt': 'none',
     #        'ls': 'none',
     #        'capsize': 2,
     #    }
@@ -245,7 +239,14 @@ for lpt in lpts:
 # Construct custom legend
 custom_lines = []
 for point_type, kwargs in point_types.items():
-    custom_lines.append(mlines.Line2D([], [], color=kwargs['color'], marker='_', linestyle='-', label=point_type))
+    custom_lines.append(mlines.Line2D(
+        [], [],
+        color=kwargs['color'],
+        marker=kwargs['fmt'],
+        fillstyle=kwargs['fillstyle'],
+        #linestyle=('--' if point_type == 'Polars' else '-'),
+        label=point_type,
+    ))
 plt.legend(handles=custom_lines, loc='lower right')
 
 plt.xscale('log')
