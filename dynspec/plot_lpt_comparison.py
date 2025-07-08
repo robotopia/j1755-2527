@@ -5,7 +5,7 @@ from matplotlib.legend_handler import HandlerTuple
 import astropy.units as u
 
 point_types = {
-    'Polars': {
+    'WD+MD LPTs': {
         'color': 'r',
         'ecolor': 'r',
         'fmt': 's',
@@ -120,7 +120,7 @@ lpts = [
     },
     {
         'name': 'GLEAM-X J0704-37',
-        'type': 'Polars',
+        'type': 'WD+MD LPTs',
         'min_width': 30 * u.s,
         'max_width': 80 * u.s,
         'period': 10496.6 * u.s,
@@ -166,7 +166,7 @@ lpts = [
     },
     {
         'name': 'ILT J1101+5521',
-        'type': 'Polars',
+        'type': 'WD+MD LPTs',
         'min_width': 30 * u.s,
         'max_width': 90 * u.s,
         'period': 7531.17 * u.s,
@@ -244,7 +244,7 @@ for point_type, kwargs in point_types.items():
         color=kwargs['color'],
         marker=kwargs['fmt'],
         fillstyle=kwargs['fillstyle'],
-        #linestyle=('--' if point_type == 'Polars' else '-'),
+        #linestyle=('--' if point_type == 'WD+MD LPTs' else '-'),
         label=point_type,
     ))
 plt.legend(handles=custom_lines, loc='lower right')
