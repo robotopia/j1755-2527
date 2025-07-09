@@ -176,6 +176,6 @@ ax.add_patch(Ellipse((coord_askap_orig.ra.value, coord_askap_orig.dec.value),
 #ax.set_xlim(0,xmax)
 #ax.set_ylim(0,ymax)
 
-fig.savefig("J1755_optical.pdf", dpi=1000, bbox_inches="tight")
+fig.savefig("J1755_optical.png", dpi=1000, bbox_inches="tight")
 #fig.savefig("M81_SDSS.eps", dpi=1000)
 #fig.savefig("M81_SDSS.pdf")
