@@ -19,7 +19,7 @@ rc('font',**{'family':'serif','serif':['serif']})
 from astropy.io import fits
 from astropy import wcs
 from astropy import units as u
-from astropy.coordinates import SkyCoord
+from astropy.coordinates import SkyCoord, Angle
 from astropy.visualization.wcsaxes import SphericalCircle
 from astropy.nddata import Cutout2D
 
@@ -48,12 +48,13 @@ def normalize(arr, vmin, vmax):
 #coords_m2= SkyCoord("07:15:07.38 -11:41:53.59", frame="fk5", unit=(u.hourangle, u.deg))
 #coords_m3= SkyCoord("07:15:07.35 -11:41:53.81", frame="fk5", unit=(u.hourangle, u.deg))
 # Average of those two
-#coords_mkt= SkyCoord("07:15:07.365 -11:41:53.745", frame="fk5", unit=(u.hourangle, u.deg))
+#coord_askap_orig= SkyCoord("07:15:07.365 -11:41:53.745", frame="fk5", unit=(u.hourangle, u.deg))
 # Unweighted average from three measurements
-#coords_mkt= SkyCoord("07:15:07.3704 -11:41:53.7072", frame="fk5", unit=(u.hourangle, u.deg))
+#coord_askap_orig= SkyCoord("07:15:07.3704 -11:41:53.7072", frame="fk5", unit=(u.hourangle, u.deg))
 # Weighted average of 16 measurements at UHF
-coords_mkt= SkyCoord("17:55:34.87 -25:27:49.1", frame="fk5", unit=(u.hourangle, u.deg))
-err_mkt = 0.5*u.arcsec
+coord_askap_orig= SkyCoord("17:55:34.87 -25:27:49.1", frame="fk5", unit=(u.hourangle, u.deg))
+err_askap_a = Angle('00h00m00.1s').to('deg')
+err_askap_b = Angle('00d00m00.1s').to('deg')
 # Weighted average of 3 measurements at L-band
 #coords_mktl= SkyCoord("07h15m07.37365723s -11d41m53.28048706s", frame="fk5", unit=(u.hourangle, u.deg))
 #err_mktl = 0.33*u.arcsec
@@ -61,8 +62,8 @@ err_mkt = 0.5*u.arcsec
 coords_mktl1= SkyCoord("17:55:34.87 -25:27:49.1", frame="fk5", unit=(u.hourangle, u.deg))
 #print(coords.to_string('hmsdms', sep=":"))
 #print(coords.to_string('hmsdms'))
-err_ra_mktl1 = 3.7291164e-5*u.deg
-err_dec_mktl1 = 3.3163615E-5*u.deg
+#err_ra_mktl1 = 3.7291164e-5*u.deg
+#err_dec_mktl1 = 3.3163615E-5*u.deg
 
 
 fits_red = "rings.v3.skycell.0775.062.stk.z.unconv.fits"
@@ -79,15 +80,15 @@ interval = PercentileInterval(pct)
 
 stretch = AsinhStretch(a=0.8)
 
-framesize = 0.1*u.arcmin
+framesize = 1.1*u.arcmin
 
-w_red = wcs.WCS(red[0].header)
-w_green = wcs.WCS(green[0].header)
-w_blue = wcs.WCS(blue[0].header)
+w_red = wcs.WCS(red[1].header)
+w_green = wcs.WCS(green[1].header)
+w_blue = wcs.WCS(blue[1].header)
 
-red_data = Cutout2D(red[0].data, coords_mktl1, framesize, wcs = w_red)
-green_data = Cutout2D(green[0].data, coords_mktl1, framesize, wcs = w_green)
-blue_data = Cutout2D(blue[0].data, coords_mktl1, framesize, wcs = w_blue)
+red_data = Cutout2D(red[1].data, coords_mktl1, framesize, wcs = w_red)
+green_data = Cutout2D(green[1].data, coords_mktl1, framesize, wcs = w_green)
+blue_data = Cutout2D(blue[1].data, coords_mktl1, framesize, wcs = w_blue)
 
 i = interval.get_limits(red_data.data)
 r = stretch(normalize(red_data.data, *i))
@@ -124,15 +125,18 @@ lat.set_axislabel("Declination (J2000)")
 #lat.set_major_formatter('dd:mm')
 
 # Transient source
-#r = SphericalCircle((coords.ra, coords.dec), 4*u.arcsec, edgecolor='cyan', facecolor='none', transform=ax.get_transform("world"))
-#ax.add_patch(r)
-#rm = SphericalCircle((coords_m1.ra, coords_m1.dec), 8.5e-5*u.deg, edgecolor='magenta', facecolor='none', transform=ax.get_transform("world"))
-#ax.add_patch(rm)
-#rm = SphericalCircle((coords_m2.ra, coords_m2.dec), 8.5e-5*u.deg, edgecolor='magenta', facecolor='none', transform=ax.get_transform("world"))
-#ax.add_patch(rm)
-#rm = SphericalCircle((coords_m3.ra, coords_m3.dec), 8.5e-5*u.deg, edgecolor='magenta', facecolor='none', transform=ax.get_transform("world"))
-#ax.add_patch(rm)
-#rm = SphericalCircle((coords_mkt.ra, coords_mkt.dec), err_mkt, edgecolor='magenta', facecolor='none', transform=ax.get_transform("world"), alpha=0.5)
+width = size * err_askap_a / framesize # in "fraction of the frame"
+height = size * err_askap_b / framesize # in "fraction of the frame"
+
+ax.add_patch(Ellipse((coord_askap_orig.ra.value, coord_askap_orig.dec.value), 
+                     width=width, height=height, angle=0,
+#                     width=m81_d25_a, height=m81_d25_b, angle=m81_d25_pa, 
+                     edgecolor='green',
+                     facecolor='none',
+                     transform=ax.get_transform("world")
+                    ))
+
+#rm = SphericalCircle((coord_askap_orig.ra, coord_askap_orig.dec), err_mkt, edgecolor='magenta', facecolor='none', transform=ax.get_transform("world"), alpha=0.5)
 #ax.add_patch(rm)
 #rm = SphericalCircle((coords_mktl.ra, coords_mktl.dec), err_mktl, edgecolor='black', facecolor='none', transform=ax.get_transform("world"), alpha=0.8)
 #ax.add_patch(rm)
