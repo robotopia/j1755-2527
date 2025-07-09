@@ -86,7 +86,7 @@ interval = PercentileInterval(pct)
 
 stretch = AsinhStretch(a=0.8)
 
-framesize = 0.1*u.arcmin
+framesize = 0.3*u.arcmin
 
 w_red = wcs.WCS(red[1].header)
 w_green = wcs.WCS(green[1].header)
@@ -131,26 +131,13 @@ lat.set_axislabel("Declination (J2000)")
 #lat.set_major_formatter('dd:mm')
 
 # Transient source
-# ASKAP
-width = size * err_askap_a / framesize # in "fraction of the frame"
-height = size * err_askap_b / framesize # in "fraction of the frame"
-
-ell = Ellipse((coord_askap_orig.ra.value, coord_askap_orig.dec.value), 
-              width=width, height=height, angle=0,
-              edgecolor='green',
-              facecolor='none',
-              transform=ax.get_transform("world")
-              )
-#ax.add_patch(ell)
-
 # MeerKAT
 width = size * err_mkt_a / framesize # in "fraction of the frame"
 height = size * err_mkt_b / framesize # in "fraction of the frame"
 
 ell = Ellipse((coord_mkt.ra.value, coord_mkt.dec.value), 
-              #width=width, height=height, angle=0,
-              width=err_mkt_a.value, height=err_mkt_b.value, angle=0,
-              edgecolor='green',
+              width=2*err_mkt_a.value, height=2*err_mkt_b.value, angle=180-155.03435,
+              edgecolor='#0f0',
               facecolor='none',
               transform=ax.get_transform("world")
               )
@@ -196,6 +183,6 @@ ax.add_patch(ell)
 #ax.set_xlim(0,xmax)
 #ax.set_ylim(0,ymax)
 
-fig.savefig("J1755_optical.png", dpi=1000, bbox_inches="tight")
+fig.savefig("J1755_optical.pdf", dpi=1000, bbox_inches="tight")
 #fig.savefig("M81_SDSS.eps", dpi=1000)
 #fig.savefig("M81_SDSS.pdf")
