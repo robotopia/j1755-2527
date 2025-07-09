@@ -52,9 +52,15 @@ def normalize(arr, vmin, vmax):
 # Unweighted average from three measurements
 #coord_askap_orig= SkyCoord("07:15:07.3704 -11:41:53.7072", frame="fk5", unit=(u.hourangle, u.deg))
 # Weighted average of 16 measurements at UHF
+
 coord_askap_orig= SkyCoord("17:55:34.87 -25:27:49.1", frame="fk5", unit=(u.hourangle, u.deg))
 err_askap_a = Angle('00h00m00.1s').to('deg')
 err_askap_b = Angle('00d00m00.1s').to('deg')
+
+coord_mkt= SkyCoord("17:55:34.87 -25:27:49.94", frame="fk5", unit=(u.hourangle, u.deg))
+err_mkt_a = Angle('00h00m00.02s').to('deg')
+err_mkt_b = Angle('00d00m00.4s').to('deg')
+
 # Weighted average of 3 measurements at L-band
 #coords_mktl= SkyCoord("07h15m07.37365723s -11d41m53.28048706s", frame="fk5", unit=(u.hourangle, u.deg))
 #err_mktl = 0.33*u.arcsec
@@ -80,15 +86,15 @@ interval = PercentileInterval(pct)
 
 stretch = AsinhStretch(a=0.8)
 
-framesize = 1.1*u.arcmin
+framesize = 0.1*u.arcmin
 
 w_red = wcs.WCS(red[1].header)
 w_green = wcs.WCS(green[1].header)
 w_blue = wcs.WCS(blue[1].header)
 
-red_data = Cutout2D(red[1].data, coords_mktl1, framesize, wcs = w_red)
-green_data = Cutout2D(green[1].data, coords_mktl1, framesize, wcs = w_green)
-blue_data = Cutout2D(blue[1].data, coords_mktl1, framesize, wcs = w_blue)
+red_data = Cutout2D(red[1].data, coord_mkt, framesize, wcs = w_red)
+green_data = Cutout2D(green[1].data, coord_mkt, framesize, wcs = w_green)
+blue_data = Cutout2D(blue[1].data, coord_mkt, framesize, wcs = w_blue)
 
 i = interval.get_limits(red_data.data)
 r = stretch(normalize(red_data.data, *i))
@@ -125,16 +131,30 @@ lat.set_axislabel("Declination (J2000)")
 #lat.set_major_formatter('dd:mm')
 
 # Transient source
+# ASKAP
 width = size * err_askap_a / framesize # in "fraction of the frame"
 height = size * err_askap_b / framesize # in "fraction of the frame"
 
-ax.add_patch(Ellipse((coord_askap_orig.ra.value, coord_askap_orig.dec.value), 
-                     width=width, height=height, angle=0,
-#                     width=m81_d25_a, height=m81_d25_b, angle=m81_d25_pa, 
-                     edgecolor='green',
-                     facecolor='none',
-                     transform=ax.get_transform("world")
-                    ))
+ell = Ellipse((coord_askap_orig.ra.value, coord_askap_orig.dec.value), 
+              width=width, height=height, angle=0,
+              edgecolor='green',
+              facecolor='none',
+              transform=ax.get_transform("world")
+              )
+#ax.add_patch(ell)
+
+# MeerKAT
+width = size * err_mkt_a / framesize # in "fraction of the frame"
+height = size * err_mkt_b / framesize # in "fraction of the frame"
+
+ell = Ellipse((coord_mkt.ra.value, coord_mkt.dec.value), 
+              #width=width, height=height, angle=0,
+              width=err_mkt_a.value, height=err_mkt_b.value, angle=0,
+              edgecolor='green',
+              facecolor='none',
+              transform=ax.get_transform("world")
+              )
+ax.add_patch(ell)
 
 #rm = SphericalCircle((coord_askap_orig.ra, coord_askap_orig.dec), err_mkt, edgecolor='magenta', facecolor='none', transform=ax.get_transform("world"), alpha=0.5)
 #ax.add_patch(rm)
