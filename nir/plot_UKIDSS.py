@@ -86,7 +86,7 @@ interval = PercentileInterval(pct)
 
 stretch = AsinhStretch(a=0.1)
 
-framesize = 0.3*u.arcmin
+framesize = 1.3*u.arcmin
 
 w_red = wcs.WCS(red[1].header)
 w_green = wcs.WCS(green[1].header)
@@ -185,6 +185,6 @@ ax.invert_yaxis()
 #ax.set_xlim(0,xmax)
 #ax.set_ylim(0,ymax)
 
-fig.savefig("J1755_nir.pdf", dpi=1000, bbox_inches="tight")
+fig.savefig("J1755_nir.png", dpi=1000, bbox_inches="tight")
 #fig.savefig("M81_SDSS.eps", dpi=1000)
 #fig.savefig("M81_SDSS.pdf")

@@ -5,7 +5,7 @@ from matplotlib.legend_handler import HandlerTuple
 import astropy.units as u
 
 point_types = {
-    'WD+MD LPTs': {
+    'Binaries hosting WDs': {
         'color': 'r',
         'ecolor': 'r',
         'fmt': 's',
@@ -120,10 +120,25 @@ lpts = [
     },
     {
         'name': 'GLEAM-X J0704-37',
-        'type': 'WD+MD LPTs',
+        'type': 'Binaries hosting WDs',
         'min_width': 30 * u.s,
         'max_width': 80 * u.s,
         'period': 10496.6 * u.s,
+        'text_kwargs': {
+            'ha': 'left',
+            'va': 'center',
+        },
+        'errorbar_kwargs': {
+            'ls': 'none',
+            'capsize': 2,
+        }
+    },
+    {
+        'name': 'CHIME/ILT J1634+44',
+        'type': 'Binaries hosting WDs',
+        'min_width': 0.07 * u.s,
+        'max_width': 0.8 * u.s,
+        'period': 841.245895 * u.s,
         'text_kwargs': {
             'ha': 'left',
             'va': 'center',
@@ -166,7 +181,7 @@ lpts = [
     },
     {
         'name': 'ILT J1101+5521',
-        'type': 'WD+MD LPTs',
+        'type': 'Binaries hosting WDs',
         'min_width': 30 * u.s,
         'max_width': 90 * u.s,
         'period': 7531.17 * u.s,
@@ -244,7 +259,7 @@ for point_type, kwargs in point_types.items():
         color=kwargs['color'],
         marker=kwargs['fmt'],
         fillstyle=kwargs['fillstyle'],
-        #linestyle=('--' if point_type == 'WD+MD LPTs' else '-'),
+        #linestyle=('--' if point_type == 'Binaries hosting WDs' else '-'),
         label=point_type,
     ))
 plt.legend(handles=custom_lines, loc='lower right')
