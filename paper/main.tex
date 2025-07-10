@@ -1,4 +1,4 @@
-% mnras_template.tex
+% mnras_template.tex 
 %
 % LaTeX template for creating an MNRAS paper
 %
@@ -133,7 +133,7 @@ $^{6}$Australian Telescope National Facility CSIRO, P.O. Box 76, Epping, NSW 171
 % These dates will be filled out by the publisher
 \date{Accepted XXX. Received YYY; in original form ZZZ}
 
-% Prints the current year, for the copyright statements etc. To achieve a fixed year, replace the expression with a number.
+% Prints the current year, for the copyright statements etc. To achieve a fixed year, replace the expression with a number. 
 \pubyear{\the\year{}}
 
 % Don't change these lines
@@ -192,9 +192,9 @@ In this section, we describe how each telescope was used to generate dynamic spe
   \label{tbl:obs}
   \begin{tabular}{lllcccc}
     \hline
-    Date range & Telescope & Project & $\nu$ & $\Delta\nu$ & Obs. (num. $\times$) & Number of \\
+    Date range & Telescope & Project & $\nu$ & $\Delta\nu$ & Obs. (num. $\times$) & Number of \\ 
     (MJD) & & & (MHz) & (MHz) & length (min) & pulses \\
-    \hline
+    \hline 
     59965 & ASKAP & SB47253 (original discovery) & 887.5 & 288 & 12.1 & 1 \\
     59966 & MWA & G0060 & 161.92 & 15.36 & 6.7 & 1 \\
     %60084 & MWA & G0057 & 154.24 & 30.72 & N/A & $\le$ 1 \\
@@ -212,7 +212,8 @@ In this section, we describe how each telescope was used to generate dynamic spe
 
 \subsection{MWA} \label{sec:mwa}
 
-\src{} was detected \revision{blindly}{} with the Murchison Widefield Array \citep[MWA;][]{Tingay2013} in observations taken between June--September 2024 under the `Galactic Plane Monitor', project code G0080. The prime objective of the campaign was to search for long-period transients by scanning the Galactic plane over $285^\circ < l < 65^\circ$, $|b| < 15^\circ$ on a bi-weekly cadence at 185--215\,MHz \citep[see Methods of][]{2023Natur.619..487H}; a full description will be released by Hurley-Walker et al., in prep. We also observed over June--September 2022 but made no detections in these data, as reported in \citetalias{2024MNRAS.535..909D}. \revision{}{The root-mean-squared (RMS) noise level in these observations on the processed four-second timescale is $\sim$80\,mJy\,beam$^{-1}$ in this region. A time-based convolution filter employed to extract pulse-like signals, as described by Horv\'ath et al., submitted, yielded the first detection in this data set of a pulse whose peak flux density was 665\,mJy.}
+\revision{\src{} was detected blindly with the Murchison Widefield Array \citep[MWA;][]{Tingay2013} in observations taken between June--September 2024 under the `Galactic Plane Monitor', project code G0080. The prime objective of the campaign was to search for long-period transients by scanning the Galactic plane over $285^\circ < l < 65^\circ$, $|b| < 15^\circ$ on a bi-weekly cadence at 185--215\,MHz \citep[see Methods of][]{2023Natur.619..487H}; a full description will be released by Hurley-Walker et al., in prep. We also observed over June--September 2022 but made no detections in these data, as reported in \citetalias{2024MNRAS.535..909D}.}{The MWA, in its Phase~\textsc{ii} ``extended'' configuration \citep[][]{2018PASA...35...33W}, was used to scan the Galactic plane for transient radio sources under the `Galactic Plane Monitor', project code G0080. These observations were conducted over June--September\,2022, and June\,2024--March\,2025. Relevant to this work, the region $285^\circ < l < 65^\circ$, $|b| < 15^\circ$ was scanned on a bi-weekly cadence at 185--215\,MHz in both June--September\,2022 and 2024 \citep[see Methods of][a full description will be released by Hurley-Walker et al., in prep]{2023Natur.619..487H}. In this region, the root-mean-squared (RMS) noise level on the processed four-second timescale is $\sim$80\,mJy\,beam$^{-1}$. Amongst several detection methods (described in full by Horv\'ath et al., submitted, a convolution filter is employed to extract pulse-like signals. In June--September 2022, no pulses from \src{} were detected, but in June 2024, the source was blindly detected as a ${\sim}70$-s-wide pulse whose peak flux density was 665\,mJy.}
+
 Subsequent to its redetection, we commenced a Director's Discretionary Time (DDT) campaign under project code D0042, to obtain further observations, adjusting the frequency from 200.32\,MHz to 184.96\,MHz for some of the observations to attempt to improve measurements of its DM.
 Time of arrival (ToA) predictions for the DDT observations were made using a preliminary ephemeris derived from the GPM detections, which, by virtue at being at the same or similar frequencies, absorbed the delays due to dispersion and scattering into the `PEPOCH' term.
 
@@ -223,7 +224,7 @@ The pulse was detected as a point source in the image formed from the third of t
 In this paper we present both the second and third observations (6.7 minutes total), in order to make the contrast between detection and non-detection more visible in the lightcurve formed by averaging over the 15.36-MHz subband, using 10-second time bins.
 A full description of how MWA IPS observations are scheduled and processed can be found in Section~2 of \citet{Morgan2022}, but the essential details are summarised here.
 The observations are taken over two equal bands of frequency, centred on approximately 80\,MHz and 160\,MHz.
-For this study, only the upper band has been processed.
+For this study, only the upper band has been processed. 
 The observations were self-calibrated against a sky model based on the GLEAM survey \citep{Hurley-Walker2017} using \textsc{mwa\_hyperdrive}\footnote{\url{https://github.com/MWATelescope/mwa_hyperdrive}}, and then imaged using \textsc{WSClean}.
 Further details of the imaging of IPS observations since the first data release can be found in Waszewski et al. (submitted).
 
@@ -248,9 +249,9 @@ We also re-imaged the original 2023-05-28 L-band MeerKAT observation described i
 
 \subsection{ATCA}
 
-Following its re-detection in the ASKAP data, follow-up observations were conducted at L/S bands with the ATCA telescope under the project code C3363 (P.I: Tara Murphy). \src\ was observed once on 2024-10-04, for a total of 1.5\,hrs, and again on 2024-10-12, for a total of 2.4\,hrs. At the beginning of each observation, 1934$-$638 was used to calibrate the bandpass, and during the observations, 1748$-$253 was used as a phase calibrator. Data were flagged, calibrated, and imaged using standard recipes from the Common Astronomy Software Applications package \citep[CASA;][]{casa}. The resulting sky model was subtracted from the visibilities (excluding the source of interest). These model-subtracted visibilities were phase-centered on the \src{} and averaged over the baselines to produce the dynamic spectra.
+Following its re-detection in the ASKAP data, follow-up observations were conducted at L/S bands with the ATCA telescope under the project code C3363 (P.I: Tara Murphy). \src\ was observed once on 2024-10-04, for a total of 1.5\,hrs, and again on 2024-10-12, for a total of 2.4\,hrs. At the beginning of each observation, 1934$-$638 was used to calibrate the bandpass, and during the observations, 1748$-$253 was used as a phase calibrator. Data were flagged, calibrated, and imaged using standard recipes from the Common Astronomy Software Applications package \citep[CASA;][]{casa}. The resulting sky model was subtracted from the visibilities (excluding the source of interest). These model-subtracted visibilities were phase-centered on the \src{} and averaged over the baselines to produce the dynamic spectra. 
 
-We identified two faint pulses (4--5 $\sigma$; see Table~\ref{tbl:toas}) in the observation taken on 2024-10-04. However, observations taken on 2024-10-12 did not yield any pulses (at 3-$\sigma$ level). We inspected the data around the expected time of arrival (using Equation~\ref{eqn:timing}) but did not find any pulses. The instantaneous noise level, per 10\,s integration time bin, around the expected time of arrivals is close to 1\,mJy. If pulse-to-pulse flux density variations, similar to ones observed in MWA data (Table~\ref{tbl:toas}), also occur at L/S band, then even a factor 1.5--2 variation can be sufficient to explain the detection of pulses on 2024-10-04 and the absence of pulses on 2024-10-12, given that the source is faint at higher frequencies.
+We identified two faint pulses (4--5 $\sigma$; see Table~\ref{tbl:toas}) in the observation taken on 2024-10-04. However, observations taken on 2024-10-12 did not yield any pulses (at 3-$\sigma$ level). We inspected the data around the expected time of arrival (using Equation~\ref{eqn:timing}) but did not find any pulses. The instantaneous noise level, per 10\,s integration time bin, around the expected time of arrivals is close to 1\,mJy\,beam$^{-1}$. If pulse-to-pulse flux density variations, similar to ones observed in MWA data (Table~\ref{tbl:toas}), also occur at L/S band, then even a factor 1.5--2 variation can be sufficient to explain the detection of pulses on 2024-10-04 and the absence of pulses on 2024-10-12, given that the source is faint at higher frequencies. 
 
 \section{Analysis \& results} \label{sec:analysis}
 
@@ -288,6 +289,7 @@ A pulse stack containing all observed pulses and the corresponding unscattered p
 \end{figure*}
 
 For the MeerKAT pulse with two components, we fit only the brighter component.
+\revision{}{We checked the higher time resolution PTUSE data for finer substructure, but did not find anything smaller than the components that can be seen in \Fig~\ref{fig:pulsestack}.}
 
 \subsection{Timing solution} \label{sec:timing}
 
@@ -311,7 +313,7 @@ Because the scattering time scale could not be reliably measured for all individ
 These ToAs were then barycentred and fit for both period and DM, resulting in the values given in \Tab~\ref{tbl:ephemeris}.
 The residuals are presented in \Fig~\ref{fig:pulse_details} and \Tab~\ref{tbl:toas}, along with other fitted properties of the pulses.
 \revision{We also tried fitting a timing model that included a spin-down parameter, and found that it was consistent with zero spin-down to within $1\sigma$, and so is not included in the ephemeris.}{We also tried fitting a timing model that included a spin-down/up parameter (fixing the DM to $733\,{\rm pc}\,{\rm cm}^{-3}$), and found that it was consistent with zero.
-However, owing to recent discovery that CHIME/ILT\,J1634+44 is spinning up \citep[$\dot{P} = (-9.03 \pm 0.11) \times 10^{-12}\,{\rm s}\,{\rm s}^{-1}$;][]{2025arXiv250705139D,2025arXiv250705078B}, we report the fitted period derivative value of $(-10 \pm 92) \times 10^{-12}\,{\rm s}\,{\rm s}^{-1}$ instead of only providing an upper limit for the spin-down.}
+However, owing to the recent discovery that the LPT CHIME/ILT\,J1634+44 is spinning up \citep[$\dot{P} = (-9.03 \pm 0.11) \times 10^{-12}\,{\rm s}\,{\rm s}^{-1}$;][]{2025arXiv250705139D,2025arXiv250705078B}, we report the fitted period derivative value of $(-10 \pm 92) \times 10^{-12}\,{\rm s}\,{\rm s}^{-1}$ instead of only providing an upper limit for the spin-down.}
 
 \begin{table}
   \centering
@@ -340,7 +342,7 @@ However, owing to recent discovery that CHIME/ILT\,J1634+44 is spinning up \cite
 The variability of the pulse brightness, coupled with the fact that none of our detections were simultaneous at multiple telescopes, prohibit a direct spectral index measurement.
 We note, however, that the fitted peak flux densities of the ASKAP and MeerKAT pulses are broadly consistent with the MWA flux densities at nearby epochs if an approximate spectral index of $\alpha = -2.0$ is assumed.
 The bottom panel of \Fig~\ref{fig:pulse_details} shows the peak flux densities scaled to 1\,GHz under this assumption, revealing a relatively slow change of the pulses' brightness, not unlike GLEAM-X\,J1627$-$5235 \citep{2022Natur.601..526H}.
-The in-band spectral index measurement of $\alpha=-3.1$ reported for the 2023 ASKAP pulse \citepalias{2024MNRAS.535..909D}, if consistent across the timespan of our observations, implies a turnover or spectral curvature at intermediate frequencies \citep[perhaps comparable with GPM\,1839$-$10][]{2023Natur.619..487H}.
+The in-band spectral index measurement of $\alpha=-3.1$ reported for the 2023 ASKAP pulse \citepalias{2024MNRAS.535..909D}, if consistent across the timespan of our observations, implies a turnover or spectral curvature at intermediate frequencies \citep[perhaps comparable with GPM\,1839$-$10;][]{2023Natur.619..487H}.
 
 The measured DM of $733 \pm 22\,{\rm pc}\,{\rm cm}^{-3}$ is slightly higher than, but still consistent with, the in-band measurement of $710^{+200}_{-180}\,{\rm pc}\,{\rm cm}^{-3}$ given in \citetalias{2024MNRAS.535..909D}.
 Because we have not attempted to simultaneously fit for both DM and scattering timescale, there will remain some small systematic error on this reported DM measurement.
@@ -470,9 +472,9 @@ This makes it an interesting test bed for the possibility that LPTs with differe
 %\begin{deluxetable*}{lcl}
 %  \tablecaption{Known and candidate LPTs, arranged in ascending order of period\label{tbl:lpts}}
 %  \tablehead{
-%    \colhead{LPT} & \colhead{Period} & \colhead{References} \\
-%     & \colhead{(min)} &
-%   }
+%    \colhead{LPT} & \colhead{Period} & \colhead{References} \\ 
+%     & \colhead{(min)} & 
+%   } 
 %   \startdata
 %   %AR Scorpii (J162147.28-225310.3) & 1.97 &  \\
 %   %ASKAP J175154.89-255135.3 & ${\sim}$3.6 &  \\
@@ -553,14 +555,16 @@ Only the original ASKAP detection exhibited a PA curve that was amenable to bein
 
 We conjecture that if \src{} is a WD pulsar, its intermittency may be a result of the spin-orbital resonance being near, but not exactly, a small-integer ratio, creating a aliased beating pattern on a time scale of months.
 The same explanation may be applied to other LPTs with activity cycles that last on the order of months.
-An alternative explanation is that the radio emission is drived by particle wind outflows from the main sequence companion.
+An alternative explanation is that the radio emission is drived by particle wind outflows from \revision{the}{a} main sequence companion.
 Long-term monitoring of LPTs will reveal whether the intermittency is periodic, and thus help discriminate between these two scenarios.
 
 \section*{Acknowledgements}
 
-N.H.-W. is the recipient of an Australian Research Council Future Fellowship (project number FT190100231).
+This research is supported by an Australian Government Research Training Program (RTP) Scholarship.
 
- This scientific work uses data obtained from Inyarrimanha Ilgari Bundara, the CSIRO Murchison Radio-astronomy Observatory. Support for the operation of the MWA is provided by the Australian Government (NCRIS), under a contract to Curtin University administered by Astronomy Australia Limited. ASVO has received funding from the Australian Commonwealth Government through the National eResearch Collaboration Tools and Resources (NeCTAR) Project, the Australian National Data Service (ANDS), and the National Collaborative Research Infrastructure Strategy.
+N.H.-W. is the recipient of an Australian Research Council Future Fellowship (project number FT190100231).
+ 
+This scientific work uses data obtained from Inyarrimanha Ilgari Bundara, the CSIRO Murchison Radio-astronomy Observatory. Support for the operation of the MWA is provided by the Australian Government (NCRIS), under a contract to Curtin University administered by Astronomy Australia Limited. ASVO has received funding from the Australian Commonwealth Government through the National eResearch Collaboration Tools and Resources (NeCTAR) Project, the Australian National Data Service (ANDS), and the National Collaborative Research Infrastructure Strategy.
 % Skipped because it is acknowledged below.
 % We acknowledge the Pawsey Supercomputing Centre which is supported by the Western Australian and Australian Governments.
 % ASKAP -- I have fixed this to use the correct name for the observatory
@@ -571,6 +575,9 @@ The MeerKAT telescope is operated by the South African Radio Astronomy Observato
 % PTUSE (https://skaafrica.atlassian.net/wiki/spaces/ESDKB/pages/1591672833/User+Supplied+Equipment+USE#PTUSE)
 Observations made use of the Pulsar Timing User Supplied Equipment (PTUSE) servers at MeerKAT which were funded by the MeerTime Collaboration members ASTRON, AUT, CSIRO, ICRAR-Curtin, MPIfR, INAF, NRAO, Swinburne University of Technology, the University of Oxford, UBC and the University of Manchester.  The system design and integration was led by Swinburne University of Technology and Auckland University of Technology in collaboration with SARAO and supported by the ARC Centre of Excellence for Gravitational Wave Discovery (OzGrav) under grant CE170100004.
 
+% ADACS
+The database of MWA candidates, and the webapp designed to facilitate manually inspecting them, were developed by Astronomy Data and Computing Services (ADACS) as part of its software support scheme.
+
 S.M. would like to thank J. Pritchard and E. Lenc for technical discussions regarding the ASKAP data sets included in this paper.
 
 K.R. thanks the LSST-DA Data Science Fellowship Program, which is funded by LSST-DA, the Brinson Foundation, and the Moore Foundation; Their participation in the program has benefited this work.
@@ -580,7 +587,7 @@ K.R. thanks the LSST-DA Data Science Fellowship Program, which is funded by LSST
 The raw visibilities for the MWA\footnote{\url{https://asvo.mwatelescope.org/}}, ASKAP\footnote{\url{https://research.csiro.au/casda/}}, and MeerKAT\footnote{\url{https://archive.sarao.ac.za/}} data sets are available via the respective telescopes' data portals.
 The ATCA\footnote{\url{https://atoa.atnf.csiro.au/}} data is available on reasonable request to the authors, and will become publicly available from the relevant data portal by November, 2025.
 The post-imaged dynamic spectra, analyses, and timing analysis data products (ToAs, pulse properties) are publicly available on GitHub\footnote{TODO: Make this available upon publication.}.
-
+ 
 %The inclusion of a Data Availability Statement is a requirement for articles published in MNRAS. Data Availability Statements provide a standardised format for readers to understand the availability of data underlying the research results described in the article. The statement may refer to original data generated in the course of the study or to third-party data analysed in the article. The statement should describe and provide means of access, where possible, by linking to the data or providing the required accession numbers for the relevant databases or DOIs.
 
 
@@ -617,7 +624,7 @@ The post-imaged dynamic spectra, analyses, and timing analysis data products (To
     \centering
     \includegraphics[width=0.48\linewidth]{J1755_optical.pdf}
     \includegraphics[width=0.48\linewidth]{J1755_nir.pdf}
-    \caption{The $1\sigma$ positional uncertainty of \src{} derived from the MeerKAT observation taken on MJD 60602 is shown as the green ellipses overlaid on the optical (z, i, r) Panoramic Survey Telescope and Rapid Response System (PanSTARRS) image (left panel), and the infrared (K, H, J) United Kingdom Infrared Telescope Deep Sky Survey (UKIDSS) image (right panel).}
+    \caption{The $1\sigma$ positional uncertainty of \src{} derived from the MeerKAT observation taken on MJD 60602 is shown as the green ellipses overlaid on the optical (z, i, r) Panoramic Survey Telescope and Rapid Response System \citep[PanSTARRS;][]{2010SPIE.7733E..0EK,2016arXiv161205560C} image (left panel), and the infrared (K, H, J) United Kingdom Infrared Telescope Deep Sky Survey \citep[UKIDSS;][]{2007MNRAS.379.1599L} image (right panel).}
     \label{fig:localization}
 \end{figure*}
 
@@ -781,4 +788,3 @@ MeerKAT & 813 & 60602.5835733(40) & 0.044(2) & 14.9(4) & 1.64(4) \\
 \end{document}
 
 % End of mnras_template.tex
-
