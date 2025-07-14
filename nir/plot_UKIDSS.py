@@ -81,12 +81,13 @@ green = fits.open(fits_green)
 blue = fits.open(fits_blue)
 
 # Percentile interval for image normalisation
-pct = 99.999
-interval = PercentileInterval(pct)
+red_interval = PercentileInterval(99.5)
+green_interval = PercentileInterval(99.7)
+blue_interval = PercentileInterval(99.999)
 
 stretch = AsinhStretch(a=0.1)
 
-framesize = 1.3*u.arcmin
+framesize = 0.3*u.arcmin
 
 w_red = wcs.WCS(red[1].header)
 w_green = wcs.WCS(green[1].header)
@@ -96,11 +97,11 @@ red_data = Cutout2D(red[1].data, coord_mkt, framesize, wcs = w_red)
 green_data = Cutout2D(green[1].data, coord_mkt, framesize, wcs = w_green)
 blue_data = Cutout2D(blue[1].data, coord_mkt, framesize, wcs = w_blue)
 
-i = interval.get_limits(red_data.data)
+i = red_interval.get_limits(red_data.data)
 r = stretch(normalize(red_data.data, *i))
-i = interval.get_limits(green_data.data)
+i = green_interval.get_limits(green_data.data)
 g = stretch(normalize(green_data.data, *i))
-i = interval.get_limits(blue_data.data)
+i = blue_interval.get_limits(blue_data.data)
 b = stretch(normalize(blue_data.data, *i))
 
 rgb = np.dstack([r,g,b])
@@ -185,6 +186,8 @@ ax.invert_yaxis()
 #ax.set_xlim(0,xmax)
 #ax.set_ylim(0,ymax)
 
-fig.savefig("J1755_nir.png", dpi=1000, bbox_inches="tight")
+ax.text(5, 7.2, 'UKIDSS (J, H, K)', bbox={'facecolor': 'white', 'pad': 10, 'alpha': 0.7})
+
+fig.savefig("J1755_nir.pdf", dpi=1000, bbox_inches="tight")
 #fig.savefig("M81_SDSS.eps", dpi=1000)
 #fig.savefig("M81_SDSS.pdf")

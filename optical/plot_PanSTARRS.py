@@ -183,6 +183,8 @@ ax.add_patch(ell)
 #ax.set_xlim(0,xmax)
 #ax.set_ylim(0,ymax)
 
+ax.text(4, 65.3, 'PanSTARRS (r, i, z)', bbox={'facecolor': 'white', 'pad': 10, 'alpha': 0.7})
+
 fig.savefig("J1755_optical.pdf", dpi=1000, bbox_inches="tight")
 #fig.savefig("M81_SDSS.eps", dpi=1000)
 #fig.savefig("M81_SDSS.pdf")
