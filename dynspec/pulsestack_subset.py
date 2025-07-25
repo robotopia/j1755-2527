@@ -122,13 +122,13 @@ def main():
     for col in range(args.ncols):
         axs[0][col].set_yticks(yticks[col])
         axs[0][col].set_yticklabels(ylabels[col], fontsize=16)
-        axs[0][col].set_xlabel("Time (s)", fontsize=20)
+        axs[0][col].set_xlabel("Time from predicted ToA (s)", fontsize=20)
         if args.xlim:
             axs[0][col].set_xlim(args.xlim)
         axs[0][col].set_ylim([-0.2, ys[col]+0.1])
         axs[0][col].axvline(0, ls='--', alpha=0.5, c='g', zorder=-100)
         axs[0][col].tick_params(axis='x', labelsize=16)
-    axs[0][0].set_ylabel("Observation start time (UTC)", fontsize=20)
+    #axs[0][0].set_ylabel("Observation start time (UTC)", fontsize=20)
 
     if args.grid:
         plt.grid(axis='x')
